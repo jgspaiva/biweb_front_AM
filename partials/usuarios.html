@@ -47,28 +47,24 @@
     	</div>
 
     	<div class="row">
-    		<div class="col-md-4">
-        		<label for="fUnidade">Unidade</label>
-				<select class="form-control" name="fUnidade" ng-model="usrCtrl.usuario.unidade" required>
-					<option value="p0" selected>Central</option>
-    				<option value="p1">Posto Tracunhaém</option>
-    				<option value="p2">Posto Shopping</option>
-    				<option value="p3">Posto Prefeitura</option>
-				</select>
-        	</div>
-        	<div class="col-md-2">
-        		<label for="fAdmin">Administrador</label>
-				<input class="form-control" name="fAdmin" type="checkbox" ng-model="usrCtrl.usuario.admin">
-        	</div>
-        	<div class="col-md-4">
+            <div class="col-md-4">
         		<label for="fPerfil">Perfil</label>
 				<select class="form-control" name="fPerfil" ng-model="usrCtrl.usuario.perfil" required>
-					<option value="atendente">Atendente</option>
-    				<option value="biomedica">Biomédica</option>
-    				<option value="financeiro">Financeiro</option>
+					<option value="cliente">Cliente</option>
+    				<option value="facilitador">Facilitador</option>
     				<option value="admin">Administrador</option>
 				</select>
         	</div>
+
+    		<div class="col-md-4" ng-show="usrCtrl.isCliente()">
+        		<label for="fCliente">Cliente</label>
+				<select class="form-control" name="fCliente" ng-model="usrCtrl.usuario.cliente" required>
+                    <option ng-repeat="cliente in usrCtrl.listaClientes" value="{{cliente._id}}">
+                        {{cliente.nome_fantasia}}
+                    </option>
+				</select>
+        	</div>
+
     	</div>
 		<!-- ===============================
                   Campos do Formulário
@@ -96,8 +92,8 @@ Tabela por controle
         <th>Nome</th>
         <th>Email</th>
         <th>Telefone</th>
-        <th>Unidade</th>
         <th>Perfil</th>
+        <th>Cliente</th>
         <th>Operacões</th>
     </tr>
 </thead>
@@ -107,7 +103,7 @@ Tabela por controle
         <td>{{usr.nome}}</td>
         <td>{{usr.email}}</td>
         <td>{{usr.telefone}}</td>
-        <td>{{usr.unidade}}</td>
+        <td>{{usr.cliente.nome_fantasia}}</td>
         <td>{{usr.perfil}}</td>
         <td>
         	<button class="btn btn-warning btn-xs" type="button" ng-click="usrCtrl.editar(usr)" data-toggle="modal" data-target="#modalForm" controle controle-verbo="PUT"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>&nbsp;
