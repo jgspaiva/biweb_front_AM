@@ -1,0 +1,120 @@
+<div>
+<h2>Controle de Usuarios</h2>
+
+<button type="button" ng-click="usrCtrl.limpaUsuario()" class="btn btn-default btn-md btn-success" data-toggle="modal" data-target="#modalForm" controle controle-verbo="POST">
+  <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Adicionar
+</button>
+
+<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+
+    <form name="frm" ng-submit="usrCtrl.enviar()"> <!-- conteudo por controle -->
+
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+        <h4 class="modal-title" id="myModalLabel">Usuário</h4> <!-- Nome do controle -->
+
+      </div>
+
+      <div class="modal-body">
+
+      <!-- ===============================
+                Campos do Formulário
+                      Início
+           ===============================-->
+
+
+		<div class="row">
+    		<div class="col-md-3">
+        		<label for="fUsername">Username</label>
+				<input class="form-control" name="fUsername" type="text" ng-model="usrCtrl.usuario.username" required>
+        	</div>
+        	<div class="col-md-3">
+        		<label for="fNome">Nome</label>
+				<input class="form-control" name="fNome" type="text" ng-model="usrCtrl.usuario.nome" required>
+        	</div>
+        	<div class="col-md-3">
+        		<label for="fEmail">Email</label>
+				<input class="form-control" name="fEmail" type="email" ng-model="usrCtrl.usuario.email">
+        	</div>
+        	<div class="col-md-3">
+        		<label for="fTelefone">Telefone</label>
+				<input class="form-control" name="fTelefone" type="text" ng-model="usrCtrl.usuario.telefone">
+        	</div>
+    	</div>
+
+    	<div class="row">
+    		<div class="col-md-4">
+        		<label for="fUnidade">Unidade</label>
+				<select class="form-control" name="fUnidade" ng-model="usrCtrl.usuario.unidade" required>
+					<option value="p0" selected>Central</option>
+    				<option value="p1">Posto Tracunhaém</option>
+    				<option value="p2">Posto Shopping</option>
+    				<option value="p3">Posto Prefeitura</option>
+				</select>
+        	</div>
+        	<div class="col-md-2">
+        		<label for="fAdmin">Administrador</label>
+				<input class="form-control" name="fAdmin" type="checkbox" ng-model="usrCtrl.usuario.admin">
+        	</div>
+        	<div class="col-md-4">
+        		<label for="fPerfil">Perfil</label>
+				<select class="form-control" name="fPerfil" ng-model="usrCtrl.usuario.perfil" required>
+					<option value="atendente">Atendente</option>
+    				<option value="biomedica">Biomédica</option>
+    				<option value="financeiro">Financeiro</option>
+    				<option value="admin">Administrador</option>
+				</select>
+        	</div>
+    	</div>
+		<!-- ===============================
+                  Campos do Formulário
+                         FIM
+             ===============================-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span> Fechar</button>
+        <button type="submit" class="btn btn-primary" ng-disabled="frm.$invalid" controle controle-verbo="POST"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> Salvar</button>
+      </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--
+Tabela por controle
+-->
+
+<table class="table table-stripped table-hover" controle controle-verbo="GET">
+<thead>
+	<tr>
+    	<th>Username</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Telefone</th>
+        <th>Unidade</th>
+        <th>Perfil</th>
+        <th>Operacões</th>
+    </tr>
+</thead>
+<tbody>
+	<tr ng-repeat="usr in usrCtrl.lista">
+    	<td>{{usr.username}}</td>
+        <td>{{usr.nome}}</td>
+        <td>{{usr.email}}</td>
+        <td>{{usr.telefone}}</td>
+        <td>{{usr.unidade}}</td>
+        <td>{{usr.perfil}}</td>
+        <td>
+        	<button class="btn btn-warning btn-xs" type="button" ng-click="usrCtrl.editar(usr)" data-toggle="modal" data-target="#modalForm" controle controle-verbo="PUT"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>&nbsp;
+
+            <button class="btn btn-danger btn-xs" type="button" ng-click="usrCtrl.remover(usr._id)" ng-hide="usrCtrl.isUsuarioLogado(usr._id)" controle controle-verbo="DELETE"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Remover</button>
+        </td>
+    </tr>
+</tbody>
+</table>
+</div>

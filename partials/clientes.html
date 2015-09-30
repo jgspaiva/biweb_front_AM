@@ -1,0 +1,108 @@
+<div>
+<h2>Controle de Clientes</h2>
+
+<button type="button" ng-click="cliCtrl.limpaCliente()" class="btn btn-default btn-md btn-success" data-toggle="modal" data-target="#modalForm" controle controle-verbo="POST">
+  <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Adicionar
+</button>
+
+<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+
+    <form name="frm" ng-submit="cliCtrl.enviar()"> <!-- conteudo por controle -->
+
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+        <h4 class="modal-title" id="myModalLabel">Cliente</h4> <!-- Nome do controle -->
+
+      </div>
+
+      <div class="modal-body">
+
+      <!-- ===============================
+                Campos do Formulário
+                      Início
+           ===============================-->
+
+		<div class="row">
+        	<div class="col-md-3">
+        		<label for="fNome">Nome</label>
+				<input class="form-control" name="fNome" type="text" ng-model="cliCtrl.cliente.nome" required>
+        	</div>
+        	<div class="col-md-2">
+        		<label for="fData">Data Nascimento</label>
+				<input class="form-control" name="fData" type="date" ng-model="cliCtrl.cliente.data_nascimento">
+        	</div>
+
+        	<div class="col-md-2">
+        		<label for="fRg">RG</label>
+				<input class="form-control" name="fRg" type="text" ng-model="cliCtrl.cliente.rg">
+        	</div>
+            <div class="col-md-2">
+        		<label for="fCpf">CPF</label>
+				<input class="form-control" name="fCpf" type="text" ng-model="cliCtrl.cliente.cpf">
+        	</div>
+    	</div>
+
+    	<div class="row">
+        	<div class="col-md-3">
+        		<label for="fPeso">Peso</label>
+				<input class="form-control" name="fPeso" type="number" ng-model="cliCtrl.cliente.peso" required>
+        	</div>
+    		<div class="col-md-3">
+        		<label for="fAltura">Altura</label>
+				<input class="form-control" name="fAltura" type="number" ng-model="cliCtrl.cliente.altura">
+        	</div>
+    	</div>
+		<!-- ===============================
+                  Campos do Formulário
+                         FIM
+             ===============================-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span> Fechar</button>
+        <button type="submit" class="btn btn-primary" ng-disabled="frm.$invalid" controle controle-verbo="POST"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> Salvar</button>
+      </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--
+Tabela por controle
+-->
+
+<table class="table table-stripped table-hover" controle controle-verbo="GET">
+<thead>
+	<tr>
+    	<th>ID</th>
+        <th>Nome</th>
+        <th>Data Nascimento</th>
+        <th>RG</th>
+        <th>CPF</th>
+        <th>Peso</th>
+        <th>Altura</th>
+        <th>Operações</th>
+    </tr>
+</thead>
+<tbody>
+	<tr ng-repeat="cli in cliCtrl.lista">
+    	<td>{{cli.id}}</td>
+    	<td>{{cli.nome}}</td>
+        <td>{{cli.data_nascimento | date:'dd/MM/yyyy'}}</td>
+        <td>{{cli.rg}}</td>
+        <td>{{cli.cpf}}</td>
+        <td>{{cli.peso}}</td>
+        <td>{{cli.altura}}</td>
+        <td>
+        	<button class="btn btn-warning btn-xs" type="button" ng-click="cliCtrl.editar(cli)" data-toggle="modal" data-target="#modalForm" controle controle-verbo="PUT"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>&nbsp;
+
+            <button class="btn btn-danger btn-xs" type="button" ng-click="cliCtrl.remover(cli._id)" controle controle-verbo="DELETE"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Remover</button>
+        </td>
+    </tr>
+</tbody>
+</table>
+</div>

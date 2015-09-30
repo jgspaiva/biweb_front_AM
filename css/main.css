@@ -1,0 +1,44 @@
+@charset "UTF-8";
+/* CSS Document */
+button{
+	color: black;
+}
+
+td{
+	padding: 3px;
+}
+
+tr:nth-child(even){
+    background-color: aliceblue;
+}
+
+.painel{
+	padding-top: 60px;
+}
+
+.btn.ng-invalid{
+	background-color: red;
+}
+
+.btn.ng-valid{
+	background-color: green;
+}
+
+fieldset{
+	margin-top: 10px;
+	padding: 10px;
+	border: thin solid lightgray;
+	border-radius: 5px;
+}
+
+div.painel{
+	margin: 10px;
+}
+
+.glyphicon-arrow-down{
+    color: red;
+}
+
+.glyphicon-arrow-up{
+    color: limegreen;
+}

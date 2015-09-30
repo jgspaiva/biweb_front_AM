@@ -1,0 +1,89 @@
+<!doctype html>
+
+<html ng-app="laclimaApp">
+<head lang="pt">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <title>LACLIMA - Laboratório de Análises Clínicas </title>
+  <link rel="stylesheet" href="css/bootstrap_united.min.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/spinner.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top" ng-controller="MainController as main">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!--<a class="navbar-brand page-scroll" href="#page-top"><img src="img/logos/logo.png" height="36" alt="Logomarca Fidelidade Corretora de Seguros"/></a>-->
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+                <form class="navbar-form navbar-left" ng-submit="main.logon()">
+    				<input class="form-control" type="text" ng-model="main.user.username" size="10" placeholder="usuário" ng-disabled="main.isLogado">
+        			<input class="form-control" type="password" ng-model="main.user.password" size="10" placeholder="senha" ng-disabled="main.isLogado">
+        			<input class="btn btn-primary" type="submit" value="Logar" ng-disabled="main.isLogado">
+    			</form>
+
+                <ul class="nav navbar-nav ng-cloak">
+                	<li ng-repeat="permissao in main.usuario.permissoes">
+                    	<a href="#/{{permissao.cadastro}}">{{permissao.nome}}</a>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+        			<li class="dropdown ng-cloak">
+          				<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{main.usuario.nome}} <span class="caret"></span></a>
+          				<ul class="dropdown-menu">
+            				<li><a href="#/senha">Trocar Senha</a></li>
+            				<li><a href="#/mensagens">Mensagens</a></li>
+            				<li role="separator" class="divider"></li>
+            				<li><a href="#/sair">Sair</a></li>
+          				</ul>
+        			</li>
+      			</ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+
+  <!-- Por aqui o spinner dinamico -->
+  <div id="spinner">
+  	<img src="css/spinner.gif" class="ajax-loader">
+  </div>
+
+  <div class="container painel" ng-view></div>
+
+  <script src="js/angular.min.js"></script>
+  <script src="js/angular-resource.min.js"></script>
+  <script src="js/angular-route.min.js"></script>
+  <script src="js/angular-locale_pt-br.js"></script>
+  <script src="js/jspdf.min.js"></script>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="js/bootstrap.min.js"></script>
+
+  <script src="js/app.js"></script>
+
+</body>
+</html>
