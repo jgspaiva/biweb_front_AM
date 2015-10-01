@@ -257,43 +257,26 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 		var permissoes = function(perfil){
 			var saida = [];
 
-			if(perfil === 'atendente'){
+			if(perfil === 'admin'){
 				saida = [
-					{ cadastro: 'atendimentos', nome: 'Atendimentos', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
-					{ cadastro: 'clientes', nome: 'Clientes', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
-					{ cadastro: 'resultados', nome: 'Resultados', verbos: [ 'GET' ] },
-                    { cadastro: 'caixa', nome: 'Caixa', verbos: [ 'GET', 'POST' ] }
+					{ cadastro: 'usuarios', nome: 'Usuários', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
+                    { cadastro: 'clientes', nome: 'Clientes', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] }
 				];
 			}
-			else if(perfil === 'biomedica'){
+			else if(perfil === 'facilitador'){
 				saida = [
-					{ cadastro: 'atendimentos', nome: 'Atendimentos', verbos: [ 'GET' ] },
-					{ cadastro: 'clientes', nome: 'Clientes', verbos: [ 'GET' ] },
-					{ cadastro: 'resultados', nome: 'Resultados', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
-					{ cadastro: 'exames', nome: 'Exames', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
-					{ cadastro: 'medicos', nome: 'Médicos', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] }
+					{ cadastro: 'painel', nome: 'Painel', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] }
 				];
 			}
-			else if(perfil === 'admin'){
+			else if(perfil === 'master'){
 				saida = [
-					{ cadastro: 'atendimentos', nome: 'Atendimentos', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
-					{ cadastro: 'clientes', nome: 'Clientes', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
-					{ cadastro: 'resultados', nome: 'Resultados', verbos: [ 'GET' ] },
-					{ cadastro: 'exames', nome: 'Exames', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
-					{ cadastro: 'medicos', nome: 'Médicos', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
-					{ cadastro: 'usuarios', nome: 'Usuários', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] }
+					{ cadastro: 'usuarios', nome: 'Usuários', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
+                    { cadastro: 'painel', nome: 'Painel', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] }
 				];
 			}
-			else if(perfil === 'financeiro'){
+            else if(perfil === 'basico'){
 				saida = [
-					{ cadastro: 'atendimentos', nome: 'Atendimentos', verbos: [ 'GET' ] },
-					{ cadastro: 'clientes', nome: 'Clientes', verbos: [ 'GET' ] },
-                    { cadastro: 'caixa', nome: 'Caixa', verbos: [ 'GET', 'POST' ] }
-				];
-			}
-			else if(perfil === 'cliente'){
-				saida = [
-					{ cadastro: 'resultados', nome: 'Resultados', verbos: [ 'GET' ] }
+					{ cadastro: 'painel', nome: 'Painel', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] }
 				];
 			}
 
