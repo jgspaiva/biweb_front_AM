@@ -283,10 +283,10 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 			return saida;
 		};
 
-        self.isCliente = function(){
+        self.isMaster = function(){
             var saida = false;
 
-            if(self.usuario.perfil == 'cliente') saida = true;
+            if(self.usuario.perfil == 'master') saida = true;
             else {
                 if(self.usuario.hasOwnProperty('cliente')) delete self.usuario['cliente'];
                 saida = false;
