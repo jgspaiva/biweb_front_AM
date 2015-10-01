@@ -12,6 +12,10 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 				templateUrl: 'partials/clientes.html',
 				controller: 'ClientesController as cliCtrl'
 			})
+            .when('/planos', {
+				templateUrl: 'partials/planos.html',
+				controller: 'PlanosController as plaCtrl'
+			})
 			.otherwise({
 				template: '<h1>Bem-vindo ao PWBI Web</h1>'
 			});
@@ -71,6 +75,12 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 	}])
 	.factory('ClientesService', ['$resource', function($resource){
 		return $resource('http://begyn.com.br:3100/api/clientes/:id', null,
+			{
+				'update' : { method: 'PUT' }
+			});
+	}])
+    .factory('PlanosService', ['$resource', function($resource){
+		return $resource('http://begyn.com.br:3100/api/planos/:id', null,
 			{
 				'update' : { method: 'PUT' }
 			});
@@ -149,7 +159,6 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
         };
 
     }])
-
 
 // Controllers
 	.controller('MainController', ['AutenticaService', 'Storage', function(AutenticaService, Storage){
@@ -260,7 +269,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 			if(perfil === 'admin'){
 				saida = [
 					{ cadastro: 'usuarios', nome: 'Usuários', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
-                    { cadastro: 'clientes', nome: 'Clientes', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] }
+                    { cadastro: 'clientes', nome: 'Clientes', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
+                    { cadastro: 'planos', nome: 'Planos', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] }
 				];
 			}
 			else if(perfil === 'facilitador'){
@@ -367,4 +377,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 				});
 			}
 		};
-	}]);
+	}])
+    .controller('PlanosController', ['PlanosService', function(PlanosService){
+
+
+    }]);
