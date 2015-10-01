@@ -294,6 +294,14 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
             return saida;
         };
+
+        self.listaClientes = [];
+
+        var carregarClientes = function(){
+            return self.listaClientes = ClientesService.query();
+        };
+
+        carregarClientes();
 	}])
 	.controller('ClientesController', ['ClientesService', 'Storage', function(ClientesService, Storage){
 		var self = this;

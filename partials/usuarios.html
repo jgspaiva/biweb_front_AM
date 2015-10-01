@@ -50,15 +50,16 @@
             <div class="col-md-4">
         		<label for="fPerfil">Perfil</label>
 				<select class="form-control" name="fPerfil" ng-model="usrCtrl.usuario.perfil" required>
-					<option value="cliente">Cliente</option>
-    				<option value="facilitador">Facilitador</option>
-    				<option value="admin">Administrador</option>
+    				<option value="master">Master de Cliente</option>
+                    <option value="basico">Usuário Básico</option>
+    				<option value="facilitador">Facilitador da DSView</option>
+                    <option value="admin">Administrador da DSView</option>
 				</select>
         	</div>
 
-    		<div class="col-md-4" ng-show="usrCtrl.isCliente()">
+    		<div class="col-md-4" ng-show="usrCtrl.isMaster()">
         		<label for="fCliente">Cliente</label>
-				<select class="form-control" name="fCliente" ng-model="usrCtrl.usuario.cliente" required>
+				<select class="form-control" name="fCliente" ng-model="usrCtrl.usuario.cliente">
                     <option ng-repeat="cliente in usrCtrl.listaClientes" value="{{cliente._id}}">
                         {{cliente.nome_fantasia}}
                     </option>
@@ -103,8 +104,8 @@ Tabela por controle
         <td>{{usr.nome}}</td>
         <td>{{usr.email}}</td>
         <td>{{usr.telefone}}</td>
-        <td>{{usr.cliente.nome_fantasia}}</td>
         <td>{{usr.perfil}}</td>
+        <td>{{usr.cliente.nome_fantasia}}</td>
         <td>
         	<button class="btn btn-warning btn-xs" type="button" ng-click="usrCtrl.editar(usr)" data-toggle="modal" data-target="#modalForm" controle controle-verbo="PUT"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>&nbsp;
 
