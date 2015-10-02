@@ -27,35 +27,60 @@
            ===============================-->
 
 		<div class="row">
+            <div class="col-md-3">
+        		<label for="fCnpj">CNPJ</label>
+				<input class="form-control" name="fCnpj" type="text" ng-model="cliCtrl.cliente.cnpj" required>
+        	</div>
         	<div class="col-md-3">
-        		<label for="fNome">Nome</label>
-				<input class="form-control" name="fNome" type="text" ng-model="cliCtrl.cliente.nome" required>
+        		<label for="fRazao">Razão Social</label>
+				<input class="form-control" name="fRazao" type="text" ng-model="cliCtrl.cliente.razao_social" required>
         	</div>
-        	<div class="col-md-2">
-        		<label for="fData">Data Nascimento</label>
-				<input class="form-control" name="fData" type="date" ng-model="cliCtrl.cliente.data_nascimento">
-        	</div>
-
-        	<div class="col-md-2">
-        		<label for="fRg">RG</label>
-				<input class="form-control" name="fRg" type="text" ng-model="cliCtrl.cliente.rg">
-        	</div>
-            <div class="col-md-2">
-        		<label for="fCpf">CPF</label>
-				<input class="form-control" name="fCpf" type="text" ng-model="cliCtrl.cliente.cpf">
+            <div class="col-md-3">
+        		<label for="fFantasia">Nome de Fantasia</label>
+				<input class="form-control" name="fFantasia" type="text" ng-model="cliCtrl.cliente.nome_fantasia" required>
         	</div>
     	</div>
 
     	<div class="row">
-        	<div class="col-md-3">
-        		<label for="fPeso">Peso</label>
-				<input class="form-control" name="fPeso" type="number" ng-model="cliCtrl.cliente.peso" required>
-        	</div>
-    		<div class="col-md-3">
-        		<label for="fAltura">Altura</label>
-				<input class="form-control" name="fAltura" type="number" ng-model="cliCtrl.cliente.altura">
+        	<div class="col-md-4">
+        		<label for="fEndereco">Endereço</label>
+				<input class="form-control" name="fEndereco" type="text" ng-model="cliCtrl.cliente.endereco" required>
         	</div>
     	</div>
+
+        <fieldset name="telefones">
+            <legend>Telefones</legend>
+            <ng-form name="fTelefones">
+                <div class="row">
+    		      <div class="col-md-3">
+        		      <label for="fContato">Nome do Contato</label>
+				      <input class="form-control" name="fContato" type="text" ng-model="cliCtrl.telefone.contato">
+        	      </div>
+                  <div class="col-md-3">
+        		      <label for="fNumero">Número</label>
+				      <input class="form-control" name="fNumero" type="text" ng-model="cliCtrl.telefone.numero">
+        	      </div>
+    		    </div>
+                <button type="button" class="btn btn-success btn-sm" ng-click="cliCtrl.adicionarTelefone()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Adicionar</button>
+
+            </ng-form>
+            <table class="table table-stripped table-hover">
+			<thead>
+				<tr>
+    				<th>Contato</th>
+        			<th>Número</th>
+                    <th>Operação</th>
+        		</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="tel in cliCtrl.cliente.telefones">
+    				<td>{{tel.contato}}</td>
+                    <td>{{tel.numero}}</td>
+                    <td><button class="btn btn-danger btn-xs" type="button" ng-click="cliCtrl.removerTelefone($index)"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Remover</button></td>
+                </tr>
+            </tbody>
+            </table>
+          </fieldset>
 		<!-- ===============================
                   Campos do Formulário
                          FIM
@@ -78,29 +103,21 @@ Tabela por controle
 <table class="table table-stripped table-hover" controle controle-verbo="GET">
 <thead>
 	<tr>
-    	<th>ID</th>
-        <th>Nome</th>
-        <th>Data Nascimento</th>
-        <th>RG</th>
-        <th>CPF</th>
-        <th>Peso</th>
-        <th>Altura</th>
+    	<th>CNPJ</th>
+        <th>Razão Social</th>
+        <th>Nome de Fantasia</th>
         <th>Operações</th>
     </tr>
 </thead>
 <tbody>
 	<tr ng-repeat="cli in cliCtrl.lista">
-    	<td>{{cli.id}}</td>
-    	<td>{{cli.nome}}</td>
-        <td>{{cli.data_nascimento | date:'dd/MM/yyyy'}}</td>
-        <td>{{cli.rg}}</td>
-        <td>{{cli.cpf}}</td>
-        <td>{{cli.peso}}</td>
-        <td>{{cli.altura}}</td>
+    	<td>{{cli.cnpj}}</td>
+    	<td>{{cli.razao_social}}</td>
+        <td>{{cli.nome_fantasia}}</td>
         <td>
         	<button class="btn btn-warning btn-xs" type="button" ng-click="cliCtrl.editar(cli)" data-toggle="modal" data-target="#modalForm" controle controle-verbo="PUT"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>&nbsp;
 
-            <button class="btn btn-danger btn-xs" type="button" ng-click="cliCtrl.remover(cli._id)" controle controle-verbo="DELETE"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Remover</button>
+            <button class="btn btn-danger btn-xs" type="button" ng-click="cliCtrl.remover(cli)" controle controle-verbo="DELETE"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Remover</button>
         </td>
     </tr>
 </tbody>

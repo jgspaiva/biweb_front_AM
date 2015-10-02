@@ -361,64 +361,88 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 		self.lista = [];
 
 		var editado = false;
-		var idEditado = '';
 
-		self.carregar = function(){
+		var carregar = function(){
 			return self.lista = ClientesService.query();
 		};
 
-		self.carregar();
+		carregar();
 
 		self.limpaCliente = function(){
 			self.cliente = {
-				nome : '',
-				username: '',
-				data_nascimento: '',
-				rg: '',
-				cpf: '',
-				peso: 0,
-				altura: 0
-			};
-
-			editado = false;
+                telefones: []
+            };
 		};
+
+        self.limpaCliente();
 
 		self.enviar = function(){
 			if(!editado){
-				ClientesService.save(self.cliente, function(response){
-					alert('Informe o codigo do Cliente: ' + response.id);
-
-					self.limpaCliente();
-					self.carregar();
-				});
+				ClientesService.save(self.cliente).$promise
+                    .then(
+                        function(response){
+                            carregar();
+                            self.limpaCliente();
+                        },
+                        function(error){
+                            alert('Ocorreu um erro ao salvar o cliente');
+                        }
+                );
 			}
 			else{
-				ClientesService.update({ id: idEditado }, self.cliente, function(response){
-					editado = false;
+				ClientesService.update({ id: self.cliente._id }, self.cliente).$promise
+                    .then(
+                        function(response){
+                            editado = false;
 
-					self.limpaCliente();
-					self.carregar();
+                            self.limpaCliente();
+                            carregar();
 
-					$('#modalForm').modal('hide');
-				});
+                            $('#modalForm').modal('hide');
+                        },
+                        function(error){
+                            alert('Erro ao atualizar o cliente');
+
+                        }
+                    );
 			}
 		};
 
 		self.editar = function(cli){
-			idEditado = cli._id;
 			editado = true;
 
 			self.cliente = cli;
 		};
 
-		self.remover = function(id){
+		self.remover = function(cli){
 			if(confirm('Deseja remover este cliente?')){
-				ClientesService.remove({ id: id }, function(response){
-					//alert(response.message);
-					self.carregar();
-				});
+				ClientesService.remove({ id: cli._id }).$promise
+                    .then(
+                        function(response){
+                            alert(response.message);
+                            carregar();
+                        },
+                        function(error){
+                            alert('Erro ao remover cliente');
+                        }
+                );
 			}
 		};
+
+        self.telefone = {};
+
+        var limpaTelefone = function(){
+            self.telefone = {};
+        };
+
+        self.adicionarTelefone = function(){
+            self.cliente.telefones.push(self.telefone);
+            limpaTelefone();
+        };
+
+        self.removerTelefone = function(index){
+            self.cliente.telefones.splice(index, 1);
+        };
 	}])
     .controller('PlanosController', ['PlanosService', function(PlanosService){
         var self = this;
