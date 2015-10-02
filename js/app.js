@@ -164,7 +164,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
         return {
             restrict: 'AE',
             scope: {
-                guardaUsuario: '=',
+                guardaUsuario: '@',
                 guardaVerbo: '@'
             },
             link: function($scope, $element, $attrs){
@@ -172,26 +172,29 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                 var verbo = $scope.guardaVerbo;
                 var cadastro = $location.path().replace(/\W/g, '');
 
-                var exibir = function(usuario_, verbo_, cadastro_){
-                    var saida = true;
+                var esconder = function(usuario_){
+                    var saida = false;
 
-                    if(Storage.getUsuario()._id == usuario_) saida = false;
-                    else {
-                        saida = false;
-
-                        Storage.getUsuario().permissoes.forEach(function(permissao){
-                            if(permissao.cadastro == cadastro_){
-                                permissao.verbos.forEach(function(v){
-                                    if(v == verbo_) saida = true;
-                                });
-                            }
-                        });
-                    }
+                    if(Storage.getUsuario()._id == usuario_) saida = true;
 
                     return saida;
                 };
 
-                if(exibir(usuario, verbo, cadastro)) $element.css("visibility", "visible");
+                var exibir = function(verbo_, cadastro_){
+                    var saida = false;
+
+                    Storage.getUsuario().permissoes.forEach(function(permissao){
+                        if(permissao.cadastro == cadastro_){
+                            permissao.verbos.forEach(function(v){
+                                if(v == verbo_) saida = true;
+                            });
+                        }
+                    });
+
+                    return saida;
+                };
+
+                if(exibir(verbo, cadastro) && !esconder(usuario)) $element.css("visibility", "visible");
                 else $element.css("visibility", "hidden");
             }
 
