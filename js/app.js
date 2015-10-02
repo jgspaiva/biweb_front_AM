@@ -160,6 +160,45 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
     }])
 
+    .directive('guarda', ['$location', 'Storage', function($location, Storage){
+        return {
+            restrict: 'AE',
+            scope: {
+                guardaUsuario: '=',
+                guardaVerbo: '@'
+            },
+            link: function($scope, $element, $attrs){
+                var usuario = $scope.guardaUsuario;
+                var verbo = $scope.guardaVerbo;
+                var cadastro = $location.path().replace(/\W/g, '');
+
+                var exibir = function(usuario_, verbo_, cadastro_){
+                    var saida = true;
+
+                    if(Storage.getUsuario()._id == usuario_) saida = false;
+                    else {
+                        saida = false;
+
+                        Storage.getUsuario().permissoes.forEach(function(permissao){
+                            if(permissao.cadastro == cadastro_){
+                                permissao.verbos.forEach(function(v){
+                                    if(v == verbo_) saida = true;
+                                });
+                            }
+                        });
+                    }
+
+                    return saida;
+                };
+
+                if(exibir(usuario, verbo, cadastro)) $element.css("visibility", "visible");
+                else $element.css("visibility", "hidden");
+            }
+
+        };
+
+    }])
+
 // Controllers
 	.controller('MainController', ['AutenticaService', 'Storage', function(AutenticaService, Storage){
 		var self = this;
