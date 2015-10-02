@@ -48,8 +48,19 @@
         	</div>
     	</div>
 
+        <div class="row">
+        	<div class="col-md-4">
+        		<label for="fPlano">Plano</label>
+				<select class="form-control" name="fPlano" ng-model="cliCtrl.cliente.plano">
+                    <option ng-repeat="plano in cliCtrl.listaPlanos" value="{{plano._id}}">
+                        {{plano.nome}} - {{plano.limite_usuarios}} licenças
+                    </option>
+				</select>
+        	</div>
+    	</div>
+
         <fieldset name="telefones">
-            <legend>Telefones</legend>
+            <legend>Telefones de Contato</legend>
             <ng-form name="fTelefones">
                 <div class="row">
     		      <div class="col-md-3">
@@ -106,6 +117,8 @@ Tabela por controle
     	<th>CNPJ</th>
         <th>Razão Social</th>
         <th>Nome de Fantasia</th>
+        <th>Plano</th>
+        <th>Licenças</th>
         <th>Operações</th>
     </tr>
 </thead>
@@ -114,6 +127,8 @@ Tabela por controle
     	<td>{{cli.cnpj}}</td>
     	<td>{{cli.razao_social}}</td>
         <td>{{cli.nome_fantasia}}</td>
+        <td>{{cli.plano.nome}}</td>
+        <td>{{cli.plano.limite_usuarios}}</td>
         <td>
         	<button class="btn btn-warning btn-xs" type="button" ng-click="cliCtrl.editar(cli)" data-toggle="modal" data-target="#modalForm" controle controle-verbo="PUT"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>&nbsp;
 

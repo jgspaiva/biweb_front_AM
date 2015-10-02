@@ -355,10 +355,18 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
         carregarClientes();
 	}])
-	.controller('ClientesController', ['ClientesService', 'Storage', function(ClientesService, Storage){
+	.controller('ClientesController', ['ClientesService', 'PlanosService', 'Storage', function(ClientesService, PlanosService, Storage){
 		var self = this;
 
 		self.lista = [];
+
+        self.listaPlanos = [];
+
+        var carregarPlanos = function(){
+            return self.listaPlanos = PlanosService.query();
+        };
+
+        carregarPlanos();
 
 		var editado = false;
 
