@@ -421,6 +421,78 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 		};
 	}])
     .controller('PlanosController', ['PlanosService', function(PlanosService){
+        var self = this;
 
+        self.lista = [];
+
+        var carregar = function(){
+            return self.lista = PlanosService.query();
+        };
+
+        carregar();
+
+        self.limpaPlano = function(){
+            self.plano = {};
+        };
+
+        self.limpaPlano();
+
+        var editado = false;
+
+        self.enviar = function(){
+            if(editado){
+                PlanosService.update({ id: self.plano._id }, self.plano).$promise
+                .then(
+                    function(res){
+                        editado = false;
+
+                        alert(res.message);
+
+                        self.limpaPlano();
+
+                        $('#modalForm').modal('hide');
+                    },
+                    function(error){
+                        alert('Erro ao atualizar');
+                    }
+                );
+            }
+            else {
+                PlanosService.save(self.plano).$promise
+                .then(
+                    function(res){
+                        alert(res.message);
+
+                        carregar();
+
+                        self.limpaPlano();
+                    },
+                    function(error){
+                        alert('Erro ao salvar');
+                    }
+                );
+            }
+        };
+
+        self.remover = function(plano){
+            if(confirm('Deseja realmente excluir este plano?')){
+                PlanosService.remove({ id: plano._id }).$promise
+                .then(
+                    function(res){
+                        alert(res.message);
+
+                        carregar();
+                    },
+                    function(error){
+                        alert('Erro ao excluir');
+                    }
+                );
+            }
+        };
+
+        self.editar = function(plano){
+            self.plano = plano;
+            editado = true;
+        };
 
     }]);

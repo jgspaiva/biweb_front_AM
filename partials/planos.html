@@ -1,1 +1,92 @@
-<h1>Cadastro de Planos</h1>
+<div>
+<h2>Controle de Planos</h2>
+
+<button type="button" ng-click="plaCtrl.limpaPlano()" class="btn btn-default btn-md btn-success" data-toggle="modal" data-target="#modalForm" controle controle-verbo="POST">
+  <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Adicionar
+</button>
+
+<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+
+    <form name="frm" ng-submit="plaCtrl.enviar()"> <!-- conteudo por controle -->
+
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+        <h4 class="modal-title" id="myModalLabel">Plano</h4> <!-- Nome do controle -->
+
+      </div>
+
+      <div class="modal-body">
+
+      <!-- ===============================
+                Campos do Formulário
+                      Início
+           ===============================-->
+
+		<div class="row">
+        	<div class="col-md-3">
+        		<label for="fNome">Nome</label>
+				<input class="form-control" name="fNome" type="text" ng-model="plaCtrl.plano.nome" required>
+        	</div>
+        	<div class="col-md-2">
+        		<label for="fDescricao">Descrição</label>
+				<input class="form-control" name="fDescricao" type="text" ng-model="plaCtrl.plano.descricao">
+        	</div>
+
+        	<div class="col-md-2">
+        		<label for="fPreco">Preço</label>
+				<input class="form-control" name="fPreco" type="number" ng-model="plaCtrl.plano.preco">
+        	</div>
+            <div class="col-md-2">
+        		<label for="fLimite">Limite de Usuários</label>
+				<input class="form-control" name="fLimite" type="number" ng-model="plaCtrl.plano.limite_usuarios">
+        	</div>
+    	</div>
+
+		<!-- ===============================
+                  Campos do Formulário
+                         FIM
+             ===============================-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span> Fechar</button>
+        <button type="submit" class="btn btn-primary" ng-disabled="frm.$invalid" controle controle-verbo="POST"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> Salvar</button>
+      </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--
+Tabela por controle
+-->
+
+<table class="table table-stripped table-hover" controle controle-verbo="GET">
+<thead>
+	<tr>
+    	<th>Nome</th>
+        <th>Descrição</th>
+        <th>Preço</th>
+        <th>Limite</th>
+        <th>Operações</th>
+    </tr>
+</thead>
+<tbody>
+	<tr ng-repeat="pla in plaCtrl.lista | orderBy: 'preco'">
+    	<td>{{pla.nome}}</td>
+        <td>{{pla.descricao}}</td>
+        <td>{{pla.preco}}</td>
+        <td>{{pla.limite_usuarios}}</td>
+        <td>
+        	<button class="btn btn-warning btn-xs" type="button" ng-click="plaCtrl.editar(pla)" data-toggle="modal" data-target="#modalForm" controle controle-verbo="PUT"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>&nbsp;
+
+            <button class="btn btn-danger btn-xs" type="button" ng-click="plaCtrl.remover(pla)" controle controle-verbo="DELETE"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Remover</button>
+        </td>
+    </tr>
+</tbody>
+</table>
+</div>
