@@ -51,7 +51,7 @@
         <div class="row">
         	<div class="col-md-4">
         		<label for="fPlano">Plano</label>
-				<select class="form-control" name="fPlano" ng-model="cliCtrl.cliente.plano">
+				<select class="form-control" name="fPlano" ng-model="cliCtrl.planoAtual">
                     <option ng-repeat="plano in cliCtrl.listaPlanos" value="{{plano._id}}">
                         {{plano.nome}} - {{plano.limite_usuarios}} licenças
                     </option>

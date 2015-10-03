@@ -380,17 +380,22 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 			self.cliente = {
                 telefones: []
             };
+
+            self.planoAtual = {};
 		};
 
         self.limpaCliente();
 
 		self.enviar = function(){
+            self.cliente.plano = self.planoAtual;
+
 			if(!editado){
 				ClientesService.save(self.cliente).$promise
                     .then(
                         function(response){
-                            carregar();
                             self.limpaCliente();
+
+                            carregar();
                         },
                         function(error){
                             alert('Ocorreu um erro ao salvar o cliente');
@@ -404,6 +409,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                             editado = false;
 
                             self.limpaCliente();
+
                             carregar();
 
                             $('#modalForm').modal('hide');
@@ -420,6 +426,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 			editado = true;
 
 			self.cliente = cli;
+            self.planoAtual = cli.plano._id;
 		};
 
 		self.remover = function(cli){
