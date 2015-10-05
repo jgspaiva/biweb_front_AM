@@ -59,7 +59,7 @@
 
     		<div class="col-md-4" ng-show="usrCtrl.isMaster()">
         		<label for="fCliente">Cliente</label>
-				<select class="form-control" name="fCliente" ng-model="usrCtrl.usuario.cliente">
+				<select class="form-control" name="fCliente" ng-model="usrCtrl.clienteAtual">
                     <option ng-repeat="cliente in usrCtrl.listaClientes" value="{{cliente._id}}">
                         {{cliente.nome_fantasia}}
                     </option>

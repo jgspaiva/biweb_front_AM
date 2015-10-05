@@ -242,6 +242,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 		var idUsuarioEditado = '';  // Id do objeto editado
 
 		self.enviar = function(){
+            self.usuario.cliente = self.clienteAtual;
+
 			if(!editado) {
 				self.usuario.password = self.usuario.username;
 
@@ -260,7 +262,6 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 				UsuariosService.update({ id: idUsuarioEditado }, self.usuario, function(response){
 						//alert(response.message);
 
-						editado = false;
 						self.limpaUsuario();
 						self.carregar();
 
@@ -274,6 +275,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
 			idUsuarioEditado = usr._id;
 			self.usuario = usr;
+
+            self.clienteAtual = usr.cliente._id;
 		};
 
 		self.remover = function(id){
@@ -301,6 +304,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 				permissoes : [],
 				_id: ''
 			};
+
+            self.clienteAtual = {};
 
 			editado = false;
 		};
