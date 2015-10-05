@@ -382,6 +382,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
             };
 
             self.planoAtual = {};
+
+            editado = false;
 		};
 
         self.limpaCliente();
@@ -406,8 +408,6 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 				ClientesService.update({ id: self.cliente._id }, self.cliente).$promise
                     .then(
                         function(response){
-                            editado = false;
-
                             self.limpaCliente();
 
                             carregar();
