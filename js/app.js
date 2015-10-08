@@ -16,6 +16,10 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 				templateUrl: 'partials/planos.html',
 				controller: 'PlanosController as plaCtrl'
 			})
+            .when('/painel', {
+				templateUrl: 'partials/painel.html',
+				controller: 'PainelController as pnlCtrl'
+			})
 			.otherwise({
 				template: '<h1>Bem-vindo ao PWBI Web</h1>'
 			});
@@ -129,42 +133,12 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 	}])
 
 // Diretivas
-    .directive('controle', ['$location', 'Storage', function($location, Storage){
-        return {
-            restrict: 'A',
-            scope: {
-                controleVerbo: '@'
-            },
-            link: function($scope, $element, $attrs){
-                var verbo = $scope.controleVerbo;
-                var cadastro = $location.path().replace(/\W/g, '');
-
-                var visibilidade = function(verbo_,cadastro_){
-                    var saida = 'hidden';
-
-                    Storage.getUsuario().permissoes.forEach(function(permissao){
-                        if(permissao.cadastro == cadastro_){
-                            permissao.verbos.forEach(function(v){
-                                if(v == verbo_) saida = 'visible';
-                            });
-                        }
-                    });
-
-                    return saida;
-                };
-
-                $element.css("visibility", visibilidade(verbo, cadastro));
-            }
-
-        };
-
-    }])
 
     .directive('guarda', ['$location', 'Storage', function($location, Storage){
         return {
             restrict: 'AE',
             scope: {
-                guardaUsuario: '@',
+                guardaUsuario: '=',
                 guardaVerbo: '@'
             },
             link: function($scope, $element, $attrs){
@@ -172,10 +146,10 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                 var verbo = $scope.guardaVerbo;
                 var cadastro = $location.path().replace(/\W/g, '');
 
-                var esconder = function(usuario_){
+                var esconder = function(usuario_id){
                     var saida = false;
 
-                    if(Storage.getUsuario()._id == usuario_) saida = true;
+                    if(Storage.getUsuario()._id == usuario_id) saida = true;
 
                     return saida;
                 };
@@ -194,8 +168,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                     return saida;
                 };
 
-                if(exibir(verbo, cadastro) && !esconder(usuario)) $element.css("visibility", "visible");
-                else $element.css("visibility", "hidden");
+                if(exibir(verbo, cadastro) && !esconder(usuario._id)) $element.css("visibility", "visible");
+                else $element.css("display", "none");
             }
 
         };
@@ -227,7 +201,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 			});
 		};
 	}])
-	.controller('UsuariosController', ['UsuariosService','UsuariosClienteService', 'ClientesService', 'Storage', function(UsuariosService, UsuariosClienteService, ClientesService, Storage){
+	.controller('UsuariosController', ['UsuariosService','UsuariosClienteService', 'ClientesService', function(UsuariosService, UsuariosClienteService, ClientesService){
 		var self = this;
 
 		self.lista = [];
@@ -288,10 +262,6 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 			}
 		};
 
-		self.isUsuarioLogado = function(id){
-			return id === Storage.getUsuario()._id;
-		};
-
 		self.limpaUsuario = function(){
 			self.usuario = {
 				username: '',
@@ -327,7 +297,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 			}
 			else if(perfil === 'master'){
 				saida = [
-					{ cadastro: 'usuarios', nome: 'Usuários', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
+					{ cadastro: 'usuarios', nome: 'Usuários', verbos: [ 'GET', 'PUT' ] },
                     { cadastro: 'painel', nome: 'Painel', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] }
 				];
 			}
@@ -360,7 +330,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
         carregarClientes();
 	}])
-	.controller('ClientesController', ['ClientesService', 'PlanosService', 'Storage', function(ClientesService, PlanosService, Storage){
+	.controller('ClientesController', ['ClientesService', 'PlanosService', function(ClientesService, PlanosService){
 		var self = this;
 
 		self.lista = [];
@@ -539,4 +509,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
             editado = true;
         };
 
+    }])
+
+    .controller('PainelController', [function(){
+        // Controller de Painel
     }]);

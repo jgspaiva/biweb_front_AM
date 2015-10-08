@@ -1,7 +1,7 @@
 <div>
 <h2>Controle de Clientes</h2>
 
-<button type="button" ng-click="cliCtrl.limpaCliente()" class="btn btn-default btn-md btn-success" data-toggle="modal" data-target="#modalForm" controle controle-verbo="POST">
+<button type="button" ng-click="cliCtrl.limpaCliente()" class="btn btn-default btn-md btn-success" data-toggle="modal" data-target="#modalForm" guarda guarda-verbo="POST">
   <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Adicionar
 </button>
 
@@ -99,7 +99,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span> Fechar</button>
-        <button type="submit" class="btn btn-primary" ng-disabled="frm.$invalid" controle controle-verbo="POST"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> Salvar</button>
+        <button type="submit" class="btn btn-primary" ng-disabled="frm.$invalid" guarda guarda-verbo="POST"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> Salvar</button>
       </div>
 
       </form>
@@ -111,7 +111,7 @@
 Tabela por controle
 -->
 
-<table class="table table-stripped table-hover" controle controle-verbo="GET">
+<table class="table table-stripped table-hover" guarda guarda-verbo="GET">
 <thead>
 	<tr>
     	<th>CNPJ</th>
@@ -130,9 +130,9 @@ Tabela por controle
         <td>{{cli.plano.nome}}</td>
         <td>{{cli.plano.limite_usuarios}}</td>
         <td>
-        	<button class="btn btn-warning btn-xs" type="button" ng-click="cliCtrl.editar(cli)" data-toggle="modal" data-target="#modalForm" controle controle-verbo="PUT"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>&nbsp;
+        	<button class="btn btn-warning btn-xs" type="button" ng-click="cliCtrl.editar(cli)" data-toggle="modal" data-target="#modalForm" guarda guarda-verbo="PUT"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>&nbsp;
 
-            <button class="btn btn-danger btn-xs" type="button" ng-click="cliCtrl.remover(cli)" controle controle-verbo="DELETE"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Remover</button>
+            <button class="btn btn-danger btn-xs" type="button" ng-click="cliCtrl.remover(cli)" guarda guarda-verbo="DELETE"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Remover</button>
         </td>
     </tr>
 </tbody>
