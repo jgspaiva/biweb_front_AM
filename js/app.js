@@ -86,9 +86,9 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 				return config;
 			},
 			requestError: function(rejection){
-				alert('Falha ao enviar.');
-
                 $rootScope.$broadcast('fail');
+
+				alert('Falha ao enviar.');
 
 				return $q.reject(rejection);
 			},
@@ -258,6 +258,20 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
                     return saida;
                 };
+            }
+        };
+    }])
+
+    .directive('list', ['Storage', function(Storage){
+        return {
+            restrict: 'AE',
+            scope: {
+                source: '=',
+                subset: '@'
+            },
+            templateUrl: 'list.html',
+            link: function($scope, $element, $attrs){
+
             }
         };
     }])
