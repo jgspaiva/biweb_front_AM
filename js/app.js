@@ -165,7 +165,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                 disabled: '&?',
                 size: '@?'
             },
-            templateUrl: 'meu_button.html',
+            templateUrl: 'button_spinner.html',
             link: function($scope, $element, $attrs){
                 var processing = false;
 
@@ -318,9 +318,9 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
             self.clienteAtual = usr.cliente._id;
 		};
 
-		self.remover = function(id){
+		self.remover = function(usr){
 			if(confirm('Deseja remover este usuário?')){
-				UsuariosService.remove({ id: id }, function(response){
+				UsuariosService.remove({ id: usr._id }, function(response){
 					//alert(response.message);
 					self.carregar();
 				});
