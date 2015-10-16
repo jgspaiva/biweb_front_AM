@@ -99,7 +99,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span> Fechar</button>
-        <button type="submit" class="btn btn-primary" ng-disabled="frm.$invalid" guarda guarda-verbo="POST"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> Salvar</button>
+        <button-spinner action="cliCtrl.enviar()" titulo="Salvar" verbo="POST"></button-spinner>
       </div>
 
       </form>
@@ -132,7 +132,7 @@ Tabela por controle
         <td>
         	<button class="btn btn-warning btn-xs" type="button" ng-click="cliCtrl.editar(cli)" data-toggle="modal" data-target="#modalForm" guarda guarda-verbo="PUT"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>&nbsp;
 
-            <button class="btn btn-danger btn-xs" type="button" ng-click="cliCtrl.remover(cli)" guarda guarda-verbo="DELETE"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Remover</button>
+            <button-spinner action="cliCtrl.remover(cli)" titulo="Remover" verbo="DELETE" size="xs"></button-spinner>
         </td>
     </tr>
 </tbody>
