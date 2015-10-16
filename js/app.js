@@ -154,7 +154,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
     }])
 
-    .directive('buttonSpinner',[function(){
+    .directive('buttonSpinner',['$location', 'Storage', function($location, Storage){
         return {
             restrict: 'E',
             scope: {
@@ -163,6 +163,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                 titulo: '@',
                 show: '&?',
                 disabled: '&?',
+                secure: '@?',
                 size: '@?'
             },
             templateUrl: 'button_spinner.html',
@@ -218,8 +219,14 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
                 $scope.isDisabled = function(){
                     var saida = processing;
+                    var cadastro = $location.path().replace(/\W/g, '');
+                    var verbo = $scope.verbo;
 
                     if($attrs.disabled) saida = saida || ($scope.disabled());
+
+                    if($attrs.secure) {
+                        if($scope.secure == "true") saida = saida || (!exibir(verbo, cadastro));
+                    }
 
                     return saida;
                 };
@@ -234,6 +241,20 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                     var saida = true;
 
                     if($attrs.show) saida = $scope.show();
+
+                    return saida;
+                };
+
+                var exibir = function(verbo, cadastro){
+                    var saida = false;
+
+                    Storage.getUsuario().permissoes.forEach(function(permissao){
+                        if(permissao.cadastro == cadastro){
+                            permissao.verbos.forEach(function(v){
+                                if(v == verbo) saida = true;
+                            });
+                        }
+                    });
 
                     return saida;
                 };

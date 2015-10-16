@@ -75,7 +75,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span> Fechar</button>
 
-        <button-spinner action="usrCtrl.enviar()" titulo="Salvar" verbo="POST"></button-spinner>
+        <button-spinner action="usrCtrl.enviar()" titulo="Salvar" verbo="POST" secure="true"></button-spinner>
 
       </div>
 
@@ -111,7 +111,7 @@ Tabela por controle
         <td>
         	<button class="btn btn-warning btn-xs" type="button" ng-click="usrCtrl.editar(usr)" data-toggle="modal" data-target="#modalForm" guarda guarda-verbo="PUT"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>&nbsp;
 
-            <button-spinner action="usrCtrl.remover(usr)" titulo="Remover" verbo="DELETE" size="xs"></button-spinner>
+            <button-spinner action="usrCtrl.remover(usr)" titulo="Remover" verbo="DELETE" size="xs" secure="true"></button-spinner>
         </td>
     </tr>
 </tbody>
