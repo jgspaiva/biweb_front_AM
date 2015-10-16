@@ -33,8 +33,6 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
             _id: ''
         };
 
-		var conexoesAbertas = 0;
-
         return {
 			// Metodos para token
             getToken: function () {
@@ -50,16 +48,6 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 			},
 			setUsuario: function(user){
 				usuario = user;
-			},
-
-			abreConexao: function(){
-				conexoesAbertas++;
-			},
-			fechaConexao: function(){
-				conexoesAbertas--;
-			},
-			getConexoesAbertas: function(){
-				return conexoesAbertas;
 			}
         };
     })
@@ -89,38 +77,28 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 				'update' : { method: 'PUT' }
 			});
 	}])
-	.factory('ResourceInterceptor', ['Storage', '$q', function(Storage, $q){
+	.factory('ResourceInterceptor', ['Storage', '$rootScope', '$q', function(Storage, $rootScope, $q){
 		return {
 			request: function(config){
 				config.headers['x-access-token'] = Storage.getToken();
                 config.headers['usuario_id'] = Storage.getUsuario()._id;
 
-				Storage.abreConexao();
-
-				$('#spinner').show();
-
 				return config;
 			},
 			requestError: function(rejection){
-				Storage.fechaConexao();
-
-				if(Storage.getConexoesAbertas() === 0) $('#spinner').hide();
-
 				alert('Falha ao enviar.');
+
+                $rootScope.$broadcast('fail');
 
 				return $q.reject(rejection);
 			},
 			response: function(response){
-				Storage.fechaConexao();
-
-				if(Storage.getConexoesAbertas() === 0) $('#spinner').hide();
+                $rootScope.$broadcast('done');
 
 				return response;
 			},
 			responseError: function(rejection){
-				Storage.fechaConexao();
-
-				if(Storage.getConexoesAbertas() === 0) $('#spinner').hide();
+                $rootScope.$broadcast('fail');
 
 				alert('O servidor retornou uma falha.');
 
@@ -174,6 +152,93 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
         };
 
+    }])
+
+    .directive('buttonSpinner',[function(){
+        return {
+            restrict: 'E',
+            scope: {
+                action: '&',
+                verbo: '@',
+                titulo: '@',
+                show: '&?',
+                disabled: '&?',
+                size: '@?'
+            },
+            templateUrl: 'meu_button.html',
+            link: function($scope, $element, $attrs){
+                var processing = false;
+
+                $scope.classeVerbo = function(){
+                    var classe = {
+                        button : "btn btn-primary",
+                        spinner: "ajax-loader",
+                        icone: "glyphicon glyphicon-plus-sign"
+                    };
+
+                    var verbo = $scope.verbo;
+
+                    if(verbo == 'GET') {
+                        classe.button = "btn btn-default";
+                        classe.icone = "glyphicon glyphicon-list";
+                    }
+                    else if(verbo == 'POST') {
+                        classe.button = "btn btn-success";
+                        classe.icone = "glyphicon glyphicon-send";
+                    }
+                    else if(verbo == 'PUT') {
+                        classe.button = "btn btn-info";
+                        classe.icone = "glyphicon glyphicon-edit";
+                    }
+                    else if(verbo == 'DELETE'){
+                        classe.button = "btn btn-danger";
+                        classe.icone = "glyphicon glyphicon-remove-sign";
+                    }
+
+                    if($attrs.size) {
+                        classe.button = classe.button + " btn-" + $scope.size;
+
+                        if(($scope.size == 'sm') || ($scope.size == 'xs')) classe.spinner = "ajax-loader-sm";
+                    }
+
+                    return classe;
+                };
+
+                $scope.$on('done', function(){
+                    processing = false;
+                });
+
+                $scope.$on('fail', function(){
+                    processing = false;
+                });
+
+                $scope.isProcessing = function(){
+                    return processing;
+                };
+
+                $scope.isDisabled = function(){
+                    var saida = processing;
+
+                    if($attrs.disabled) saida = saida || ($scope.disabled());
+
+                    return saida;
+                };
+
+                $scope.clique = function(){
+                    processing = true;
+
+                    $scope.action();
+                };
+
+                $scope.intraShow = function(){
+                    var saida = true;
+
+                    if($attrs.show) saida = $scope.show();
+
+                    return saida;
+                };
+            }
+        };
     }])
 
 // Controllers
