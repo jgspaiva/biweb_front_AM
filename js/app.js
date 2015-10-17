@@ -264,7 +264,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
     .directive('list', ['Storage', function(Storage){
         return {
-            restrict: 'AE',
+            restrict: 'E',
             scope: {
                 source: '=',
                 subset: '@'
