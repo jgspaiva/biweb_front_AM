@@ -164,6 +164,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                 show: '&?',
                 disabled: '&?',
                 secure: '@?',
+                perfil: '@?',
                 size: '@?'
             },
             templateUrl: 'componentes/button_spinner.html',
@@ -241,6 +242,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                     var saida = true;
 
                     if($attrs.show) saida = $scope.show();
+
+                    if($attrs.perfil && (Storage.getUsuario().perfil != $scope.perfil)) saida = false;
 
                     return saida;
                 };
@@ -438,6 +441,10 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
         };
 
         carregarClientes();
+
+        self.autorizar = function(usr){
+
+        };
 	}])
 	.controller('ClientesController', ['ClientesService', 'PlanosService', function(ClientesService, PlanosService){
 		var self = this;
