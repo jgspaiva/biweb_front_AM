@@ -301,13 +301,22 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 			});
 		};
 	}])
-	.controller('UsuariosController', ['UsuariosService','UsuariosClienteService', 'ClientesService', function(UsuariosService, UsuariosClienteService, ClientesService){
+	.controller('UsuariosController', ['Storage', 'UsuariosService','UsuariosClienteService', 'ClientesService', function(Storage, UsuariosService, UsuariosClienteService, ClientesService){
 		var self = this;
+
+        var cliente = Storage.getUsuario().cliente;
 
 		self.lista = [];
 
 		self.carregar = function(){
-			return self.lista = UsuariosService.query();
+            if(cliente){
+                self.lista = UsuariosClienteService.query({ id: cliente });
+            }
+            else {
+                self.lista = UsuariosService.query();
+            }
+
+            return self.lista;
 		};
 
 		self.carregar(); // Inicializa a lista
