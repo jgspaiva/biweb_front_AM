@@ -166,7 +166,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                 secure: '@?',
                 size: '@?'
             },
-            templateUrl: 'button_spinner.html',
+            templateUrl: 'componentes/button_spinner.html',
             link: function($scope, $element, $attrs){
                 var processing = false;
 
@@ -269,7 +269,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                 source: '=',
                 subset: '@'
             },
-            templateUrl: 'list.html',
+            templateUrl: 'componentes/list.html',
             link: function($scope, $element, $attrs){
 
             }
