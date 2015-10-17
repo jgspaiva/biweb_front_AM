@@ -1,9 +1,13 @@
 <div>
 <h2>Controle de Usuarios</h2>
 
-<button type="button" ng-click="usrCtrl.limpaUsuario()" class="btn btn-default btn-md btn-success" data-toggle="modal" data-target="#modalForm" guarda guarda-verbo="POST">
-  <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Adicionar
-</button>
+ <button type="button" ng-click="usrCtrl.limpaUsuario()" class="btn btn-default btn-md btn-success" data-toggle="modal" data-target="#modalForm" guarda guarda-verbo="POST"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Adicionar</button>
+
+    <div class="row">
+        <div class="col-md-2 col-lg-2">
+            <input class="form-control" type="search" ng-model="usrCtrl.busca" placeholder="Filtre usuários ...">
+        </div>
+    </div>
 
 <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-lg" role="document">
@@ -101,7 +105,7 @@ Tabela por controle
     </tr>
 </thead>
 <tbody>
-	<tr ng-repeat="usr in usrCtrl.lista" guarda guarda-usuario="usr" guarda-verbo="GET">
+	<tr ng-repeat="usr in usrCtrl.lista | filter: usrCtrl.busca" guarda guarda-usuario="usr" guarda-verbo="GET">
     	<td>{{usr.username}}</td>
         <td>{{usr.nome}}</td>
         <td>{{usr.email}}</td>
