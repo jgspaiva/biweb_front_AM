@@ -65,6 +65,12 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
     .factory('UsuariosClienteService', ['$resource', function($resource){
 		return $resource('http://begyn.com.br:3100/api/usuarios/cliente/:id');
 	}])
+    .factory('UsuariosAutorizaService', ['$resource', function($resource){
+		return $resource('http://begyn.com.br:3100/api/usuarios/autoriza/:id', null,
+			{
+				'update' : { method: 'PUT' }
+			});
+	}])
 	.factory('ClientesService', ['$resource', function($resource){
 		return $resource('http://begyn.com.br:3100/api/clientes/:id', null,
 			{
