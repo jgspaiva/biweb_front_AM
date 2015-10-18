@@ -310,7 +310,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 			});
 		};
 	}])
-	.controller('UsuariosController', ['Storage', 'UsuariosService','UsuariosClienteService', 'ClientesService', function(Storage, UsuariosService, UsuariosClienteService, ClientesService){
+	.controller('UsuariosController', ['Storage', 'UsuariosService','UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', function(Storage, UsuariosService, UsuariosClienteService, ClientesService, UsuariosAutorizaService){
 		var self = this;
 
         var cliente = Storage.getUsuario().cliente;
@@ -335,25 +335,21 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
 		self.enviar = function(){
             self.usuario.cliente = self.clienteAtual;
+            self.usuario.permissoes = permissoes(self.usuario.perfil);
 
 			if(!editado) {
 				self.usuario.password = self.usuario.username;
 
-				self.usuario.permissoes = permissoes(self.usuario.perfil);
+                if(self.usuario.perfil == 'basico') self.usuario.autorizado = false;
+                else self.usuario.autorizado = true;
 
 				UsuariosService.save(self.usuario, function(response){
-						//alert(response.message);
-
 						self.limpaUsuario();
 						self.carregar();
 					});
 			}
 			else{
-                self.usuario.permissoes = permissoes(self.usuario.perfil);
-
 				UsuariosService.update({ id: idUsuarioEditado }, self.usuario, function(response){
-						//alert(response.message);
-
 						self.limpaUsuario();
 						self.carregar();
 
