@@ -446,7 +446,16 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
         carregarClientes();
 
         self.autorizar = function(usr){
+            usr.autorizado = true;
 
+            UsuariosAutorizaService.update({ id: usr._id}, usr).$promise
+            .then(
+                function(res){
+                    self.carregar();
+                },
+                function(error){
+                    alert(error);
+                });
         };
 	}])
 	.controller('ClientesController', ['ClientesService', 'PlanosService', function(ClientesService, PlanosService){
