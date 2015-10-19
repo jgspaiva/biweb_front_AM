@@ -313,15 +313,35 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 	.controller('UsuariosController', ['Storage', 'UsuariosService','UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', function(Storage, UsuariosService, UsuariosClienteService, ClientesService, UsuariosAutorizaService){
 		var self = this;
 
-        var cliente = Storage.getUsuario().cliente;
+        var usuarioLogado = Storage.getUsuario();
 
-		self.lista = [];
+        self.isLogadoAdmin = function(){
+            return (usuarioLogado.perfil == 'admin');
+        };
+
+        self.isLogadoMaster = function(){
+            return (usuarioLogado.perfil == 'master');
+        };
+
+        self.isLogadoFacilitador = function(){
+            return (usuarioLogado.perfil == 'facilitador');
+        };
+
+        self.isLogadoBasico = function(){
+            return (usuarioLogado.perfil == 'basico');
+        };
+
+        self.isLogadoVisual = function(){
+            return (usuarioLogado.perfil == 'visual');
+        };
+
+        self.lista = [];
 
 		self.carregar = function(){
-            if(cliente){
-                self.lista = UsuariosClienteService.query({ id: cliente });
+            if(self.isLogadoMaster()){
+                self.lista = UsuariosClienteService.query({ id: usuarioLogado.cliente });
             }
-            else {
+            else if(self.isLogadoAdmin()) {
                 self.lista = UsuariosService.query();
             }
 
@@ -330,18 +350,17 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
 		self.carregar(); // Inicializa a lista
 
-		var editado = false;  // Quando o usuario edita objeto da lista
-		var idUsuarioEditado = '';  // Id do objeto editado
-
 		self.enviar = function(){
-            self.usuario.cliente = self.clienteAtual;
             self.usuario.permissoes = permissoes(self.usuario.perfil);
 
 			if(!editado) {
 				self.usuario.password = self.usuario.username;
 
-                if(self.usuario.perfil == 'basico') self.usuario.autorizado = false;
-                else self.usuario.autorizado = true;
+                if(self.isLogadoAdmin()) {
+                    self.usuario.cliente = self.clienteAtual;
+                    self.usuario.autorizado = false;
+                }
+                else if(self.isLogadoMaster()) self.usuario.cliente = usuarioLogado.cliente;
 
 				UsuariosService.save(self.usuario, function(response){
 						self.limpaUsuario();
@@ -349,7 +368,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 					});
 			}
 			else{
-				UsuariosService.update({ id: idUsuarioEditado }, self.usuario, function(response){
+				UsuariosService.update({ id: self.usuario._id }, self.usuario, function(response){
 						self.limpaUsuario();
 						self.carregar();
 
@@ -358,10 +377,11 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 			}
 		};
 
+        var editado = false;
+
 		self.editar = function(usr){
 			editado = true;
 
-			idUsuarioEditado = usr._id;
 			self.usuario = usr;
 
             self.clienteAtual = usr.cliente._id;
@@ -377,19 +397,16 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 		};
 
 		self.limpaUsuario = function(){
-			self.usuario = {
-				username: '',
-				nome: '',
-				password: '',
-				telefone: '',
-				email: '',
-				perfil: '',
-				admin: false,
-				permissoes : [],
-				_id: ''
-			};
+            self.usuario = {
+                ativo: true,
+                autorizado: true
+            };
 
-            self.clienteAtual = {};
+            if(self.isLogadoMaster()){
+                self.usuario.perfil = 'basico';
+            }
+
+            self.clienteAtual = undefined;
 
 			editado = false;
 		};
@@ -412,7 +429,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 			}
 			else if(perfil === 'master'){
 				saida = [
-					{ cadastro: 'usuarios', nome: 'Usuários', verbos: [ 'GET', 'PUT' ] },
+					{ cadastro: 'usuarios', nome: 'Usuários', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
                     { cadastro: 'painel', nome: 'Painel', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] }
 				];
 			}
@@ -421,18 +438,33 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 					{ cadastro: 'painel', nome: 'Painel', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] }
 				];
 			}
+            else if(perfil === 'visual'){
+				saida = [
+					{ cadastro: 'painel', nome: 'Painel', verbos: [ 'GET' ] }
+				];
+			}
 
 			return saida;
 		};
 
         self.isMaster = function(){
+            return (self.usuario.perfil == 'master');
+        };
+
+        self.isBasico = function(){
+            return (self.usuario.perfil == 'basico');
+        };
+
+        self.isVisual = function(){
+            return (self.usuario.perfil == 'visual');
+        };
+
+        self.isCliente = function(){
             var saida = false;
 
-            if(self.usuario.perfil == 'master') saida = true;
-            else {
-                if(self.usuario.hasOwnProperty('cliente')) delete self.usuario['cliente'];
-                saida = false;
-            }
+            saida = (self.isBasico() || self.isMaster() || self.isVisual());
+
+            if(!saida) if(self.usuario.hasOwnProperty('cliente')) delete self.usuario['cliente'];
 
             return saida;
         };

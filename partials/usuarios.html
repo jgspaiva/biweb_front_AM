@@ -54,7 +54,7 @@
     	</div>
 
     	<div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4" ng-show="usrCtrl.isLogadoAdmin()">
         		<label for="fPerfil">Perfil</label>
 				<select class="form-control" name="fPerfil" ng-model="usrCtrl.usuario.perfil" required>
     				<option value="master">Master de Cliente</option>
@@ -64,13 +64,29 @@
 				</select>
         	</div>
 
-    		<div class="col-md-4" ng-show="usrCtrl.isMaster()">
+    		<div class="col-md-4" ng-show="usrCtrl.isLogadoAdmin() && usrCtrl.isCliente()">
         		<label for="fCliente">Cliente</label>
 				<select class="form-control" name="fCliente" ng-model="usrCtrl.clienteAtual">
                     <option ng-repeat="cliente in usrCtrl.listaClientes" value="{{cliente._id}}">
                         {{cliente.nome_fantasia}}
                     </option>
 				</select>
+        	</div>
+
+            <div class="col-md-3" ng-show="usrCtrl.isLogadoMaster()">
+        		<div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-true-value="'visual'" ng-false-value="'basico'" ng-model="usrCtrl.usuario.perfil"> Só Visualizar
+                    </label>
+                </div>
+        	</div>
+
+            <div class="col-md-3">
+        		<div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="usrCtrl.usuario.ativo"> Ativo
+                    </label>
+                </div>
         	</div>
 
     	</div>
