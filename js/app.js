@@ -83,7 +83,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 				'update' : { method: 'PUT' }
 			});
 	}])
-	.factory('ResourceInterceptor', ['Storage', '$rootScope', '$q', function(Storage, $rootScope, $q){
+	.factory('ResourceInterceptor', ['Storage', '$q', function(Storage, $q){
 		return {
 			request: function(config){
 				config.headers['x-access-token'] = Storage.getToken();
@@ -92,21 +92,15 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 				return config;
 			},
 			requestError: function(rejection){
-                $rootScope.$broadcast('fail');
-
-				alert('Falha ao enviar.');
+                alert('Falha ao enviar.');
 
 				return $q.reject(rejection);
 			},
 			response: function(response){
-                $rootScope.$broadcast('done');
-
-				return response;
+                return response;
 			},
 			responseError: function(rejection){
-                $rootScope.$broadcast('fail');
-
-				alert('O servidor retornou uma falha.');
+                alert('O servidor retornou uma falha.');
 
 				return $q.reject(rejection);
 			}
@@ -176,6 +170,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
             templateUrl: 'componentes/button_spinner.html',
             link: function($scope, $element, $attrs){
                 var processing = false;
+                var processo = 0;
 
                 $scope.classeVerbo = function(){
                     var classe = {
@@ -212,12 +207,12 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                     return classe;
                 };
 
-                $scope.$on('done', function(){
-                    processing = false;
+                $scope.$on('done', function(event, data){
+                    if(data.processo == processo) processing = false;
                 });
 
-                $scope.$on('fail', function(){
-                    processing = false;
+                $scope.$on('fail', function(event, data){
+                    if(data.processo == processo) processing = false;
                 });
 
                 $scope.isProcessing = function(){
@@ -241,7 +236,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                 $scope.clique = function(){
                     processing = true;
 
-                    $scope.action();
+                    processo = $scope.action();
                 };
 
                 $scope.intraShow = function(){
@@ -310,7 +305,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 			});
 		};
 	}])
-	.controller('UsuariosController', ['Storage', 'UsuariosService','UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', function(Storage, UsuariosService, UsuariosClienteService, ClientesService, UsuariosAutorizaService){
+	.controller('UsuariosController', ['Storage', 'UsuariosService','UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', '$scope', function(Storage, UsuariosService, UsuariosClienteService, ClientesService, UsuariosAutorizaService, $scope){
 		var self = this;
 
         var usuarioLogado = Storage.getUsuario();
@@ -351,30 +346,47 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 		self.carregar(); // Inicializa a lista
 
 		self.enviar = function(){
+            var processo = Math.floor((Math.random() * 1000) + 1);
+
             self.usuario.permissoes = permissoes(self.usuario.perfil);
+
+            if(self.isLogadoAdmin()) self.usuario.cliente = self.clienteAtual;
+            else if(self.isLogadoMaster()) self.usuario.cliente = usuarioLogado.cliente;
+
+            if(self.isAdmin() || self.isFacilitador()){
+                if(self.usuario.hasOwnProperty('cliente')) delete self.usuario['cliente'];
+            }
 
 			if(!editado) {
 				self.usuario.password = self.usuario.username;
 
-                if(self.isLogadoAdmin()) {
-                    self.usuario.cliente = self.clienteAtual;
-                    if(self.isBasico()) self.usuario.autorizado = false;
-                }
-                else if(self.isLogadoMaster()) self.usuario.cliente = usuarioLogado.cliente;
+                if(self.isLogadoAdmin() && self.isBasico()) self.usuario.autorizado = false;
 
-				UsuariosService.save(self.usuario, function(response){
+				UsuariosService.save(self.usuario).$promise
+                    .then(function(response){
 						self.limpaUsuario();
 						self.carregar();
-					});
+
+                        $scope.$broadcast('done', { processo: processo });
+					}, function(error){
+                        $scope.$broadcast('fail', { processo: processo });
+                    });
 			}
 			else{
-				UsuariosService.update({ id: self.usuario._id }, self.usuario, function(response){
+				UsuariosService.update({ id: self.usuario._id }, self.usuario).$promise
+                    .then(function(response){
 						self.limpaUsuario();
 						self.carregar();
 
+                        $scope.$broadcast('done', { processo: processo });
+
 						$('#modalForm').modal('hide');
-					});
+					}, function(error){
+                        $scope.$broadcast('done', { processo: processo });
+                    });
 			}
+
+            return processo;
 		};
 
         var editado = false;
@@ -388,12 +400,17 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 		};
 
 		self.remover = function(usr){
+            var processo = Math.floor((Math.random() * 1000) + 1);
+
 			if(confirm('Deseja remover este usuário?')){
 				UsuariosService.remove({ id: usr._id }, function(response){
-					//alert(response.message);
+					$scope.$broadcast('done', { processo: processo });
+
 					self.carregar();
 				});
 			}
+
+            return processo;
 		};
 
 		self.limpaUsuario = function(){
@@ -459,12 +476,18 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
             return (self.usuario.perfil == 'visual');
         };
 
+        self.isAdmin = function(){
+            return (self.usuario.perfil == 'admin');
+        };
+
+        self.isFacilitador = function(){
+            return (self.usuario.perfil == 'facilitador');
+        };
+
         self.isCliente = function(){
             var saida = false;
 
             saida = (self.isBasico() || self.isMaster() || self.isVisual());
-
-            if(!saida) if(self.usuario.hasOwnProperty('cliente')) delete self.usuario['cliente'];
 
             return saida;
         };
@@ -478,19 +501,27 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
         carregarClientes();
 
         self.autorizar = function(usr){
+            var processo = Math.floor((Math.random() * 1000) + 1);
+
             usr.autorizado = true;
 
             UsuariosAutorizaService.update({ id: usr._id}, usr).$promise
             .then(
                 function(res){
+                    $scope.$broadcast('done', { processo: processo });
+
                     self.carregar();
                 },
                 function(error){
+                    $scope.$broadcast('fail', { processo: processo });
+
                     alert(error);
                 });
+
+            return processo;
         };
 	}])
-	.controller('ClientesController', ['ClientesService', 'PlanosService', function(ClientesService, PlanosService){
+	.controller('ClientesController', ['ClientesService', 'PlanosService', '$scope', function(ClientesService, PlanosService, $scope){
 		var self = this;
 
 		self.lista = [];
@@ -524,6 +555,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
         self.limpaCliente();
 
 		self.enviar = function(){
+            var processo = Math.floor((Math.random() * 1000) + 1);
+
             self.cliente.plano = self.planoAtual;
 
 			if(!editado){
@@ -533,9 +566,13 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                             self.limpaCliente();
 
                             carregar();
+
+                            $scope.$broadcast('done', { processo: processo });
                         },
                         function(error){
                             alert('Ocorreu um erro ao salvar o cliente');
+
+                            $scope.$broadcast('fail', { processo: processo });
                         }
                 );
 			}
@@ -547,14 +584,20 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
                             carregar();
 
+                            $scope.$broadcast('done', { processo: processo });
+
                             $('#modalForm').modal('hide');
                         },
                         function(error){
                             alert('Erro ao atualizar o cliente');
 
+                            $scope.$broadcast('fail', { processo: processo });
+
                         }
                     );
 			}
+
+            return processo;
 		};
 
 		self.editar = function(cli){
@@ -565,18 +608,25 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 		};
 
 		self.remover = function(cli){
+            var processo = Math.floor((Math.random() * 1000) + 1);
+
 			if(confirm('Deseja remover este cliente?')){
 				ClientesService.remove({ id: cli._id }).$promise
                     .then(
                         function(response){
-                            alert(response.message);
+                            $scope.$broadcast('done', { processo: processo });
+
                             carregar();
                         },
                         function(error){
                             alert('Erro ao remover cliente');
+
+                            $scope.$broadcast('fail', { processo: processo });
                         }
                 );
 			}
+
+            return processo;
 		};
 
         self.telefone = {};
@@ -594,7 +644,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
             self.cliente.telefones.splice(index, 1);
         };
 	}])
-    .controller('PlanosController', ['PlanosService', function(PlanosService){
+    .controller('PlanosController', ['PlanosService', '$scope', function(PlanosService, $scope){
         var self = this;
 
         self.lista = [];
@@ -614,20 +664,24 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
         var editado = false;
 
         self.enviar = function(){
+            var processo = Math.floor((Math.random() * 1000) + 1);
+
             if(editado){
                 PlanosService.update({ id: self.plano._id }, self.plano).$promise
                 .then(
                     function(res){
                         editado = false;
 
-                        alert(res.message);
-
                         self.limpaPlano();
+
+                        $scope.$broadcast('done', { processo: processo });
 
                         $('#modalForm').modal('hide');
                     },
                     function(error){
                         alert('Erro ao atualizar');
+
+                        $scope.$broadcast('fail', { processo: processo });
                     }
                 );
             }
@@ -635,33 +689,45 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                 PlanosService.save(self.plano).$promise
                 .then(
                     function(res){
-                        alert(res.message);
+                        self.limpaPlano();
+
+                        $scope.$broadcast('done', { processo: processo });
 
                         carregar();
-
-                        self.limpaPlano();
                     },
                     function(error){
                         alert('Erro ao salvar');
+
+                        $scope.$broadcast('fail', { processo: processo });
                     }
                 );
             }
+
+            return processo;
         };
 
         self.remover = function(plano){
+            var processo = Math.floor((Math.random() * 1000) + 1);
+
             if(confirm('Deseja realmente excluir este plano?')){
                 PlanosService.remove({ id: plano._id }).$promise
                 .then(
                     function(res){
                         alert(res.message);
 
+                        $scope.$broadcast('done', { processo: processo });
+
                         carregar();
                     },
                     function(error){
                         alert('Erro ao excluir');
+
+                        $scope.$broadcast('fail', { processo: processo });
                     }
                 );
             }
+
+            return processo;
         };
 
         self.editar = function(plano){
