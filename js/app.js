@@ -358,7 +358,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
                 if(self.isLogadoAdmin()) {
                     self.usuario.cliente = self.clienteAtual;
-                    self.usuario.autorizado = false;
+                    if(self.isBasico()) self.usuario.autorizado = false;
                 }
                 else if(self.isLogadoMaster()) self.usuario.cliente = usuarioLogado.cliente;
 

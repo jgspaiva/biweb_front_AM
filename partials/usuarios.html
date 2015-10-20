@@ -73,7 +73,7 @@
 				</select>
         	</div>
 
-            <div class="col-md-3" ng-show="usrCtrl.isLogadoMaster()">
+            <div class="col-md-3" ng-show="usrCtrl.isLogadoMaster() && (usrCtrl.isBasico() || usrCtrl.isVisual())">
         		<div class="checkbox">
                     <label>
                         <input type="checkbox" ng-true-value="'visual'" ng-false-value="'basico'" ng-model="usrCtrl.usuario.perfil"> Só Visualizar
