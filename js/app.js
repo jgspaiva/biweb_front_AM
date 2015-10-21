@@ -153,7 +153,14 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
         };
 
     }])
-
+    /*
+    ==========================================================================
+    Para utilizar esta diretiva (button-spinner) é necessário:
+    a) action() deve retornar o número do processo;
+    b) Devem ser lançados os eventos 'done' ou 'fail';
+    c) Cada evento deve enviar o objeto 'data' contendo o número do processo.
+    ==========================================================================
+    */
     .directive('buttonSpinner',['$location', 'Storage', function($location, Storage){
         return {
             restrict: 'E',
@@ -413,6 +420,24 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
             return processo;
 		};
 
+        self.removerLeve = function(usr, indice){
+            var processo = Math.floor((Math.random() * 1000) + 1);
+
+			if(confirm('Deseja remover este usuário?')){
+				UsuariosService.remove({ id: usr._id }).$promise
+                    .then(
+                    function(response){
+                        $scope.$broadcast('done', { processo: processo });
+                        self.lista.splice(indice, 1);
+                    },
+                    function(error){
+                        $scope.$broadcast('fail', { processo: processo });
+                    });
+			}
+
+            return processo;
+		};
+
 		self.limpaUsuario = function(){
             self.usuario = {
                 ativo: true,
@@ -629,6 +654,24 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
             return processo;
 		};
 
+        self.removerLeve = function(cli, indice){
+            var processo = Math.floor((Math.random() * 1000) + 1);
+
+			if(confirm('Deseja remover este cliente?')){
+				ClientesService.remove({ id: cli._id }).$promise
+                    .then(
+                    function(response){
+                        $scope.$broadcast('done', { processo: processo });
+                        self.lista.splice(indice, 1);
+                    },
+                    function(error){
+                        $scope.$broadcast('fail', { processo: processo });
+                    });
+			}
+
+            return processo;
+		};
+
         self.telefone = {};
 
         var limpaTelefone = function(){
@@ -729,6 +772,24 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
             return processo;
         };
+
+        self.removerLeve = function(plano, indice){
+            var processo = Math.floor((Math.random() * 1000) + 1);
+
+			if(confirm('Deseja realmente excluir este plano?')){
+                PlanosService.remove({ id: plano._id }).$promise
+                    .then(
+                    function(response){
+                        $scope.$broadcast('done', { processo: processo });
+                        self.lista.splice(indice, 1);
+                    },
+                    function(error){
+                        $scope.$broadcast('fail', { processo: processo });
+                    });
+			}
+
+            return processo;
+		};
 
         self.editar = function(plano){
             self.plano = plano;

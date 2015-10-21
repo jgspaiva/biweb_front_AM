@@ -141,7 +141,7 @@ Tabela por controle
         <td>
         	<button class="btn btn-warning btn-xs" type="button" ng-click="cliCtrl.editar(cli)" data-toggle="modal" data-target="#modalForm" guarda guarda-verbo="PUT"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>
 
-            <button-spinner action="cliCtrl.remover(cli)" titulo="Remover" verbo="DELETE" size="xs" secure="true"></button-spinner>
+            <button-spinner action="cliCtrl.removerLeve(cli, $index)" titulo="Remover" verbo="DELETE" size="xs" secure="true"></button-spinner>
         </td>
     </tr>
 </tbody>
