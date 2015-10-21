@@ -406,21 +406,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
             self.clienteAtual = usr.cliente._id;
 		};
 
-		self.remover = function(usr){
-            var processo = Math.floor((Math.random() * 1000) + 1);
-
-			if(confirm('Deseja remover este usuário?')){
-				UsuariosService.remove({ id: usr._id }, function(response){
-					$scope.$broadcast('done', { processo: processo });
-
-					self.carregar();
-				});
-			}
-
-            return processo;
-		};
-
-        self.removerLeve = function(usr, indice){
+        self.remover = function(usr){
             var processo = Math.floor((Math.random() * 1000) + 1);
 
 			if(confirm('Deseja remover este usuário?')){
@@ -428,7 +414,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                     .then(
                     function(response){
                         $scope.$broadcast('done', { processo: processo });
-                        self.lista.splice(indice, 1);
+                        self.lista.splice(self.lista.indexOf(usr), 1);
                     },
                     function(error){
                         $scope.$broadcast('fail', { processo: processo });
@@ -632,29 +618,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
             self.planoAtual = cli.plano._id;
 		};
 
-		self.remover = function(cli){
-            var processo = Math.floor((Math.random() * 1000) + 1);
-
-			if(confirm('Deseja remover este cliente?')){
-				ClientesService.remove({ id: cli._id }).$promise
-                    .then(
-                        function(response){
-                            $scope.$broadcast('done', { processo: processo });
-
-                            carregar();
-                        },
-                        function(error){
-                            alert('Erro ao remover cliente');
-
-                            $scope.$broadcast('fail', { processo: processo });
-                        }
-                );
-			}
-
-            return processo;
-		};
-
-        self.removerLeve = function(cli, indice){
+        self.remover = function(cli){
             var processo = Math.floor((Math.random() * 1000) + 1);
 
 			if(confirm('Deseja remover este cliente?')){
@@ -662,7 +626,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                     .then(
                     function(response){
                         $scope.$broadcast('done', { processo: processo });
-                        self.lista.splice(indice, 1);
+                        self.lista.splice(self.lista.indexOf(cli), 1);
                     },
                     function(error){
                         $scope.$broadcast('fail', { processo: processo });
@@ -752,36 +716,12 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
         self.remover = function(plano){
             var processo = Math.floor((Math.random() * 1000) + 1);
 
-            if(confirm('Deseja realmente excluir este plano?')){
-                PlanosService.remove({ id: plano._id }).$promise
-                .then(
-                    function(res){
-                        alert(res.message);
-
-                        $scope.$broadcast('done', { processo: processo });
-
-                        carregar();
-                    },
-                    function(error){
-                        alert('Erro ao excluir');
-
-                        $scope.$broadcast('fail', { processo: processo });
-                    }
-                );
-            }
-
-            return processo;
-        };
-
-        self.removerLeve = function(plano, indice){
-            var processo = Math.floor((Math.random() * 1000) + 1);
-
 			if(confirm('Deseja realmente excluir este plano?')){
                 PlanosService.remove({ id: plano._id }).$promise
                     .then(
                     function(response){
                         $scope.$broadcast('done', { processo: processo });
-                        self.lista.splice(indice, 1);
+                        self.lista.splice(self.lista.indexOf(plano), 1);
                     },
                     function(error){
                         $scope.$broadcast('fail', { processo: processo });
