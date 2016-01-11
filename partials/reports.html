@@ -2,13 +2,16 @@
     <h2>Reports</h2>
 
     <div class="row">
-        <div class="col-sm-4 col-md-3 col-lg-3 report" ng-repeat="report in repCtrl.listaReports">
+        <div class="col-xs-4 col-md-3 col-lg-3 report" ng-repeat="report in repCtrl.listaReports | orderBy: '-data'">
             <div class="cabecalho"><span>{{report.titulo}}</span></div>
             <div class="row cartao">
 
-                <div class="col-md-6 esquerda"><img class="img_report" ng-src="data:{{report.imagem.contentType}};base64,{{report.imagem.data}}"></div>
 
-                <div class="col-md-2 direita"><span class="glyphicon glyphicon-heart-empty icone" aria-hidden="true"></span></div>
+                <div class="col-xs-6 col-md-6 col-lg-6 esquerda">
+                    <!--<img src="../imagens/banner_novo-01.png" width="44px" style="float: left">-->
+                    <img class="img_report" ng-src="data:{{report.imagem.contentType}};base64,{{report.imagem.data}}"></div>
+
+                <div class="col-xs-2 col-md-2 col-lg-2 direita"><span class="glyphicon glyphicon-heart-empty icone" aria-hidden="true"></span></div>
 
             </div>
 
