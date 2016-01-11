@@ -20,6 +20,10 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 				templateUrl: 'partials/painel.html',
 				controller: 'PainelController as pnlCtrl'
 			})
+            .when('/reports', {
+				templateUrl: 'partials/reports.html',
+				controller: 'ReportsController as repCtrl'
+			})
 			.otherwise({
 				template: '<h1>Bem-vindo ao PWBI Web</h1>'
 			});
@@ -79,6 +83,12 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 	}])
     .factory('PlanosService', ['$resource', function($resource){
 		return $resource('http://begyn.com.br:3100/api/planos/:id', null,
+			{
+				'update' : { method: 'PUT' }
+			});
+	}])
+    .factory('ReportsService', ['$resource', function($resource){
+		return $resource('http://begyn.com.br:3100/api/relatorios/cnpj/:cnpj', null,
 			{
 				'update' : { method: 'PUT' }
 			});
@@ -341,7 +351,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
 		self.carregar = function(){
             if(self.isLogadoMaster()){
-                self.lista = UsuariosClienteService.query({ id: usuarioLogado.cliente });
+                self.lista = UsuariosClienteService.query({ id: usuarioLogado.cliente._id });
             }
             else if(self.isLogadoAdmin()) {
                 self.lista = UsuariosService.query();
@@ -358,7 +368,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
             self.usuario.permissoes = permissoes(self.usuario.perfil);
 
             if(self.isLogadoAdmin()) self.usuario.cliente = self.clienteAtual;
-            else if(self.isLogadoMaster()) self.usuario.cliente = usuarioLogado.cliente;
+            else if(self.isLogadoMaster()) self.usuario.cliente = usuarioLogado.cliente._id;
 
             if(self.isAdmin() || self.isFacilitador()){
                 if(self.usuario.hasOwnProperty('cliente')) delete self.usuario['cliente'];
@@ -447,28 +457,33 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 					{ cadastro: 'usuarios', nome: 'Usuários', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
                     { cadastro: 'clientes', nome: 'Clientes', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
                     { cadastro: 'planos', nome: 'Planos', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
-                    { cadastro: 'painel', nome: 'Painel', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] }
+                    { cadastro: 'painel', nome: 'Painel', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
+                    { cadastro: 'reports', nome: 'Reports', verbos: [ 'GET', 'PUT' ] }
 				];
 			}
 			else if(perfil === 'facilitador'){
 				saida = [
-					{ cadastro: 'painel', nome: 'Painel', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] }
+					{ cadastro: 'painel', nome: 'Painel', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
+                    { cadastro: 'reports', nome: 'Reports', verbos: [ 'GET', 'PUT' ] }
 				];
 			}
 			else if(perfil === 'master'){
 				saida = [
 					{ cadastro: 'usuarios', nome: 'Usuários', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
-                    { cadastro: 'painel', nome: 'Painel', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] }
+                    { cadastro: 'painel', nome: 'Painel', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
+                    { cadastro: 'reports', nome: 'Reports', verbos: [ 'GET', 'PUT' ] }
 				];
 			}
             else if(perfil === 'basico'){
 				saida = [
-					{ cadastro: 'painel', nome: 'Painel', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] }
+					{ cadastro: 'painel', nome: 'Painel', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
+                    { cadastro: 'reports', nome: 'Reports', verbos: [ 'GET', 'PUT' ] }
 				];
 			}
             else if(perfil === 'visual'){
 				saida = [
-					{ cadastro: 'painel', nome: 'Painel', verbos: [ 'GET' ] }
+					{ cadastro: 'painel', nome: 'Painel', verbos: [ 'GET' ] },
+                    { cadastro: 'reports', nome: 'Reports', verbos: [ 'GET', 'PUT' ] }
 				];
 			}
 
@@ -740,4 +755,20 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
     .controller('PainelController', [function(){
         // Controller de Painel
+    }])
+    .controller('ReportsController', ['ReportsService', 'Storage', function(ReportsService, Storage){
+        // Controller de Reports
+        var self = this;
+
+        self.listaReports = [];
+
+        var cnpj = Storage.getUsuario().cliente.cnpj;
+
+        self.carregarReports = function(){
+            self.listaReports = ReportsService.query({ cnpj: cnpj});
+        };
+
+        self.carregarReports();
+
+
     }]);
