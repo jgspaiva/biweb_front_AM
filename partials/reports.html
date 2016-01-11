@@ -4,6 +4,7 @@
     <div class="row">
         <div class="col-sm-4 col-md-3 col-lg-3" ng-repeat="report in repCtrl.listaReports">
             <span>{{report.titulo}} - {{report.descricao}} em {{report.data}}</span>
+            <img ng-src="data:{{report.imagem.contentType}};base64,{{report.imagem.data}}">
         </div>
     </div>
 
