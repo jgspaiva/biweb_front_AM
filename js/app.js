@@ -774,5 +774,14 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
         };
 
+        self.miniImagem = function(report){
+            var saida = 'data:' + report.imagem.contentType + ';base64,' + report.imagem.data;
+
+            if(report.imagem.contentType == 'text/html') saida = 'imagens/html_type.jpg';
+
+            return saida;
+        };
+
+
 
     }]);
