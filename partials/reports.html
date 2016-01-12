@@ -7,7 +7,7 @@
             <div class="row cartao">
 
 
-                <div class="col-xs-6 col-md-6 col-lg-6 esquerda">
+                <div class="col-xs-6 col-md-6 col-lg-6 esquerda" ng-click="repCtrl.clicado(report)">
                     <!--<img src="../imagens/banner_novo-01.png" width="44px" style="float: left">-->
                     <img class="img_report" ng-src="data:{{report.imagem.contentType}};base64,{{report.imagem.data}}"></div>
 
@@ -19,5 +19,7 @@
 
         </div>
     </div>
+
+
 
 </div>

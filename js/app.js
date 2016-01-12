@@ -770,5 +770,9 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
         self.carregarReports();
 
+        self.clicado = function(report){
+
+        };
+
 
     }]);
