@@ -760,6 +760,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
         // Controller de Reports
         var self = this;
 
+        self.reportAtual = {};
+
         self.listaReports = [];
 
         var cnpj = Storage.getUsuario().cliente.cnpj;
@@ -771,15 +773,38 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
         self.carregarReports();
 
         self.clicado = function(report){
+            self.reportAtual = report;
 
+            $('#modalMaximo').modal('show');
+
+            if(self.isHtml(report)){
+                $('#frameHtml').contents().find('html').html(decodeURIComponent(escape(atob(report.imagem.data))));
+            }
         };
 
         self.miniImagem = function(report){
-            var saida = 'data:' + report.imagem.contentType + ';base64,' + report.imagem.data;
+            var saida = '';
 
-            if(report.imagem.contentType == 'text/html') saida = 'imagens/html_type.jpg';
+            if(self.isImage(report)) saida = 'data:' + report.imagem.contentType + ';base64,' + report.imagem.data;
+            else if(self.isHtml(report)) saida = 'imagens/html_type.jpg';
 
             return saida;
+        };
+
+        self.htmlDados = function(report){
+            var saida = 'data:text/html;base64,PGh0bWw+DQo8Ym9keT4NCjxoMT5WYXppbzwvaDE+DQo8L2JvZHk+DQo8L2h0bWw=';
+
+            if(self.isHtml(report)) saida = 'data:' + report.imagem.contentType + ';base64,' + report.imagem.data;
+
+            return saida;
+        };
+
+        self.isImage = function(report){
+            return (report.imagem.contentType.indexOf('image') != -1);
+        };
+
+        self.isHtml = function(report){
+            return (report.imagem.contentType.indexOf('html') != -1);
         };
 
 

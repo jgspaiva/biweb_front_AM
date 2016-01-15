@@ -3,12 +3,9 @@
 
     <div class="row">
         <div class="col-xs-4 col-md-3 col-lg-3 report" ng-repeat="report in repCtrl.listaReports | orderBy: '-data'">
-            <div class="cabecalho"><span>{{report.titulo | limitTo: 18 }}</span></div>
+            <div class="cabecalho">{{report.titulo | limitTo: 20 }}</div>
             <div class="row cartao">
-
-
                 <div class="col-xs-6 col-md-6 col-lg-6 esquerda" ng-click="repCtrl.clicado(report)">
-                    <!--<img src="../imagens/banner_novo-01.png" width="44px" style="float: left">-->
                     <img class="img_report" ng-src="{{repCtrl.miniImagem(report)}}"></div>
 
                 <div class="col-xs-2 col-md-2 col-lg-2 direita"><span class="glyphicon glyphicon-heart-empty icone" aria-hidden="true"></span></div>
@@ -19,7 +16,28 @@
 
         </div>
     </div>
+</div>
 
+<!-- Modal -->
+<div class="modal fade" id="modalMaximo" tabindex="-1" role="dialog" style="position: absolute" aria-labelledby="myModalLabel">
+  <div class="modal-dialog full" role="document">
+    <div class="modal-content content-full">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">{{repCtrl.reportAtual.titulo}}</h4>
+      </div>
+      <div class="modal-body">
+        <!-- Conteúdo aqui -->
+        <iframe class="full" id="frameHtml" src="" ng-show="repCtrl.isHtml(repCtrl.reportAtual)"></iframe>
 
-
+        <figure ng-show="repCtrl.isImage(repCtrl.reportAtual)">
+            <img ng-src="{{repCtrl.miniImagem(repCtrl.reportAtual)}}">
+        </figure>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div>
+  </div>
 </div>
