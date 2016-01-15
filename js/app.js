@@ -791,14 +791,6 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
             return saida;
         };
 
-        self.htmlDados = function(report){
-            var saida = 'data:text/html;base64,PGh0bWw+DQo8Ym9keT4NCjxoMT5WYXppbzwvaDE+DQo8L2JvZHk+DQo8L2h0bWw=';
-
-            if(self.isHtml(report)) saida = 'data:' + report.imagem.contentType + ';base64,' + report.imagem.data;
-
-            return saida;
-        };
-
         self.isImage = function(report){
             return (report.imagem.contentType.indexOf('image') != -1);
         };
@@ -807,6 +799,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
             return (report.imagem.contentType.indexOf('html') != -1);
         };
 
-
+        self.isNovo = function(report){
+            return true;
+        };
 
     }]);
