@@ -93,6 +93,12 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 				'update' : { method: 'PUT' }
 			});
 	}])
+    .factory('ReportsUsuarioService', ['$resource', function($resource){
+		return $resource('http://begyn.com.br:3100/api/relatorios/cnpj/:cnpj/usuario/:usuario', null,
+			{
+				'update' : { method: 'PUT' }
+			});
+	}])
 	.factory('ResourceInterceptor', ['Storage', '$q', function(Storage, $q){
 		return {
 			request: function(config){
@@ -756,18 +762,22 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
     .controller('PainelController', [function(){
         // Controller de Painel
     }])
-    .controller('ReportsController', ['ReportsService', 'Storage', function(ReportsService, Storage){
+    .controller('ReportsController', ['ReportsUsuarioService', 'Storage', function(ReportsUsuarioService, Storage){
         // Controller de Reports
         var self = this;
 
-        self.reportAtual = {};
-
-        self.listaReports = [];
-
+        // Criterios de busca
+        var username = Storage.getUsuario().username;
         var cnpj = Storage.getUsuario().cliente.cnpj;
 
+        // o relatorio clicado
+        self.reportAtual = {};
+
+        // Lista de Relatorios
+        self.listaReports = [];
+
         self.carregarReports = function(){
-            self.listaReports = ReportsService.query({ cnpj: cnpj});
+            self.listaReports = ReportsUsuarioService.query({ cnpj: cnpj, usuario: username });
         };
 
         self.carregarReports();
