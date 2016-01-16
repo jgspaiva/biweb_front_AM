@@ -45,16 +45,17 @@ div.painel{
 }
 
 div.report{
-    width: 186px;
+    width: 192px;
     margin: 10px;
 }
 
 div.direita{
-    width: 44px;
+    width: 50px;
     height: 88px;
     background-color: darkorange;
     padding: 0;
     border-radius: 0 4px 4px 0;
+    text-align: center;
 }
 div.esquerda{
     position: relative;
@@ -77,7 +78,7 @@ div.rodape{
 div.cartao{
     border: thin solid lightgray;
 	border-radius: 5px;
-    width: 186px;
+    width: 192px;
     padding: 0;
     left: 0;
     right: 0;
@@ -97,10 +98,12 @@ img.img_banner{
     width: 44px;
 }
 
-span.icone{
+button.icone{
     color: white;
-    top: 48%;
-    left: 34%;
+    border: 0;
+    background-color: transparent;
+    position: absolute;
+    transform: translate(-50%, 45%);
 }
 
 figure img{
