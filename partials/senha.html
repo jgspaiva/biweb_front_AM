@@ -1,0 +1,21 @@
+<div>
+    <h2>Nova Senha</h2>
+
+    <form ng-submit="senCtrl.enviar()">
+        <div class="row">
+        	<div class="col-md-3">
+        		<label for="fSenha">Nova Senha</label>
+				<input class="form-control" name="fSenha" type="password" ng-model="senCtrl.usuario.novasenha" required>
+        	</div>
+        </div>
+        <div class="row">
+        	<div class="col-md-3">
+        		<label for="fConfere">Redigite</label>
+				<input class="form-control" name="fConfere" type="password" ng-model="senCtrl.usuario.confere">
+        	</div>
+        </div>
+
+        <button-spinner action="senCtrl.enviar()" titulo="Salvar" verbo="PUT" secure="false"></button-spinner>
+    </form>
+
+</div>

@@ -24,6 +24,10 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 				templateUrl: 'partials/reports.html',
 				controller: 'ReportsController as repCtrl'
 			})
+            .when('/senha', {
+				templateUrl: 'partials/senha.html',
+				controller: 'SenhaController as senCtrl'
+			})
 			.otherwise({
 				template: '<h1>Bem-vindo ao PWBI Web</h1>'
 			});
@@ -62,6 +66,18 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 	}])
 	.factory('UsuariosService', ['$resource', function($resource){
 		return $resource('http://begyn.com.br:3100/api/usuarios/:id', null,
+			{
+				'update' : { method: 'PUT' }
+			});
+	}])
+    .factory('UsuariosResetService', ['$resource', function($resource){
+		return $resource('http://begyn.com.br:3100/api/usuarios/reset/:id', null,
+			{
+				'update' : { method: 'PUT' }
+			});
+	}])
+    .factory('UsuariosNovaSenhaService', ['$resource', function($resource){
+		return $resource('http://begyn.com.br:3100/api/usuarios/novasenha/:id', null,
 			{
 				'update' : { method: 'PUT' }
 			});
@@ -241,6 +257,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                 });
 
                 $scope.$on('fail', function(event, data){
+                    if(data.processo == -1) processing = false;
                     if(data.processo == processo) processing = false;
                 });
 
@@ -334,7 +351,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 			});
 		};
 	}])
-	.controller('UsuariosController', ['Storage', 'UsuariosService','UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', '$scope', function(Storage, UsuariosService, UsuariosClienteService, ClientesService, UsuariosAutorizaService, $scope){
+	.controller('UsuariosController', ['Storage', 'UsuariosService', 'UsuariosResetService', 'UsuariosNovaSenhaService', 'UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', '$scope', function(Storage, UsuariosService, UsuariosResetService, UsuariosNovaSenhaService, UsuariosClienteService, ClientesService, UsuariosAutorizaService, $scope){
 		var self = this;
 
         var usuarioLogado = Storage.getUsuario();
@@ -838,5 +855,44 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
             return saida;
         };
+
+    }])
+    .controller('SenhaController', ['UsuariosNovaSenhaService', 'Storage', '$scope', '$location', function(UsuariosNovaSenhaService, Storage, $scope, $location){
+        // Controller de Senha
+
+        var self = this;
+
+        self.usuario = {};
+
+        self.enviar = function(){
+            var processo = Math.floor((Math.random() * 1000) + 1);
+
+            if(self.usuario.novasenha == self.usuario.confere){
+                UsuariosNovaSenhaService.update({ id: Storage.getUsuario()._id },
+                                                { password: self.usuario.novasenha }).$promise
+                .then(
+                    function(res){
+                        alert('Senha alterada com sucess');
+
+                        $scope.$broadcast('done', { processo: processo });
+
+                        $location.path('/');
+                    },
+                    function(error){
+                        alert('Erro ao atualizar');
+
+                        $scope.$broadcast('fail', { processo: processo });
+                    }
+                );
+            }
+            else{
+                alert('As senhas não conferem.');
+
+                $scope.$broadcast('fail', { processo: -1 });
+            }
+
+            return processo;
+        };
+
 
     }]);
