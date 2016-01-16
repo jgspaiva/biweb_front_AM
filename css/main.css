@@ -54,6 +54,7 @@ div.direita{
     height: 88px;
     background-color: darkorange;
     padding: 0;
+    border-radius: 0 4px 4px 0;
 }
 div.esquerda{
     position: relative;
@@ -87,6 +88,7 @@ img.img_report{
     max-width: 140px;
     max-height: 88px;
     display: block;
+    border-radius: 4px 0 0 4px;
 }
 
 img.img_banner{
