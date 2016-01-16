@@ -106,7 +106,7 @@ figure img{
     max-width: 100%;
 }
 
-.modal {
+.modal-x {
   position: fixed;
   top: 0;
   right: 0;
@@ -115,7 +115,7 @@ figure img{
   overflow: hidden;
 }
 
-.modal-dialog {
+.modal-dialog-x {
   position: fixed;
   margin: 0;
   width: 100%;
@@ -123,7 +123,7 @@ figure img{
   padding: 0;
 }
 
-.modal-content {
+.modal-content-x {
   position: absolute;
   top: 0;
   right: 0;
@@ -134,7 +134,7 @@ figure img{
   box-shadow: none;
 }
 
-.modal-header {
+.modal-header-x {
   position: absolute;
   top: 0;
   right: 0;
@@ -145,23 +145,28 @@ figure img{
   border: 0;
 }
 
-.modal-title {
+.modal-close-x{
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.modal-title-x {
   font-weight: 300;
   font-size: 2em;
   color: #fff;
   line-height: 30px;
 }
 
-.modal-body {
+.modal-body-x {
   position: absolute;
   top: 50px;
-  bottom: 60px;
+  bottom: 5px;
   width: 100%;
   font-weight: 300;
   overflow: auto;
 }
 
-.modal-footer {
+.modal-footer-x {
   position: absolute;
   right: 0;
   bottom: 0;
