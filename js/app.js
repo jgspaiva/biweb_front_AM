@@ -379,6 +379,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
             self.usuario.permissoes = permissoes(self.usuario.perfil);
 
+            self.usuario.email = self.usuario.username;
+
             if(self.isLogadoAdmin()) self.usuario.cliente = self.clienteAtual;
             else if(self.isLogadoMaster()) self.usuario.cliente = usuarioLogado.cliente._id;
 
@@ -387,7 +389,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
             }
 
 			if(!editado) {
-				self.usuario.password = self.usuario.username;
+				self.usuario.password = "1234";
 
                 if(self.isLogadoAdmin() && self.isBasico()) self.usuario.autorizado = false;
 
