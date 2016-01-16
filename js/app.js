@@ -99,6 +99,12 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 				'update' : { method: 'PUT' }
 			});
 	}])
+    .factory('ReportsVisualizadoService', ['$resource', function($resource){
+		return $resource('http://begyn.com.br:3100/api/relatorios/visualizado/:id/usuario/:usuario', null,
+			{
+				'update' : { method: 'PUT' }
+			});
+	}])
 	.factory('ResourceInterceptor', ['Storage', '$q', function(Storage, $q){
 		return {
 			request: function(config){
@@ -762,7 +768,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
     .controller('PainelController', [function(){
         // Controller de Painel
     }])
-    .controller('ReportsController', ['ReportsUsuarioService', 'Storage', function(ReportsUsuarioService, Storage){
+    .controller('ReportsController', ['ReportsUsuarioService', 'ReportsVisualizadoService','Storage', function(ReportsUsuarioService, ReportsVisualizadoService, Storage){
         // Controller de Reports
         var self = this;
 
@@ -784,6 +790,18 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
         self.clicado = function(report){
             self.reportAtual = report;
+
+            if(self.isNovo(report)){
+                ReportsVisualizadoService.update({ id: report._id, usuario: username }, {}).$promise
+                    .then(
+                    function(response){
+                        for (i in report.visualizado){
+                            if(report.visualizado[i].login == username) report.visualizado[i].valor = true;
+                        }
+                    },
+                    function(erro){ }
+                    );
+            }
 
             $('#modalMaximo').modal('show');
 
@@ -810,7 +828,13 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
         };
 
         self.isNovo = function(report){
-            return true;
+            var saida = true;
+
+            for (i in report.visualizado){
+                if(report.visualizado[i].login == username) saida = !report.visualizado[i].valor;
+            }
+
+            return saida;
         };
 
     }]);
