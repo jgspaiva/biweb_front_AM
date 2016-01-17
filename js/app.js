@@ -6,23 +6,48 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 		$routeProvider
 			.when('/usuarios', {
 				templateUrl: 'partials/usuarios.html',
-				controller: 'UsuariosController as usrCtrl'
+				controller: 'UsuariosController as usrCtrl',
+                resolve: {
+                    deviate:function(Storage, $location){
+                        if(Storage.getUsuario().expirada) $location.path('/senha');
+                    }
+                }
 			})
 			.when('/clientes', {
 				templateUrl: 'partials/clientes.html',
-				controller: 'ClientesController as cliCtrl'
+				controller: 'ClientesController as cliCtrl',
+                resolve: {
+                    deviate:function(Storage, $location){
+                        if(Storage.getUsuario().expirada) $location.path('/senha');
+                    }
+                }
 			})
             .when('/planos', {
 				templateUrl: 'partials/planos.html',
-				controller: 'PlanosController as plaCtrl'
+				controller: 'PlanosController as plaCtrl',
+                resolve: {
+                    deviate:function(Storage, $location){
+                        if(Storage.getUsuario().expirada) $location.path('/senha');
+                    }
+                }
 			})
             .when('/painel', {
 				templateUrl: 'partials/painel.html',
-				controller: 'PainelController as pnlCtrl'
+				controller: 'PainelController as pnlCtrl',
+                resolve: {
+                    deviate:function(Storage, $location){
+                        if(Storage.getUsuario().expirada) $location.path('/senha');
+                    }
+                }
 			})
             .when('/reports', {
 				templateUrl: 'partials/reports.html',
-				controller: 'ReportsController as repCtrl'
+				controller: 'ReportsController as repCtrl',
+                resolve: {
+                    deviate:function(Storage, $location){
+                        if(Storage.getUsuario().expirada) $location.path('/senha');
+                    }
+                }
 			})
             .when('/senha', {
 				templateUrl: 'partials/senha.html',
@@ -898,6 +923,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                 .then(
                     function(res){
                         alert(res.message);
+
+                        Storage.getUsuario().expirada = false;
 
                         $scope.$broadcast('done', { processo: processo });
 
