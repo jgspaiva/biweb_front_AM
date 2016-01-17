@@ -327,7 +327,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
     }])
 
 // Controllers
-	.controller('MainController', ['AutenticaService', 'Storage', function(AutenticaService, Storage){
+	.controller('MainController', ['AutenticaService', 'Storage', '$location', function(AutenticaService, Storage, $location){
 		var self = this;
 
 		self.isLogado = false;
@@ -347,6 +347,12 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 					self.usuario = response.usuario;
 
 					self.isLogado = true;
+
+                    if(self.usuario.expirada) {
+                        alert('ATENÇÃO: Sua senha expirou!');
+
+                        $location.path('/senha');
+                    }
 				}
 			});
 		};
