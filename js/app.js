@@ -872,7 +872,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                                                 { password: self.usuario.novasenha }).$promise
                 .then(
                     function(res){
-                        alert('Senha alterada com sucess');
+                        alert(res.message);
 
                         $scope.$broadcast('done', { processo: processo });
 
