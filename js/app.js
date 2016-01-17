@@ -351,7 +351,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 			});
 		};
 	}])
-	.controller('UsuariosController', ['Storage', 'UsuariosService', 'UsuariosResetService', 'UsuariosNovaSenhaService', 'UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', '$scope', function(Storage, UsuariosService, UsuariosResetService, UsuariosNovaSenhaService, UsuariosClienteService, ClientesService, UsuariosAutorizaService, $scope){
+	.controller('UsuariosController', ['Storage', 'UsuariosService', 'UsuariosResetService', 'UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', '$scope', function(Storage, UsuariosService, UsuariosResetService, UsuariosClienteService, ClientesService, UsuariosAutorizaService, $scope){
 		var self = this;
 
         var usuarioLogado = Storage.getUsuario();
@@ -573,6 +573,25 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                     $scope.$broadcast('fail', { processo: processo });
 
                     alert(error);
+                });
+
+            return processo;
+        };
+
+        self.resetSenha = function(usr){
+            var processo = Math.floor((Math.random() * 1000) + 1);
+
+            UsuariosResetService.update({ id: usr._id}, { password: '1234' }).$promise
+            .then(
+                function(res){
+                    alert(res.message);
+
+                    $scope.$broadcast('done', { processo: processo });
+                },
+                function(error){
+                    alert('Erro ao tentar alterar a senha.');
+
+                    $scope.$broadcast('fail', { processo: processo });
                 });
 
             return processo;
