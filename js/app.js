@@ -381,6 +381,19 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 				}
 			});
 		};
+
+        self.logout = function(){
+            if(confirm('Deseja realmente sair?')){
+                self.isLogado = false;
+                self.usuario = { nome: 'Convidado' };
+                self.user = { username: '', password: '' };
+
+                Storage.setToken('');
+                Storage.setUsuario({ id: '' });
+
+                $location.path('/');
+            }
+        };
 	}])
 	.controller('UsuariosController', ['Storage', 'UsuariosService', 'UsuariosResetService', 'UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', '$scope', function(Storage, UsuariosService, UsuariosResetService, UsuariosClienteService, ClientesService, UsuariosAutorizaService, $scope){
 		var self = this;
