@@ -850,13 +850,27 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
     .controller('PainelController', [function(){
         // Controller de Painel
     }])
-    .controller('ReportsController', ['ReportsUsuarioService', 'ReportsVisualizadoService','Storage', function(ReportsUsuarioService, ReportsVisualizadoService, Storage){
+    .controller('ReportsController', ['ClientesService','ReportsService','ReportsUsuarioService', 'ReportsVisualizadoService','Storage', function(ClientesService, ReportsService, ReportsUsuarioService, ReportsVisualizadoService, Storage){
         // Controller de Reports
         var self = this;
 
+        self.isAdmin = function(){
+            return (Storage.getUsuario().perfil == 'admin');
+        };
+
         // Criterios de busca
         var username = Storage.getUsuario().username;
-        var cnpj = Storage.getUsuario().cliente.cnpj;
+        self.cnpj = '';
+
+        if(!self.isAdmin()) self.cnpj = Storage.getUsuario().cliente.cnpj;
+
+        self.listaClientes = [];
+
+        self.carregaClientes = function(){
+            self.listaClientes = ClientesService.query();
+        };
+
+        if(self.isAdmin()) self.carregaClientes();
 
         // o relatorio clicado
         self.reportAtual = {};
@@ -865,15 +879,21 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
         self.listaReports = [];
 
         self.carregarReports = function(){
-            self.listaReports = ReportsUsuarioService.query({ cnpj: cnpj, usuario: username });
+            if(self.isAdmin()){
+                self.listaReports = ReportsService.query({ cnpj: self.cnpj });
+            }
+            else{
+                self.listaReports = ReportsUsuarioService.query({ cnpj: self.cnpj, usuario: username });
+            }
+
         };
 
-        self.carregarReports();
+        if(!self.isAdmin())self.carregarReports();
 
         self.clicado = function(report){
             self.reportAtual = report;
 
-            if(self.isNovo(report)){
+            if(self.isNovo(report) && (!self.isAdmin())){
                 ReportsVisualizadoService.update({ id: report._id, usuario: username }, {}).$promise
                     .then(
                     function(response){
@@ -917,6 +937,10 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
             }
 
             return saida;
+        };
+
+        self.mudaCliente = function(){
+            self.carregarReports();
         };
 
     }])

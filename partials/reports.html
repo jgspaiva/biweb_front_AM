@@ -1,6 +1,17 @@
 <div>
     <h2>Reports</h2>
 
+    <form>
+        <div class="row">
+            <div class="col-md-5">
+                <select class="form-control" ng-model="repCtrl.cnpj" ng-show="repCtrl.isAdmin()" ng-change="repCtrl.mudaCliente()">
+                    <option ng-repeat="cliente in repCtrl.listaClientes" value="{{cliente.cnpj}}">{{cliente.nome_fantasia}}</option>
+                </select>
+            </div>
+        </div>
+
+    </form>
+
     <div class="row">
         <div class="col-xs-4 col-md-3 col-lg-3 report" ng-repeat="report in repCtrl.listaReports | orderBy: '-data'">
             <div class="cabecalho" title="{{report.titulo}}">{{report.titulo | limitTo: 20 }}</div>
