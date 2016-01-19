@@ -17,9 +17,37 @@
   <link rel="stylesheet" href="css/spinner.css">
 </head>
 
-<body>
+<body ng-controller="MainController as main">
     <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top" ng-controller="MainController as main">
+
+    <div ng-show="!main.isLogado">
+        <div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-md-4 col-md-offset-4">
+            <h1 class="text-center login-title">SEJA BEM-VINDO!</h1>
+            <div class="account-wall">
+                <img class="profile-img" src="imagens/logo_quadratica.png"
+                    alt="">
+                <form class="form-signin" ng-submit="main.logon()">
+                <input type="text" class="form-control" placeholder="Email" ng-model="main.user.username" required autofocus>
+                <input type="password" class="form-control" placeholder="Password" ng-model="main.user.password" required>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">
+                    Entrar</button>
+                <!--<label class="checkbox pull-left">
+                    <input type="checkbox" value="remember-me">
+                    Lembrar-me neste computador
+                </label>
+                <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>-->
+                </form>
+            </div>
+            <!--<a href="#" class="text-center new-account">Create an account </a>-->
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    <nav class="navbar navbar-default navbar-fixed-top" ng-show="main.isLogado">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
@@ -35,11 +63,11 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-                <form class="navbar-form navbar-left" ng-submit="main.logon()">
+                <!--<form class="navbar-form navbar-left" ng-submit="main.logon()">
     				<input class="form-control" type="text" ng-model="main.user.username" size="20" placeholder="e-mail" ng-disabled="main.isLogado">
         			<input class="form-control" type="password" ng-model="main.user.password" size="10" placeholder="senha" ng-disabled="main.isLogado">
         			<input class="btn btn-primary" type="submit" value="Logar" ng-disabled="main.isLogado">
-    			</form>
+    			</form>-->
 
                 <ul class="nav navbar-nav ng-cloak">
                 	<li ng-repeat="permissao in main.usuario.permissoes">
@@ -65,7 +93,7 @@
     </nav>
 
 
-  <div class="container painel" ng-view></div>
+  <div class="container painel" ng-view ng-show="main.isLogado"></div>
 
   <script src="js/angular.min.js"></script>
   <script src="js/angular-resource.min.js"></script>
