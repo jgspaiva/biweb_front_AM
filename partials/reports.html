@@ -14,23 +14,15 @@
 
     <div class="row">
         <div class="col-xs-4 col-md-3 col-lg-3 report" ng-repeat="report in repCtrl.listaReports | orderBy: '-data'">
-            <div class="cabecalho" title="{{report.titulo}}">{{report.titulo | limitTo: 20 }}</div>
-            <div class="row cartao" title="{{report.titulo}}">
-                <div class="col-xs-6 col-md-6 col-lg-6 esquerda" ng-click="repCtrl.clicado(report)">
+
+            <div class="cabecalho" title="{{report.titulo}}">{{report.titulo | limitTo: 22 }}</div>
+
+            <div class="cartao" title="{{report.titulo}}" ng-click="repCtrl.clicado(report)">
 
                     <img class="img_banner" src="http://begyn.com.br/biweb/imagens/banner_novo-01.png" ng-show="repCtrl.isNovo(report)">
                     <img class="img_report" ng-src="{{repCtrl.miniImagem(report)}}">
 
-                </div>
-
-
-                <div class="col-xs-2 col-md-2 col-lg-2 direita">
-
-                    <button type="button" class="btn btn-lg icone" aria-label="Favorito" title="Favorito">
-                        <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                    </button>
-
-                </div>
+                    <img class="img_spinner" ng-src="css/spinner.gif">
 
             </div>
 
@@ -53,7 +45,7 @@
         <iframe class="full" id="frameHtml" src="" ng-show="repCtrl.isHtml(repCtrl.reportAtual)"></iframe>
 
         <figure ng-show="repCtrl.isImage(repCtrl.reportAtual)">
-            <img ng-src="{{repCtrl.miniImagem(repCtrl.reportAtual)}}">
+            <img ng-src="{{repCtrl.imagem(repCtrl.reportAtual)}}">
         </figure>
       </div>
       <!--<div class="modal-footer modal-footer-x">

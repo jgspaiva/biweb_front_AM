@@ -128,6 +128,12 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 				'update' : { method: 'PUT' }
 			});
 	}])
+    .factory('ReportsIdService', ['$resource', function($resource){
+		return $resource('http://begyn.com.br:3100/api/relatorios/:id', null,
+			{
+				'update' : { method: 'PUT' }
+			});
+	}])
     .factory('ReportsService', ['$resource', function($resource){
 		return $resource('http://begyn.com.br:3100/api/relatorios/cnpj/:cnpj', null,
 			{
@@ -850,7 +856,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
     .controller('PainelController', [function(){
         // Controller de Painel
     }])
-    .controller('ReportsController', ['ClientesService','ReportsService','ReportsUsuarioService', 'ReportsVisualizadoService','Storage', function(ClientesService, ReportsService, ReportsUsuarioService, ReportsVisualizadoService, Storage){
+    .controller('ReportsController', ['ClientesService','ReportsService','ReportsUsuarioService', 'ReportsVisualizadoService', 'ReportsIdService', 'Storage', function(ClientesService, ReportsService, ReportsUsuarioService, ReportsVisualizadoService, ReportsIdService, Storage){
         // Controller de Reports
         var self = this;
 
@@ -891,32 +897,50 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
         if(!self.isAdmin())self.carregarReports();
 
         self.clicado = function(report){
-            self.reportAtual = report;
 
-            if(self.isNovo(report) && (!self.isAdmin())){
-                ReportsVisualizadoService.update({ id: report._id, usuario: username }, {}).$promise
-                    .then(
-                    function(response){
-                        for (i in report.visualizado){
-                            if(report.visualizado[i].login == username) report.visualizado[i].valor = true;
-                        }
-                    },
-                    function(erro){ }
-                    );
-            }
+            ReportsIdService.get({ id: report._id }).$promise
+            .then(
+                function(response){
+                    self.reportAtual = response;
 
-            $('#modalMaximo').modal('show');
+                    $('#modalMaximo').modal('show');
 
-            if(self.isHtml(report)){
-                $('#frameHtml').contents().find('html').html(decodeURIComponent(escape(atob(report.imagem.data))));
-            }
+
+                    if(self.isHtml(report)){            $('#frameHtml').contents().find('html').html(decodeURIComponent(escape(atob(self.reportAtual.imagem.data))));
+                    }
+
+                    if(self.isNovo(report) && (!self.isAdmin())){
+                        return ReportsVisualizadoService.update({ id: report._id, usuario: username }, {}).$promise;
+                    }
+                },
+                function(error){
+
+                })
+            .then(
+                function(response){
+                    for (i in report.visualizado){
+                        if(report.visualizado[i].login == username) report.visualizado[i].valor = true;
+                    }
+                },
+                function(error){
+
+                });
         };
 
         self.miniImagem = function(report){
             var saida = '';
 
+            if(self.isImage(report)) saida = 'imagens/painel.jpg';
+            else if(self.isHtml(report)) saida = 'imagens/cubo.jpg';
+
+            return saida;
+        };
+
+        self.imagem = function(report){
+            var saida = '';
+
             if(self.isImage(report)) saida = 'data:' + report.imagem.contentType + ';base64,' + report.imagem.data;
-            else if(self.isHtml(report)) saida = 'imagens/html_type.jpg';
+            else if(self.isHtml(report)) saida = 'imagens/painel.jpg';
 
             return saida;
         };

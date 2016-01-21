@@ -45,11 +45,12 @@ div.painel{
 }
 
 div.report{
-    width: 192px;
+    width: 142px;
     margin: 10px;
+    padding: 0;
 }
 
-div.direita{
+/*div.direita{
     width: 50px;
     height: 88px;
     background-color: darkorange;
@@ -62,40 +63,51 @@ div.esquerda{
     width: 140px;
     left: 0;
     padding: 0;
-}
+}*/
 
 div.cabecalho{
     text-align: center;
     padding: 0;
+    font-size: x-small;
 }
 
 div.rodape{
-    clear: both;
     display: block;
     text-align: center;
+    font-size: x-small;
 }
 
 div.cartao{
+    display: block;
+    position: relative;
     border: thin solid lightgray;
 	border-radius: 5px;
-    width: 192px;
-    padding: 0;
+    width: 142px;
+    height: 88px;
     left: 0;
     right: 0;
 }
 
 img.img_report{
-    position: absolute;
+    position: relative;
     max-width: 140px;
     max-height: 88px;
     display: block;
-    border-radius: 4px 0 0 4px;
+    border-radius: 4px;
 }
 
 img.img_banner{
     position: absolute;
     z-index: 2;
     width: 44px;
+}
+
+img.img_spinner{
+    top: 44%;
+    left: 42%;
+    position: absolute;
+    z-index: 4;
+    width: 22px;
 }
 
 button.icone{
