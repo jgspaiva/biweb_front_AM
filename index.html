@@ -31,6 +31,10 @@
                 <form class="form-signin" ng-submit="main.logon()">
                 <input type="text" class="form-control" placeholder="Email" ng-model="main.user.username" required autofocus>
                 <input type="password" class="form-control" placeholder="Password" ng-model="main.user.password" required>
+                <div class="alert alert-danger" ng-show="main.statusLogin.erro">
+                    <button type="button" class="close" ng-click="main.dismissAlert()">&times;</button>
+                    {{main.statusLogin.mensagem}}
+                    </div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">
                     Entrar</button>
                 <!--<label class="checkbox pull-left">

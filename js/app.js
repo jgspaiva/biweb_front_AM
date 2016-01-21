@@ -367,6 +367,15 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
 		self.usuario = { nome: 'Convidado' };
 
+        self.statusLogin = {
+            mensagem: '',
+            erro: false
+        };
+
+        self.dismissAlert = function(){
+            self.statusLogin.erro = false;
+        };
+
 		self.logon = function(){
 			AutenticaService.save(self.user, function(response){
 				//alert(response.message);
@@ -379,12 +388,19 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
 					self.isLogado = true;
 
+                    self.statusLogin.mensagem = '';
+                    self.statusLogin.erro = false;
+
                     if(self.usuario.expirada) {
                         alert('ATENÇÃO: Sua senha expirou!');
 
                         $location.path('/senha');
                     }
 				}
+                else{
+                    self.statusLogin.mensagem = 'Verifique o e-mail / senha.';
+                    self.statusLogin.erro = true;
+                }
 			});
 		};
 
