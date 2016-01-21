@@ -44,6 +44,7 @@
         <h4 class="modal-title modal-title-x" id="myModalLabel">{{repCtrl.reportAtual.titulo}}</h4>
       </div>
       <div class="modal-body modal-body-x">
+        <div class="params">{{repCtrl.reportAtual.parametros}}</div>
         <!-- Conteúdo aqui -->
         <iframe class="full" id="frameHtml" src="" ng-show="repCtrl.isHtml(repCtrl.reportAtual)"></iframe>
 
