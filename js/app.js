@@ -880,6 +880,10 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
             return (Storage.getUsuario().perfil == 'admin');
         };
 
+        self.isMaster = function(){
+            return (Storage.getUsuario().perfil == 'master');
+        };
+
         // Criterios de busca
         var username = Storage.getUsuario().username;
         self.cnpj = '';
@@ -901,7 +905,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
         self.listaReports = [];
 
         self.carregarReports = function(){
-            if(self.isAdmin()){
+            if(self.isAdmin() || self.isMaster()){
                 self.listaReports = ReportsService.query({ cnpj: self.cnpj });
             }
             else{
