@@ -896,12 +896,17 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
         if(!self.isAdmin())self.carregarReports();
 
-        self.clicado = function(report){
+        self.clicado = function(report, spin){
+            var spinner = '#spin'+spin;
+
+            $(spinner).removeClass('ocultar').addClass('mostrar');
 
             ReportsIdService.get({ id: report._id }).$promise
             .then(
                 function(response){
                     self.reportAtual = response;
+
+                    $(spinner).removeClass('mostrar').addClass('ocultar');
 
                     $('#modalMaximo').modal('show');
 
@@ -914,7 +919,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
                     }
                 },
                 function(error){
-
+                    $(spinner).removeClass('mostrar').addClass('ocultar');
                 })
             .then(
                 function(response){

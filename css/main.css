@@ -50,20 +50,24 @@ div.report{
     padding: 0;
 }
 
-/*div.direita{
-    width: 50px;
-    height: 88px;
-    background-color: darkorange;
-    padding: 0;
-    border-radius: 0 4px 4px 0;
-    text-align: center;
-}
-div.esquerda{
-    position: relative;
+div.spinner{
+    position: absolute;
+    top: 0;
+    background-color: white;
+    opacity: 0.7;
+    z-index: 5;
     width: 140px;
-    left: 0;
-    padding: 0;
-}*/
+    height: 88px;
+    border-radius: 4px;
+}
+
+.mostrar{
+    visibility: visible;
+}
+
+.ocultar{
+    visibility: hidden;
+}
 
 div.cabecalho{
     text-align: center;
@@ -83,7 +87,7 @@ div.cartao{
     border: thin solid lightgray;
 	border-radius: 5px;
     width: 142px;
-    height: 88px;
+    height: 90px;
     left: 0;
     right: 0;
 }
@@ -103,11 +107,11 @@ img.img_banner{
 }
 
 img.img_spinner{
-    top: 44%;
+    top: 42%;
     left: 42%;
     position: absolute;
-    z-index: 4;
     width: 22px;
+    opacity: 1;
 }
 
 button.icone{
