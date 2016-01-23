@@ -20,7 +20,7 @@
 <body ng-controller="MainController as main">
     <!-- Navigation -->
 
-    <div ng-show="!main.isLogado">
+    <div ng-show="!main.isLogado()">
         <div class="container">
     <div class="row">
         <div class="col-sm-6 col-md-4 col-md-offset-4">
@@ -51,7 +51,7 @@
 
     </div>
 
-    <nav class="navbar navbar-default navbar-fixed-top" ng-show="main.isLogado">
+    <nav class="navbar navbar-default navbar-fixed-top" ng-show="main.isLogado()">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
@@ -66,12 +66,6 @@
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-                <!--<form class="navbar-form navbar-left" ng-submit="main.logon()">
-    				<input class="form-control" type="text" ng-model="main.user.username" size="20" placeholder="e-mail" ng-disabled="main.isLogado">
-        			<input class="form-control" type="password" ng-model="main.user.password" size="10" placeholder="senha" ng-disabled="main.isLogado">
-        			<input class="btn btn-primary" type="submit" value="Logar" ng-disabled="main.isLogado">
-    			</form>-->
 
                 <ul class="nav navbar-nav ng-cloak">
                 	<li ng-repeat="permissao in main.usuario.permissoes">
@@ -97,9 +91,10 @@
     </nav>
 
 
-  <div class="container painel" ng-view ng-show="main.isLogado"></div>
+  <div class="container painel" ng-view ng-show="main.isLogado()"></div>
 
   <script src="js/angular.min.js"></script>
+  <script src="js/angular-cookies.js"></script>
   <script src="js/angular-resource.min.js"></script>
   <script src="js/angular-route.min.js"></script>
   <script src="js/angular-locale_pt-br.js"></script>

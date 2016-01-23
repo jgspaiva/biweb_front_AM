@@ -1,4 +1,4 @@
-angular.module('biwebApp', ['ngRoute', 'ngResource'])
+angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies'])
 
 // Router
 	.config(function($routeProvider){
@@ -152,11 +152,11 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 				'update' : { method: 'PUT' }
 			});
 	}])
-	.factory('ResourceInterceptor', ['Storage', '$q', function(Storage, $q){
+	.factory('ResourceInterceptor', ['$cookies', '$q', function($cookies, $q){
 		return {
 			request: function(config){
-				config.headers['x-access-token'] = Storage.getToken();
-                config.headers['usuario_id'] = Storage.getUsuario()._id;
+				config.headers['x-access-token'] = $cookies.token;
+                config.headers['usuario_id'] = $cookies.usuario_id;
 
 				return config;
 			},
@@ -358,10 +358,25 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
     }])
 
 // Controllers
-	.controller('MainController', ['AutenticaService', 'Storage', '$location', function(AutenticaService, Storage, $location){
+	.controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', '$location', '$cookies', '$route', function(AutenticaService, UsuariosService, Storage, $location, $cookies, $route){
 		var self = this;
 
-		self.isLogado = false;
+		if($cookies.logado == undefined){
+            $cookies.logado = 'false';
+        }
+        else if($cookies.usuario_id != undefined){
+            UsuariosService.get({ id: $cookies.usuario_id }).$promise
+            .then(
+                function(response){
+                    self.usuario = response;
+                    Storage.setUsuario(self.usuario);
+
+                    $route.reload();
+                },
+                function(error){
+                    alert('Erro X');
+                });
+        }
 
 		self.user = { username : "", password : "" };
 
@@ -381,12 +396,13 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 				//alert(response.message);
 
 				if(response.success) {
-					Storage.setToken(response.token);
-					Storage.setUsuario(response.usuario);
+                    self.usuario = response.usuario;
+                    $cookies.token = response.token;
+                    $cookies.usuario_id = self.usuario._id;
 
-					self.usuario = response.usuario;
+					Storage.setUsuario(self.usuario);
 
-					self.isLogado = true;
+					$cookies.logado = 'true';
 
                     self.statusLogin.mensagem = '';
                     self.statusLogin.erro = false;
@@ -406,15 +422,27 @@ angular.module('biwebApp', ['ngRoute', 'ngResource'])
 
         self.logout = function(){
             if(confirm('Deseja realmente sair?')){
-                self.isLogado = false;
+                $cookies.logado = 'false';
+
                 self.usuario = { nome: 'Convidado' };
                 self.user = { username: '', password: '' };
 
-                Storage.setToken('');
                 Storage.setUsuario({ id: '' });
+
+                delete $cookies.token;
+                delete $cookies.usuario_id;
 
                 $location.path('/');
             }
+        };
+
+        self.isLogado = function(){
+            var saida = false;
+
+            if($cookies.logado === 'true') saida = true;
+            else saida = false;
+
+            return saida;
         };
 	}])
 	.controller('UsuariosController', ['Storage', 'UsuariosService', 'UsuariosResetService', 'UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', '$scope', function(Storage, UsuariosService, UsuariosResetService, UsuariosClienteService, ClientesService, UsuariosAutorizaService, $scope){
