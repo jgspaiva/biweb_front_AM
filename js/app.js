@@ -361,6 +361,15 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies'])
 	.controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', '$location', '$cookies', '$route', function(AutenticaService, UsuariosService, Storage, $location, $cookies, $route){
 		var self = this;
 
+        self.isLogado = function(){
+            var saida = false;
+
+            if($cookies.logado === 'true') saida = true;
+            else saida = false;
+
+            return saida;
+        };
+
 		if($cookies.logado == undefined){
             $cookies.logado = 'false';
         }
@@ -436,14 +445,6 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies'])
             }
         };
 
-        self.isLogado = function(){
-            var saida = false;
-
-            if($cookies.logado === 'true') saida = true;
-            else saida = false;
-
-            return saida;
-        };
 	}])
 	.controller('UsuariosController', ['Storage', 'UsuariosService', 'UsuariosResetService', 'UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', '$scope', function(Storage, UsuariosService, UsuariosResetService, UsuariosClienteService, ClientesService, UsuariosAutorizaService, $scope){
 		var self = this;
