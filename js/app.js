@@ -1,4 +1,4 @@
-angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies'])
+angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
 
 // Router
 	.config(function($routeProvider){
@@ -7,6 +7,15 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies'])
 			.when('/usuarios', {
 				templateUrl: 'partials/usuarios.html',
 				controller: 'UsuariosController as usrCtrl',
+                resolve: {
+                    deviate:function(Storage, $location){
+                        if(Storage.getUsuario().expirada) $location.path('/senha');
+                    }
+                }
+			})
+            .when('/principal', {
+				templateUrl: 'partials/principal.html',
+				controller: 'InicialController as iniCtrl',
                 resolve: {
                     deviate:function(Storage, $location){
                         if(Storage.getUsuario().expirada) $location.path('/senha');
@@ -52,6 +61,15 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies'])
             .when('/senha', {
 				templateUrl: 'partials/senha.html',
 				controller: 'SenhaController as senCtrl'
+			})
+            .when('/utilizacao', {
+				templateUrl: 'partials/utilizacao.html',
+				controller: 'UtilizacaoController as utlCtrl',
+                resolve: {
+                    deviate:function(Storage, $location){
+                        if(Storage.getUsuario().expirada) $location.path('/senha');
+                    }
+                }
 			})
 			.otherwise({
 				template: '<h1>Bem-vindo ao PWBI Web</h1>'
@@ -421,6 +439,9 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies'])
 
                         $location.path('/senha');
                     }
+                    else{
+                        $location.path('/principal');
+                    }
 				}
                 else{
                     self.statusLogin.mensagem = 'Verifique o e-mail / senha.';
@@ -584,7 +605,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies'])
                     { cadastro: 'clientes', nome: 'Clientes', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
                     { cadastro: 'planos', nome: 'Planos', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
                     { cadastro: 'painel', nome: 'Painel', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
-                    { cadastro: 'reports', nome: 'Reports', verbos: [ 'GET', 'PUT' ] }
+                    { cadastro: 'reports', nome: 'Reports', verbos: [ 'GET', 'PUT' ] },
+                    { cadastro: 'utilizacao', nome: 'Utilização', verbos: [ 'GET' ] }
 				];
 			}
 			else if(perfil === 'facilitador'){
@@ -597,7 +619,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies'])
 				saida = [
 					{ cadastro: 'usuarios', nome: 'Usuários', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
                     { cadastro: 'painel', nome: 'Painel', verbos: [ 'GET', 'POST', 'PUT', 'DELETE' ] },
-                    { cadastro: 'reports', nome: 'Reports', verbos: [ 'GET', 'PUT' ] }
+                    { cadastro: 'reports', nome: 'Reports', verbos: [ 'GET', 'PUT' ] },
+                    { cadastro: 'utilizacao', nome: 'Utilização', verbos: [ 'GET' ] }
 				];
 			}
             else if(perfil === 'basico'){
@@ -898,8 +921,10 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies'])
 
     }])
 
-    .controller('PainelController', [function(){
+    .controller('PainelController', ['$scope', function($scope){
         // Controller de Painel
+        var self = this;
+
     }])
     .controller('ReportsController', ['ClientesService','ReportsService','ReportsUsuarioService', 'ReportsVisualizadoService', 'ReportsIdService', 'Storage', function(ClientesService, ReportsService, ReportsUsuarioService, ReportsVisualizadoService, ReportsIdService, Storage){
         // Controller de Reports
@@ -1043,7 +1068,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies'])
 
                         $scope.$broadcast('done', { processo: processo });
 
-                        $location.path('/');
+                        $location.path('/principal');
                     },
                     function(error){
                         alert('Erro ao atualizar');
@@ -1062,4 +1087,134 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies'])
         };
 
 
+    }])
+    .controller('InicialController', ['Storage', function(Storage){
+        var self = this;
+
+        self.listaApps = Storage.getUsuario().permissoes;
+
+    }])
+    .controller('UtilizacaoController', ['UsuariosClienteService', 'UsuariosService', '$scope', 'Storage', function(UsuariosClienteService, UsuariosService, $scope, Storage){
+        var self = this;
+
+        var usuarioLogado = Storage.getUsuario();
+
+        self.isLogadoAdmin = function(){
+            return (usuarioLogado.perfil == 'admin');
+        };
+
+        self.isLogadoMaster = function(){
+            return (usuarioLogado.perfil == 'master');
+        };
+
+        var lista = [];
+
+        var usuarios = [];
+
+        var dataSource = {
+            fields: [
+                {
+                    area:'row',
+                    dataField: 'cliente',
+                    dataType: 'string',
+                    displayFolder:'Users'
+                },
+                {
+                    area: 'row',
+                    dataField: 'nome',
+                    dataType: 'string',
+                    displayFolder:'Users'
+                },
+                {
+                    area: 'column',
+                    dataField: 'ultimoAcesso',
+                    groupInterval: 'year',
+                    dataType: 'date',
+                    displayFolder:'Date'
+                },
+                {
+                    area: 'column',
+                    dataField: 'ultimoAcesso',
+                    groupInterval: 'month',
+                    dataType: 'date',
+                    displayFolder:'Date'
+                },
+                {
+                    area: 'column',
+                    dataField: 'ultimoAcesso',
+                    groupInterval: 'day',
+                    dataType: 'date',
+                    displayFolder:'Date'
+                },
+                {
+                    area: 'data',
+                    dataField: 'qtAcesso',
+                    dataType: 'number',
+                    summaryType: 'sum',
+                    caption: 'Qt Acessos',
+                    displayFolder:'Log'
+                }],
+
+            retrieveFields: false
+        };
+
+        self.carregar = function(){
+            if(self.isLogadoMaster()){
+                UsuariosClienteService.query({ id: usuarioLogado.cliente._id }).$promise
+                .then(
+                    function(response){
+                        lista = response;
+
+                        lista.forEach(function(usr){
+                            usuarios.push({
+                                nome : usr.nome,
+                                username : usr.username,
+                                qtAcesso : usr.qtAcesso,
+                                ultimoAcesso : usr.ultimoAcesso,
+                                cliente : usr.cliente.razao_social
+                            });
+                        });
+
+                        dataSource.store = usuarios;
+
+                        $('#cuboUtil').dxPivotGrid('instance').option('dataSource', dataSource);
+                        $('#cuboUtil').dxPivotGrid('instance').repaint();
+                    },
+                    function(error){
+                        alert('Erro');
+                    });
+            }
+            else if(self.isLogadoAdmin()) {
+                UsuariosService.query().$promise
+                .then(
+                    function(response){
+                        lista = response;
+
+                        lista.forEach(function(usr){
+                            var cliente = '';
+
+                            if(usr.cliente != null) cliente = usr.cliente.razao_social;
+
+                            usuarios.push({
+                                nome : usr.nome,
+                                username : usr.username,
+                                qtAcesso : usr.qtAcesso,
+                                ultimoAcesso : usr.ultimoAcesso,
+                                cliente : cliente
+                            });
+
+                        });
+
+                        dataSource.store = usuarios;
+
+                        $('#cuboUtil').dxPivotGrid('instance').option('dataSource', dataSource);
+                        $('#cuboUtil').dxPivotGrid('instance').repaint();
+                    },
+                    function(error){
+
+                    });
+            }
+		};
+
+		self.carregar();
     }]);

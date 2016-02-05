@@ -12,9 +12,13 @@
   <![endif]-->
 
   <title>PWBI WEB</title>
-  <link rel="stylesheet" href="css/bootstrap_simplex.min.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/spinner.css">
+
+  <link rel="stylesheet" type="text/css" href="css/dx.common.css" />
+  <link rel="stylesheet" type="text/css" href="css/dx.light.css" />
+
 </head>
 
 <body ng-controller="MainController as main">
@@ -67,13 +71,13 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-                <ul class="nav navbar-nav ng-cloak">
+                <!-- <ul class="nav navbar-nav ng-cloak">
                 	<li ng-repeat="permissao in main.usuario.permissoes">
                     	<a href="#/{{permissao.cadastro}}">{{permissao.nome}}</a>
                     </li>
-                </ul>
+                </ul>-->
 
-                <ul class="nav navbar-nav navbar-right">
+                <ul class="nav navbar-nav navbar-right ng-cloak">
         			<li class="dropdown ng-cloak">
           				<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{main.usuario.nome}} <span class="caret"></span></a>
           				<ul class="dropdown-menu">
@@ -93,15 +97,21 @@
 
   <div class="container painel" ng-view ng-show="main.isLogado()"></div>
 
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
   <script src="js/angular.min.js"></script>
   <script src="js/angular-cookies.js"></script>
   <script src="js/angular-resource.min.js"></script>
   <script src="js/angular-route.min.js"></script>
   <script src="js/angular-locale_pt-br.js"></script>
-  <script src="js/jspdf.min.js"></script>
 
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <!-- Relativos ao DevExpressJS -->
+  <script src="js/angular-sanitize.js"></script>
+  <script src="js/globalize.js"></script>
+  <script src="js/dx.webappjs.js"></script>
+  <script src="js/dx.chartjs.js"></script>
+
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="js/bootstrap.min.js"></script>
 
