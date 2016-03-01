@@ -128,6 +128,9 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
     .factory('UsuariosClienteService', ['$resource', function($resource){
 		return $resource('http://begyn.com.br:3100/api/usuarios/cliente/:id');
 	}])
+    .factory('UsuariosClienteCnpjService', ['$resource', function($resource){
+		return $resource('http://begyn.com.br:3100/api/usuarios/cliente/cnpj/:cnpj');
+	}])
     .factory('UsuariosAutorizaService', ['$resource', function($resource){
 		return $resource('http://begyn.com.br:3100/api/usuarios/autoriza/:id', null,
 			{
@@ -529,7 +532,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
         };
 
 	}])
-	.controller('UsuariosController', ['Storage', 'UsuariosService', 'UsuariosResetService', 'UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', '$scope', function(Storage, UsuariosService, UsuariosResetService, UsuariosClienteService, ClientesService, UsuariosAutorizaService, $scope){
+	.controller('UsuariosController', ['Storage', 'UsuariosService', 'UsuariosResetService', 'UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', 'UsuariosClienteCnpjService', '$scope', '$cookies', function(Storage, UsuariosService, UsuariosResetService, UsuariosClienteService, ClientesService, UsuariosAutorizaService, UsuariosClienteCnpjService, $scope, $cookies){
 		var self = this;
 
         var usuarioLogado = Storage.getUsuario();
@@ -561,7 +564,13 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
                 self.lista = UsuariosClienteService.query({ id: usuarioLogado.cliente._id });
             }
             else if(self.isLogadoAdmin()) {
-                self.lista = UsuariosService.query();
+                if($cookies.cliente_id == undefined){
+                    self.lista = UsuariosService.query();
+                }
+                else{
+                    self.lista = UsuariosClienteCnpjService.query({ cnpj: $cookies.cliente_id });
+                }
+
             }
 
             return self.lista;
