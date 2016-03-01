@@ -521,6 +521,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
                 delete $cookies.usuario_id;
                 delete $cookies.cliente_id;
 
+                delete self.clienteId;
+
                 $location.path('/');
             }
         };
