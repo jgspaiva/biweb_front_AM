@@ -78,7 +78,7 @@
                 </ul>-->
 
                 <form class="navbar-form navbar-left" role="search" ng-show="main.isAdmin()">
-                    <select id="fCliente" class="form-control" ng-model="main.clienteId" ng-change="main.mudaCliente()" ng-options="c._id as c.nome_fantasia for c in main.clientes"></select>
+                    <select id="fCliente" class="form-control" ng-model="main.clienteId" ng-change="main.mudaCliente()" ng-options="c.cnpj as c.nome_fantasia for c in main.clientes"></select>
                 </form>
 
                 <ul class="nav navbar-nav navbar-right ng-cloak">
