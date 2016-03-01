@@ -376,8 +376,27 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
     }])
 
 // Controllers
-	.controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', '$location', '$cookies', '$route', function(AutenticaService, UsuariosService, Storage, $location, $cookies, $route){
+	.controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', 'ClientesService', '$location', '$cookies', '$route', function(AutenticaService, UsuariosService, Storage, ClientesService, $location, $cookies, $route){
 		var self = this;
+
+        self.isAdmin = function(){
+            var saida = false;
+
+            try{
+                saida = (Storage.getUsuario().perfil == 'admin');
+            }
+            catch(error){
+                saida = false;
+            }
+
+            return saida;
+        };
+
+        self.clientes = [];
+
+        self.carregaClientes = function(){
+            return ClientesService.query().$promise;
+        };
 
         self.isLogado = function(){
             var saida = false;
@@ -399,9 +418,29 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
                     Storage.setUsuario(self.usuario);
 
                     $route.reload();
+
+                    if(self.isAdmin()) return self.carregaClientes();
+                    else self.clientes = [];
                 },
                 function(error){
                     alert('Erro X');
+                })
+            .then(
+                function(res){
+                    self.clientes = res;
+
+                    if($cookies.cliente_id != undefined){
+                        self.clienteId = $cookies.cliente_id;
+                    }
+                    else{
+                        self.clienteId = 0;
+                    }
+
+                },
+                function(err){
+                    alert('Erro Y');
+
+                    self.clientes = [];
                 });
         }
 
@@ -419,7 +458,9 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
         };
 
 		self.logon = function(){
-			AutenticaService.save(self.user, function(response){
+			AutenticaService.save(self.user).$promise
+            .then(
+            function(response){
 				//alert(response.message);
 
 				if(response.success) {
@@ -442,12 +483,26 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
                     else{
                         $location.path('/principal');
                     }
+
+                    if(self.isAdmin()) return self.carregaClientes();
+                    else self.clientes = [];
 				}
                 else{
                     self.statusLogin.mensagem = 'Verifique o e-mail / senha.';
                     self.statusLogin.erro = true;
                 }
-			});
+			},
+            function(error){
+                alert('Error')
+            })
+            .then(
+                function(res){
+                    self.clientes = res;
+                },
+                function(err){
+                    self.clientes = [];
+                }
+            );
 		};
 
         self.logout = function(){
@@ -461,9 +516,14 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
 
                 delete $cookies.token;
                 delete $cookies.usuario_id;
+                delete $cookies.cliente_id;
 
                 $location.path('/');
             }
+        };
+
+        self.mudaCliente = function(){
+            $cookies.cliente_id = self.clienteId;
         };
 
 	}])

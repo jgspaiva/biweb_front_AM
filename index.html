@@ -77,6 +77,10 @@
                     </li>
                 </ul>-->
 
+                <form class="navbar-form navbar-left" role="search" ng-show="main.isAdmin()">
+                    <select id="fCliente" class="form-control" ng-model="main.clienteId" ng-change="main.mudaCliente()" ng-options="c._id as c.nome_fantasia for c in main.clientes"></select>
+                </form>
+
                 <ul class="nav navbar-nav navbar-right ng-cloak">
         			<li class="dropdown ng-cloak">
           				<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{main.usuario.nome}} <span class="caret"></span></a>
