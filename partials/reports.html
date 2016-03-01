@@ -4,6 +4,17 @@
         <li class="active">Reports</li>
     </ul>
 
+    <form class="form-horizontal" ng-show="repCtrl.isAdmin() || repCtrl.isMaster()">
+        <div class="form-group">
+            <label for="fUsuario" class="col-sm-2 control-label"><strong>Usuário</strong></label>
+            <div class="col-sm-5">
+                <select id="fUsuario" class="form-control" role="search" ng-model="repCtrl.usuarioId" ng-options="u.username as u.nome for u in repCtrl.usuarios" ng-change="repCtrl.mudaUsuario()">
+                </select>
+            </div>
+        </div>
+    </form>
+
+
     <div class="row">
         <div class="col-xs-4 col-md-3 col-lg-3 report" ng-repeat="report in repCtrl.listaReports | orderBy: '-data'">
 
@@ -44,9 +55,7 @@
             <img ng-src="{{repCtrl.imagem(repCtrl.reportAtual)}}">
         </figure>
       </div>
-      <!--<div class="modal-footer modal-footer-x">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-      </div>-->
+
     </div>
   </div>
 </div>

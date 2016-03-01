@@ -999,7 +999,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
         var self = this;
 
     }])
-    .controller('ReportsController', ['ClientesService','ReportsService','ReportsUsuarioService', 'ReportsVisualizadoService', 'ReportsIdService', 'Storage', '$cookies', function(ClientesService, ReportsService, ReportsUsuarioService, ReportsVisualizadoService, ReportsIdService, Storage, $cookies){
+    .controller('ReportsController', ['ClientesService','ReportsService','ReportsUsuarioService', 'ReportsVisualizadoService', 'ReportsIdService', 'UsuariosService', 'UsuariosClienteCnpjService', 'Storage', '$cookies', function(ClientesService, ReportsService, ReportsUsuarioService, ReportsVisualizadoService, ReportsIdService, UsuariosService, UsuariosClienteCnpjService, Storage, $cookies){
         // Controller de Reports
         var self = this;
 
@@ -1017,12 +1017,57 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
         // Lista de Relatorios
         self.listaReports = [];
 
-        self.carregarReports = function(){
+        self.usuarios = [];
+
+        self.carregaUsuarios = function(){
             if(self.isAdmin()){
-                self.listaReports = ReportsService.query({ cnpj: $cookies.cliente_id });
+                if($cookies.cliente_id == undefined){
+                    //carrega todos
+
+                    self.usuarios = UsuariosService.query();
+                }
+                else{
+                    // carrega pelo cnpj da navbar
+
+                    self.usuarios = UsuariosClienteCnpjService.query({ cnpj: $cookies.cliente_id });
+                }
             }
             else if(self.isMaster()){
-                self.listaReports = ReportsService.query({ cnpj: Storage.getUsuario().cliente.cnpj });
+                // carrega pelo cnpj do master
+
+                self.usuarios = UsuariosClienteCnpjService.query({ cnpj: Storage.getUsuario().cliente.cnpj });
+            }
+        };
+
+        self.carregaUsuarios();
+
+        self.carregarReports = function(){
+            if(self.isAdmin()){
+                if($cookies.cliente_id != undefined){
+                    if(self.usuarioId == undefined){
+                        self.listaReports = ReportsService.query({ cnpj: $cookies.cliente_id });
+                    }
+                    else{
+                        self.listaReports = ReportsUsuarioService.query(
+                            {
+                                cnpj: $cookies.cliente_id,
+                                usuario: self.usuarioId
+                            });
+                    }
+                }
+
+            }
+            else if(self.isMaster()){
+                if(self.usuarioId == undefined){
+                    self.listaReports = ReportsService.query({ cnpj: Storage.getUsuario().cliente.cnpj });
+                }
+                else{
+                    self.listaReports = ReportsUsuarioService.query(
+                    {
+                        cnpj: Storage.getUsuario().cliente.cnpj,
+                        usuario: self.usuarioId
+                    });
+                }
             }
             else{
                 self.listaReports = ReportsUsuarioService.query(
@@ -1106,6 +1151,10 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
             }
 
             return saida;
+        };
+
+        self.mudaUsuario = function(){
+            self.carregarReports();
         };
 
     }])
