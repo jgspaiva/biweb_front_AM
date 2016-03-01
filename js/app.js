@@ -524,6 +524,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
 
         self.mudaCliente = function(){
             $cookies.cliente_id = self.clienteId;
+
+            $route.reload();
         };
 
 	}])
@@ -998,20 +1000,6 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
             return (Storage.getUsuario().perfil == 'master');
         };
 
-        // Criterios de busca
-        var username = Storage.getUsuario().username;
-        self.cnpj = '';
-
-        if(!self.isAdmin()) self.cnpj = Storage.getUsuario().cliente.cnpj;
-
-        self.listaClientes = [];
-
-        self.carregaClientes = function(){
-            self.listaClientes = ClientesService.query();
-        };
-
-        if(self.isAdmin()) self.carregaClientes();
-
         // o relatorio clicado
         self.reportAtual = {};
 
@@ -1019,16 +1007,23 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
         self.listaReports = [];
 
         self.carregarReports = function(){
-            if(self.isAdmin() || self.isMaster()){
-                self.listaReports = ReportsService.query({ cnpj: self.cnpj });
+            if(self.isAdmin()){
+                self.listaReports = ReportsService.query({ cnpj: $cookies.cliente_id });
+            }
+            else if(self.isMaster()){
+                self.listaReports = ReportsService.query({ cnpj: Storage.getUsuario().cliente.cnpj });
             }
             else{
-                self.listaReports = ReportsUsuarioService.query({ cnpj: self.cnpj, usuario: username });
+                self.listaReports = ReportsUsuarioService.query(
+                    {
+                        cnpj: Storage.getUsuario().cliente.cnpj,
+                        usuario: Storage.getUsuario().username
+                    });
             }
 
         };
 
-        if(!self.isAdmin())self.carregarReports();
+        self.carregarReports();
 
         self.clicado = function(report, spin){
             var spinner = '#spin'+spin;
@@ -1100,10 +1095,6 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
             }
 
             return saida;
-        };
-
-        self.mudaCliente = function(){
-            self.carregarReports();
         };
 
     }])
