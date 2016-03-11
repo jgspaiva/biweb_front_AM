@@ -173,6 +173,12 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
 				'update' : { method: 'PUT' }
 			});
 	}])
+    .factory('FontesService', ['$resource', function($resource){
+		return $resource('http://begyn.com.br:3100/api/fontes/:id');
+	}])
+    .factory('FontesCnpjService', ['$resource', function($resource){
+		return $resource('http://begyn.com.br:3100/api/fontes/cnpj/:cnpj');
+	}])
 	.factory('ResourceInterceptor', ['$cookies', '$q', function($cookies, $q){
 		return {
 			request: function(config){
@@ -471,7 +477,14 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
                     $cookies.token = response.token;
                     $cookies.usuario_id = self.usuario._id;
 
-					Storage.setUsuario(self.usuario);
+                    try{
+                        $cookies.cnpj = self.usuario.cliente.cnpj;
+                    }
+                    catch(error){
+                        $cookies.cnpj = "";
+                    }
+
+                    Storage.setUsuario(self.usuario);
 
 					$cookies.logado = 'true';
 
@@ -520,6 +533,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
                 delete $cookies.token;
                 delete $cookies.usuario_id;
                 delete $cookies.cliente_id;
+                delete $cookies.cnpj;
 
                 delete self.clienteId;
 
@@ -994,9 +1008,17 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
 
     }])
 
-    .controller('PainelController', ['$scope', function($scope){
+    .controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'Storage', '$scope', '$cookies', function(FontesService, FontesCnpjService, Storage, $scope, $cookies){
         // Controller de Painel
         var self = this;
+
+        self.fontes = [];
+
+        self.carregarFontes = function(){
+            self.fontes = FontesCnpjService.query({ cnpj: $cookies.cnpj });
+        };
+
+        self.carregarFontes();
 
     }])
     .controller('ReportsController', ['ClientesService','ReportsService','ReportsUsuarioService', 'ReportsVisualizadoService', 'ReportsIdService', 'UsuariosService', 'UsuariosClienteCnpjService', 'Storage', '$cookies', function(ClientesService, ReportsService, ReportsUsuarioService, ReportsVisualizadoService, ReportsIdService, UsuariosService, UsuariosClienteCnpjService, Storage, $cookies){
