@@ -1013,24 +1013,13 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
         var self = this;
 
         self.fontes = [];
-        self.fonteIndex = 0;
-        var fonteAtual = {};
+        self.fonteAtual = {};
 
         self.carregarFontes = function(){
             self.fontes = FontesCnpjService.query({ cnpj: $cookies.cnpj });
         };
 
         self.carregarFontes();
-
-        self.campos = [];
-
-        self.mudaFonte = function(){
-            fonteAtual = self.fontes[self.fonteIndex];
-
-            if(fonteAtual.dados.length > 0){
-                self.campos = Object.keys(fonteAtual.dados[0]);
-            }
-        };
 
     }])
     .controller('ReportsController', ['ClientesService','ReportsService','ReportsUsuarioService', 'ReportsVisualizadoService', 'ReportsIdService', 'UsuariosService', 'UsuariosClienteCnpjService', 'Storage', '$cookies', function(ClientesService, ReportsService, ReportsUsuarioService, ReportsVisualizadoService, ReportsIdService, UsuariosService, UsuariosClienteCnpjService, Storage, $cookies){

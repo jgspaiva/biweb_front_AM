@@ -4,10 +4,10 @@
         <li class="active">Painéis</li>
     </ul>
 
-    <select style="width: 40%; min-width: 120px" ng-model="pnlCtrl.fonteIndex" ng-options="id as f.nome for (id, f) in pnlCtrl.fontes" ng-change="pnlCtrl.mudaFonte()"></select>
+    <select style="width: 40%; min-width: 120px" ng-model="pnlCtrl.fonteAtual" ng-options="f as f.nome for f in pnlCtrl.fontes"></select>
 
     <ul>
-        <li ng-repeat="campo in pnlCtrl.campos">{{campo}}</li>
+        <li ng-repeat="item in pnlCtrl.fonteAtual.header">{{item.campo}} - {{item.tipo}}</li>
     </ul>
 
 </div>
