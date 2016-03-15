@@ -1,8 +1,69 @@
 <div>
     <ul class="breadcrumb">
         <li><a href="#/principal">Início</a></li>
-        <li class="active">Painéis</li>
+        <li class="active">Paineis</li>
     </ul>
+
+    <button type="button" ng-click="pnlCtrl.limpaPainel()" class="btn btn-default btn-md btn-success" data-toggle="modal" data-target="#modalForm" guarda guarda-verbo="POST">
+        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Adicionar
+    </button>
+
+    <div class="row">
+        <div class="col-md-4 col-lg-4">
+            <div class="form-group has-feedback">
+                <input class="form-control" type="search" ng-model="pnlCtrl.busca" placeholder="Filtre paineis ...">
+                <i class="glyphicon glyphicon-search form-control-feedback"></i>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-stripped table-hover" guarda guarda-verbo="GET">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Descrição</th>
+                <th>Data de Criação</th>
+                <th>Operações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="painel in pnlCtrl.lista | filter:pnlCtrl.busca">
+                <td>{{painel.titulo}}</td>
+                <td>{{painel.descricao}}</td>
+                <td>{{painel.data_criacao}}</td>
+                <td>
+                    <button class="btn btn-warning btn-xs" type="button" ng-click="pnlCtrl.editar(painel)" data-toggle="modal" data-target="#modalForm" guarda guarda-verbo="PUT"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>
+
+                    <button-spinner action="pnlCtrl.remover(painel)" titulo="Remover" verbo="DELETE" size="xs" secure="true"></button-spinner>
+
+                    <button class="btn btn-warning btn-xs" type="button" ng-click="pnlCtrl.exibir(painel)" data-toggle="modal" data-target="#modalForm" guarda guarda-verbo="PUT"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Exibir</button>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+    <!-- Modal -->
+<div class="modal fade modal-x" id="modalMaximo" tabindex="-1" role="dialog" style="position: absolute" aria-labelledby="myModalLabel">
+  <div class="modal-dialog full modal-dialog-x" role="document">
+    <div class="modal-content content-full modal-content-x">
+      <div class="modal-header modal-header-x">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="glyphicon glyphicon-remove-circle modal-close-x" aria-hidden="true"></span></button>
+        <h4 class="modal-title modal-title-x" id="myModalLabel">Título do Painel</h4>
+      </div>
+      <div class="modal-body modal-body-x">
+        <div class="params">Parâmetros</div>
+        <!-- Conteúdo aqui -->
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
 
     <select style="width: 40%; min-width: 120px" ng-model="pnlCtrl.fonteAtual" ng-options="f as f.nome for f in pnlCtrl.fontes"></select>
 

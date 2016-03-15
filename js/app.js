@@ -179,6 +179,12 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
     .factory('FontesCnpjService', ['$resource', function($resource){
 		return $resource('http://begyn.com.br:3100/api/fontes/cnpj/:cnpj');
 	}])
+    .factory('PaineisService', ['$resource', function($resource){
+		return $resource('http://begyn.com.br:3100/api/paineis/:id');
+	}])
+    .factory('PaineisCnpjService', ['$resource', function($resource){
+		return $resource('http://begyn.com.br:3100/api/paineis/cnpj/:cnpj');
+	}])
 	.factory('ResourceInterceptor', ['$cookies', '$q', function($cookies, $q){
 		return {
 			request: function(config){
@@ -1008,7 +1014,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
 
     }])
 
-    .controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'Storage', '$scope', '$cookies', function(FontesService, FontesCnpjService, Storage, $scope, $cookies){
+    .controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisService', 'PaineisCnpjService', 'Storage', '$scope', '$cookies', function(FontesService, FontesCnpjService, PaineisService, PaineisCnpjService, Storage, $scope, $cookies){
         // Controller de Painel
         var self = this;
 
@@ -1020,6 +1026,33 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
         };
 
         self.carregarFontes();
+
+        self.lista = [];
+
+        self.carregarPaineis = function(){
+            self.lista = PaineisCnpjService.query({ cnpj: $cookies.cnpj });
+        };
+
+        self.carregarPaineis();
+
+        self.painel = {};
+
+        self.limpaPainel = function(){
+            self.painel = {};
+        };
+
+        self.editar = function(painel){
+
+        };
+
+        self.remover = function(painel){
+
+        };
+
+        self.exibir = function(painel){
+            $("#modalMaximo").modal("show");
+        };
+
 
     }])
     .controller('ReportsController', ['ClientesService','ReportsService','ReportsUsuarioService', 'ReportsVisualizadoService', 'ReportsIdService', 'UsuariosService', 'UsuariosClienteCnpjService', 'Storage', '$cookies', function(ClientesService, ReportsService, ReportsUsuarioService, ReportsVisualizadoService, ReportsIdService, UsuariosService, UsuariosClienteCnpjService, Storage, $cookies){
