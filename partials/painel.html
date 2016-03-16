@@ -43,9 +43,99 @@
         </tbody>
     </table>
 
+    <!-- Modal de criação de paineis -->
+
+    <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form name="frm" ng-submit="pnlCtrl.enviar()">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Criação de Paineis</h4>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="row">
+
+                        </div>
+
+                        <fieldset name="telefones">
+                            <legend>Componentes</legend>
+
+                            <ng-form name="fTelefones">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                        <label for="fFonte" class="control-label"><strong>Fonte de Dados: </strong></label>
+                                    <select style="width: 40%; min-width: 120px" ng-model="pnlCtrl.fonteAtual" ng-options="f as f.nome for f in pnlCtrl.fontes"></select>
+                                            </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label for="fFonte" class="control-label"><strong>Tipo do Gráfico: </strong></label>
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <button type="button" class="btn btn-default" ng-click="pnlCtrl.grafico('dxPieChart')">
+                                            <i class="material-icons">pie_chart</i>Pizza
+                                        </button>
+
+                                        <button type="button" class="btn btn-default" ng-click="pnlCtrl.grafico('dxChart', 'bar')">
+                                            <i class="material-icons">insert_chart</i>Barras
+                                        </button>
+
+                                        <button type="button" class="btn btn-default" ng-click="pnlCtrl.grafico('dxChart')">
+                                            <i class="material-icons">show_chart</i>Linhas
+                                        </button>
+                                    </div>
+                                    </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                        <label for="fFonte" class="control-label"><strong>Categoria: </strong></label>
+                                            <select style="width: 40%; min-width: 120px" ng-model="pnlCtrl.categoriaAtual" ng-options="c as c.campo for c in pnlCtrl.fonteAtual.header"></select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                        <label for="fFonte" class="control-label"><strong>Valor: </strong></label>
+                                            <select style="width: 40%; min-width: 120px" ng-model="pnlCtrl.valorAtual" ng-options="v as v.campo for v in pnlCtrl.fonteAtual.header"></select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </ng-form>
+
+                        </fieldset>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span> Fechar</button>
+
+                        <button-spinner action="cliCtrl.enviar()" titulo="Salvar" verbo="POST" secure="true"></button-spinner>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
 
 
-    <!-- Modal -->
+
+    <!-- Modal de exibicao do Painel -->
 <div class="modal fade modal-x" id="modalMaximo" tabindex="-1" role="dialog" style="position: absolute" aria-labelledby="myModalLabel">
   <div class="modal-dialog full modal-dialog-x" role="document">
     <div class="modal-content content-full modal-content-x">
@@ -62,13 +152,5 @@
     </div>
   </div>
 </div>
-
-
-
-    <select style="width: 40%; min-width: 120px" ng-model="pnlCtrl.fonteAtual" ng-options="f as f.nome for f in pnlCtrl.fontes"></select>
-
-    <ul>
-        <li ng-repeat="item in pnlCtrl.fonteAtual.header">{{item.campo}} - {{item.tipo}}</li>
-    </ul>
 
 </div>

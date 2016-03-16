@@ -1053,6 +1053,11 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
             $("#modalMaximo").modal("show");
         };
 
+        self.grafico = function(tipo, subtipo){
+            self.graficoTipo = tipo;
+            self.graficoSubtipo = subtipo;
+        };
+
 
     }])
     .controller('ReportsController', ['ClientesService','ReportsService','ReportsUsuarioService', 'ReportsVisualizadoService', 'ReportsIdService', 'UsuariosService', 'UsuariosClienteCnpjService', 'Storage', '$cookies', function(ClientesService, ReportsService, ReportsUsuarioService, ReportsVisualizadoService, ReportsIdService, UsuariosService, UsuariosClienteCnpjService, Storage, $cookies){
