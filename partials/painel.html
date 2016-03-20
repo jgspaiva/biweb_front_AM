@@ -4,7 +4,7 @@
         <li class="active">Paineis</li>
     </ul>
 
-    <button type="button" ng-click="pnlCtrl.limpaPainel()" class="btn btn-default btn-md btn-success" data-toggle="modal" data-target="#modalForm" guarda guarda-verbo="POST">
+    <button type="button" ng-click="pnlCtrl.novoPainel()" class="btn btn-default btn-md btn-success" data-toggle="modal" data-target="#modalForm" guarda guarda-verbo="POST">
         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Adicionar
     </button>
 
@@ -58,13 +58,21 @@
                     <div class="modal-body">
 
                         <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label" for="fTitulo">Título: </label>
+                                <input id="fTitulo" type="text" class="form-control" ng-model="pnlCtrl.painel.titulo" placeholder="Digite um título.">
+                            </div>
 
+                            <div class="col-md-6">
+                                <label class="form-label" for="fDescricao">Descrição: </label>
+                                <textarea id="fDescricao" class="form-control" ng-model="pnlCtrl.painel.descricao" placeholder="Digite uma descrição."></textarea>
+                            </div>
                         </div>
 
-                        <fieldset name="telefones">
+                        <fieldset name="componentes">
                             <legend>Componentes</legend>
 
-                            <ng-form name="fTelefones">
+                            <ng-form name="fComponentes">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -79,17 +87,16 @@
                                     <div class="form-group">
                                     <label for="fFonte" class="control-label"><strong>Tipo do Gráfico: </strong></label>
                                     <div class="btn-group" role="group" aria-label="...">
-                                        <button type="button" class="btn btn-default" ng-click="pnlCtrl.grafico('dxPieChart')">
-                                            <i class="material-icons">pie_chart</i>Pizza
-                                        </button>
 
-                                        <button type="button" class="btn btn-default" ng-click="pnlCtrl.grafico('dxChart', 'bar')">
-                                            <i class="material-icons">insert_chart</i>Barras
-                                        </button>
+                                        <button-chart indice="1" callback="pnlCtrl.grafico(tipo, subtipo)" titulo="Pizza" tipo="dxPieChart" subtipo="">
+                                        </button-chart>
 
-                                        <button type="button" class="btn btn-default" ng-click="pnlCtrl.grafico('dxChart')">
-                                            <i class="material-icons">show_chart</i>Linhas
-                                        </button>
+                                        <button-chart indice="2" callback="pnlCtrl.grafico(tipo, subtipo)" titulo="Barras" tipo="dxChart" subtipo="bar">
+                                        </button-chart>
+
+                                        <button-chart indice="3" callback="pnlCtrl.grafico(tipo, subtipo)" titulo="Linhas" tipo="dxChart" subtipo="">
+                                        </button-chart>
+
                                     </div>
                                     </div>
                                     </div>

@@ -276,3 +276,10 @@ iframe.full{
     display: block;
     margin-top: 10px;
 }
+
+/* Style para diretiva button-chart */
+
+.ativo{
+    background-color: dodgerblue;
+    color: white;
+}

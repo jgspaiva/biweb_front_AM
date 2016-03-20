@@ -263,6 +263,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
     c) Cada evento deve enviar o objeto 'data' contendo o número do processo.
     ==========================================================================
     */
+
     .directive('buttonSpinner',['$location', 'Storage', function($location, Storage){
         return {
             restrict: 'E',
@@ -376,7 +377,68 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
         };
     }])
 
-    .directive('list', ['Storage', function(Storage){
+    .directive('buttonChart', ['$rootScope', function($rootScope){
+        return{
+            restrict: 'E',
+            scope: {
+                titulo: '@',
+                tipo: '@',
+                subtipo: '@',
+                callback: '&',
+                indice: '@'
+            },
+            templateUrl: 'componentes/button_chart.html',
+            link: function($scope, $element, $attrs){
+                $scope.clicado = false;
+
+                $scope.$on('clicked', function(event, data){
+                    if(data.button_indice == $scope.indice){
+                        $scope.clicado = true;
+                    }
+                    else{
+                        $scope.clicado = false;
+                    }
+                });
+
+                $scope.icone = function(){
+                    var saida = "";
+
+                    switch($scope.tipo){
+                        case "dxChart":
+                            if($scope.subtipo == "bar"){
+                                saida = "insert_chart";
+                            }
+                            else{
+                                saida = "show_chart";
+                            }
+                            break;
+                        case "dxPieChart":
+                            saida = "pie_chart";
+                            break;
+                    }
+
+                    return saida;
+                };
+
+                $scope.classe = function(){
+                    var saida = "btn btn-default";
+
+                    if($scope.clicado) saida = "btn ativo";
+
+                    return saida;
+                };
+
+                $scope.clique = function(){
+                    $rootScope.$broadcast('clicked', { button_indice: $scope.indice });
+
+                    $scope.callback({ tipo: $scope.tipo, subtipo: $scope.subtipo});
+                };
+            },
+
+        };
+    }])
+
+    /*.directive('list', ['Storage', function(Storage){
         return {
             restrict: 'E',
             scope: {
@@ -388,7 +450,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
 
             }
         };
-    }])
+    }])*/
 
 // Controllers
 	.controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', 'ClientesService', '$location', '$cookies', '$route', function(AutenticaService, UsuariosService, Storage, ClientesService, $location, $cookies, $route){
@@ -549,6 +611,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
 
         self.mudaCliente = function(){
             $cookies.cliente_id = self.clienteId;
+
+            $cookies.cnpj = self.clienteId;
 
             $route.reload();
         };
@@ -1035,10 +1099,13 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
 
         self.carregarPaineis();
 
-        self.painel = {};
-
-        self.limpaPainel = function(){
-            self.painel = {};
+        self.novoPainel = function(){
+            self.painel = {
+                cnpj: $cookies.cnpj,
+                titulo: "",
+                descricao: "",
+                componentes: []
+            };
         };
 
         self.editar = function(painel){
@@ -1054,9 +1121,10 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
         };
 
         self.grafico = function(tipo, subtipo){
-            self.graficoTipo = tipo;
-            self.graficoSubtipo = subtipo;
+            self.graficoEscolhido.tipo = tipo;
+            self.graficoEscolhido.subtipo = subtipo;
         };
+
 
 
     }])
