@@ -1254,6 +1254,26 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
         self.removerComponente = function(index){
             self.painel.componentes.splice(index, 1);
         };
+
+        self.categorias = function(lista){
+            var saida = [];
+
+            lista.forEach(function(item){
+                if(item.tipo != "Number") saida.push(item);
+            });
+
+            return saida;
+        };
+
+        self.valores = function(lista){
+            var saida = [];
+
+            lista.forEach(function(item){
+                if(item.tipo == "Number") saida.push(item);
+            });
+
+            return saida;
+        };
     }])
     .controller('ReportsController', ['ClientesService','ReportsService','ReportsUsuarioService', 'ReportsVisualizadoService', 'ReportsIdService', 'UsuariosService', 'UsuariosClienteCnpjService', 'Storage', '$cookies', function(ClientesService, ReportsService, ReportsUsuarioService, ReportsVisualizadoService, ReportsIdService, UsuariosService, UsuariosClienteCnpjService, Storage, $cookies){
         // Controller de Reports
