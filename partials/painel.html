@@ -185,11 +185,13 @@
     <div class="modal-content content-full modal-content-x">
       <div class="modal-header modal-header-x">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="glyphicon glyphicon-remove-circle modal-close-x" aria-hidden="true"></span></button>
-        <h4 class="modal-title modal-title-x" id="myModalLabel">Título do Painel</h4>
+        <h4 class="modal-title modal-title-x" id="myModalLabel">{{pnlCtrl.painelVisao.titulo}}</h4>
       </div>
       <div class="modal-body modal-body-x">
         <div class="params">Parâmetros</div>
         <!-- Conteúdo aqui -->
+          <div class="grafico" ng-repeat="componente in pnlCtrl.painelVisao.componentes" id="chartContainer{{$index}}">
+          </div>
 
       </div>
 

@@ -283,3 +283,12 @@ iframe.full{
     background-color: dodgerblue;
     color: white;
 }
+
+/* Estilos para grafico em Painel */
+
+div.grafico{
+    display: inline-block;
+    width: 40%;
+    min-width: 400px;
+    height: 400px;
+}

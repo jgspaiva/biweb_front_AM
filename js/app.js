@@ -1182,6 +1182,31 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
         };
 
         self.exibir = function(painel){
+            self.painelVisao = painel;
+
+            self.painelVisao.componentes.forEach(function(componente, i){
+                FontesService.get({ id: componente.fonte.id }).$promise
+                .then(
+                    function(response){
+                        var dxComponent = $("#chartContainer" + i)[componente.dx.tipo]({
+                            dataSource: response.dados,
+                            title: componente.titulo,
+                            series: {
+                                argumentField: componente.categoria,
+                                valueField: componente.valor,
+                                type: componente.dx.subtipo,
+                                name: componente.categoria
+                            }
+                        });
+
+                        dxComponent('instance').render();
+
+                    },
+                    function(error){
+                        alert("Erro");
+                    });
+            });
+
             $("#modalMaximo").modal("show");
         };
 
