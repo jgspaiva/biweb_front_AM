@@ -180,7 +180,11 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
 		return $resource('http://begyn.com.br:3100/api/fontes/cnpj/:cnpj');
 	}])
     .factory('PaineisService', ['$resource', function($resource){
-		return $resource('http://begyn.com.br:3100/api/paineis/:id');
+		return $resource('http://begyn.com.br:3100/api/paineis/:id', null,
+        {
+            'update' : { method : 'PUT' }
+
+        });
 	}])
     .factory('PaineisCnpjService', ['$resource', function($resource){
 		return $resource('http://begyn.com.br:3100/api/paineis/cnpj/:cnpj');
