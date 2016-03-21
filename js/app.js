@@ -383,7 +383,6 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
             scope: {
                 titulo: '@',
                 tipo: '@',
-                subtipo: '@',
                 callback: '&',
                 indice: '@'
             },
@@ -404,15 +403,13 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
                     var saida = "";
 
                     switch($scope.tipo){
-                        case "dxChart":
-                            if($scope.subtipo == "bar"){
-                                saida = "insert_chart";
-                            }
-                            else{
-                                saida = "show_chart";
-                            }
+                        case "barras":
+                            saida = "insert_chart";
                             break;
-                        case "dxPieChart":
+                        case "linhas":
+                            saida = "show_chart";
+                            break;
+                        case "pizza":
                             saida = "pie_chart";
                             break;
                     }
@@ -431,7 +428,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
                 $scope.clique = function(){
                     $rootScope.$broadcast('clicked', { button_indice: $scope.indice });
 
-                    $scope.callback({ tipo: $scope.tipo, subtipo: $scope.subtipo});
+                    $scope.callback({ tipo: $scope.tipo });
                 };
             },
 
@@ -1085,6 +1082,10 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
         self.fontes = [];
         self.fonteAtual = {};
 
+        var graficoEscolhido = {};
+
+        var editado = false;
+
         self.carregarFontes = function(){
             self.fontes = FontesCnpjService.query({ cnpj: $cookies.cnpj });
         };
@@ -1108,25 +1109,126 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
             };
         };
 
-        self.editar = function(painel){
+        self.enviar = function(){
+            var processo = Math.floor((Math.random() * 1000) + 1);
 
+            if(editado){
+                PaineisService.update({ id: self.painel._id }, self.painel).$promise
+                .then(
+                    function(res){
+                        editado = false;
+
+                        self.novoPainel();
+
+                        $scope.$broadcast('done', { processo: processo });
+
+                        $('#modalForm').modal('hide');
+                    },
+                    function(error){
+                        alert('Erro ao atualizar');
+
+                        $scope.$broadcast('fail', { processo: processo });
+                    }
+                );
+            }
+            else {
+                PaineisService.save(self.painel).$promise
+                .then(
+                    function(res){
+                        alert(res.message);
+
+                        self.novoPainel();
+
+                        $scope.$broadcast('done', { processo: processo });
+
+                        self.carregarPaineis();
+                    },
+                    function(error){
+                        alert('Erro ao salvar');
+
+                        $scope.$broadcast('fail', { processo: processo });
+                    }
+                );
+            }
+
+            return processo;
+        };
+
+        self.editar = function(painel){
+            editado = true;
+
+            self.painel = painel;
         };
 
         self.remover = function(painel){
+            var processo = Math.floor((Math.random() * 1000) + 1);
 
+			if(confirm('Deseja realmente excluir este painel?')){
+                PaineisService.remove({ id: painel._id }).$promise
+                    .then(
+                    function(response){
+                        $scope.$broadcast('done', { processo: processo });
+                        self.lista.splice(self.lista.indexOf(painel), 1);
+                    },
+                    function(error){
+                        $scope.$broadcast('fail', { processo: processo });
+                    });
+			}
+            else{
+                $scope.$broadcast('fail', { processo: -1 });
+            }
+
+            return processo;
         };
 
         self.exibir = function(painel){
             $("#modalMaximo").modal("show");
         };
 
-        self.grafico = function(tipo, subtipo){
-            self.graficoEscolhido.tipo = tipo;
-            self.graficoEscolhido.subtipo = subtipo;
+        self.grafico = function(tipo){
+            graficoEscolhido.tipo = tipo;
+
+            switch(tipo){
+                case "barras":
+                    graficoEscolhido.dx = {
+                        tipo: "dxChart",
+                        subtipo: "bar"
+                    };
+                    break;
+                case "linhas":
+                    graficoEscolhido.dx = {
+                        tipo: "dxChart"
+                    };
+                    break;
+                case "pizza":
+                    graficoEscolhido.dx = {
+                        tipo: "dxPieChart"
+                    };
+                    break;
+            }
         };
 
+        self.adicionarComponente = function(){
+            var componente = {
+                titulo: self.componente.titulo,
+                tipo: graficoEscolhido.tipo,
+                dx: graficoEscolhido.dx,
+                fonte: {
+                    id: self.fonteAtual._id,
+                    nome: self.fonteAtual.nome
+                },
+                categoria: self.categoriaAtual.campo,
+                valor: self.valorAtual.campo
+            };
 
+            self.painel.componentes.push(componente);
 
+            self.componente.titulo = "";
+        };
+
+        self.removerComponente = function(index){
+            self.painel.componentes.splice(index, 1);
+        };
     }])
     .controller('ReportsController', ['ClientesService','ReportsService','ReportsUsuarioService', 'ReportsVisualizadoService', 'ReportsIdService', 'UsuariosService', 'UsuariosClienteCnpjService', 'Storage', '$cookies', function(ClientesService, ReportsService, ReportsUsuarioService, ReportsVisualizadoService, ReportsIdService, UsuariosService, UsuariosClienteCnpjService, Storage, $cookies){
         // Controller de Reports

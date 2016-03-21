@@ -30,7 +30,7 @@
             <tr ng-repeat="painel in pnlCtrl.lista | filter:pnlCtrl.busca">
                 <td>{{painel.titulo}}</td>
                 <td>{{painel.descricao}}</td>
-                <td>{{painel.data_criacao}}</td>
+                <td>{{painel.data_criacao | date: 'dd/MM/yyyy'}}</td>
                 <td>
                     <button class="btn btn-warning btn-xs" type="button" ng-click="pnlCtrl.editar(painel)" data-toggle="modal" data-target="#modalForm" guarda guarda-verbo="PUT"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>
 
@@ -74,6 +74,14 @@
 
                             <ng-form name="fComponentes">
                                 <div class="row">
+                                   <div class="col-md-4">
+                                       <label class="form-label" for="fTituloComponente">Título: </label>
+                                       <input id="fTituloComponente" type="text" class="form-control" ng-model="pnlCtrl.componente.titulo" placeholder="Título do componente.">
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                         <label for="fFonte" class="control-label"><strong>Fonte de Dados: </strong></label>
@@ -88,13 +96,13 @@
                                     <label for="fFonte" class="control-label"><strong>Tipo do Gráfico: </strong></label>
                                     <div class="btn-group" role="group" aria-label="...">
 
-                                        <button-chart indice="1" callback="pnlCtrl.grafico(tipo, subtipo)" titulo="Pizza" tipo="dxPieChart" subtipo="">
+                                        <button-chart indice="1" callback="pnlCtrl.grafico(tipo)" titulo="Pizza" tipo="pizza">
                                         </button-chart>
 
-                                        <button-chart indice="2" callback="pnlCtrl.grafico(tipo, subtipo)" titulo="Barras" tipo="dxChart" subtipo="bar">
+                                        <button-chart indice="2" callback="pnlCtrl.grafico(tipo)" titulo="Barras" tipo="barras">
                                         </button-chart>
 
-                                        <button-chart indice="3" callback="pnlCtrl.grafico(tipo, subtipo)" titulo="Linhas" tipo="dxChart" subtipo="">
+                                        <button-chart indice="3" callback="pnlCtrl.grafico(tipo)" titulo="Linhas" tipo="linhas">
                                         </button-chart>
 
                                     </div>
@@ -120,7 +128,36 @@
                                     </div>
                                 </div>
 
+                                <button type="button" class="btn btn-info btn-sm" ng-click="pnlCtrl.adicionarComponente()">
+                                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Adicionar
+                                </button>
                             </ng-form>
+
+                            <table class="table table-stripped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Título</th>
+                                        <th>Tipo</th>
+                                        <th>Fonte de Dados</th>
+                                        <th>Categoria</th>
+                                        <th>Valor</th>
+                                        <th>Operação</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="cmp in pnlCtrl.painel.componentes">
+                                        <th>{{cmp.titulo}}</th>
+                                        <th>{{cmp.tipo}}</th>
+                                        <th>{{cmp.fonte.nome}}</th>
+                                        <th>{{cmp.categoria}}</th>
+                                        <th>{{cmp.valor}}</th>
+                                        <td>
+                                            <button class="btn btn-danger btn-xs" type="button" ng-click="pnlCtrl.removerComponente($index)">
+                                                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Remover
+                                            </button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
                         </fieldset>
 
@@ -130,7 +167,7 @@
 
                         <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span> Fechar</button>
 
-                        <button-spinner action="cliCtrl.enviar()" titulo="Salvar" verbo="POST" secure="true"></button-spinner>
+                        <button-spinner action="pnlCtrl.enviar()" titulo="Salvar" verbo="POST" secure="true"></button-spinner>
 
                     </div>
 
