@@ -1092,7 +1092,6 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
 
         self.carregarFontes = function(){
             if($cookies.cnpj != undefined && $cookies.cnpj != "") self.fontes = FontesCnpjService.query({ cnpj: $cookies.cnpj });
-            else alert("Escolha um cliente primeiro");
         };
 
         self.carregarFontes();
@@ -1101,7 +1100,6 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
 
         self.carregarPaineis = function(){
             if($cookies.cnpj != undefined && $cookies.cnpj != "") self.lista = PaineisCnpjService.query({ cnpj: $cookies.cnpj });
-            else alert("Escolha um cliente primeiro");
         };
 
         self.carregarPaineis();
