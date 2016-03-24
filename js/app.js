@@ -439,20 +439,6 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
         };
     }])
 
-    /*.directive('list', ['Storage', function(Storage){
-        return {
-            restrict: 'E',
-            scope: {
-                source: '=',
-                subset: '@'
-            },
-            templateUrl: 'componentes/list.html',
-            link: function($scope, $element, $attrs){
-
-            }
-        };
-    }])*/
-
 // Controllers
 	.controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', 'ClientesService', '$location', '$cookies', '$route', function(AutenticaService, UsuariosService, Storage, ClientesService, $location, $cookies, $route){
 		var self = this;
