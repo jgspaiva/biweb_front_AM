@@ -13,6 +13,8 @@
 
   <title>PWBI WEB</title>
 
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.green-cyan.min.css" />
 
@@ -78,81 +80,41 @@
 </div>
 
 
-
-
-
-    <div ng-show="!main.isLogado()">
-        <div class="container">
-    <div class="row">
-        <div class="col-sm-6 col-md-4 col-md-offset-4">
-            <h1 class="text-center login-title">SEJA BEM-VINDO!</h1>
-            <div class="account-wall">
-                <img class="profile-img" src="imagens/logo_quadratica.png"
-                    alt="">
-                <form class="form-signin" ng-submit="main.logon()">
-                <input type="text" class="form-control" placeholder="Email" ng-model="main.user.username" required autofocus>
-                <input type="password" class="form-control" placeholder="Password" ng-model="main.user.password" required>
-                <div class="alert alert-danger" ng-show="main.statusLogin.erro">
-                    <button type="button" class="close" ng-click="main.dismissAlert()">&times;</button>
-                    {{main.statusLogin.mensagem}}
-                    </div>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">
-                    Entrar</button>
-                <!--<label class="checkbox pull-left">
-                    <input type="checkbox" value="remember-me">
-                    Lembrar-me neste computador
-                </label>
-                <a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>-->
-                </form>
-            </div>
-            <!--<a href="#" class="text-center new-account">Create an account </a>-->
+<div class="mdl-grid dark login-grid" ng-show="!main.isLogado()">
+    <div class="mdl-layout-spacer"></div>
+    <div class="demo-card-square mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col login-card">
+        <div class="mdl-card__title mdl-card--expand">
+            <h2 class="mdl-card__title-text">SEJA BEM-VINDO</h2>
         </div>
+
+        <form ng-submit="main.logon()">
+
+        <div class="mdl-card__supporting-text">
+
+
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="fUsername" ng-model="main.user.username" required autofocus>
+                    <label class="mdl-textfield__label" for="fUsername">Username</label>
+                </div>
+
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="password" id="fPassword" ng-model="main.user.password" required>
+                    <label class="mdl-textfield__label" for="fPassword">Password</label>
+                </div>
+
+
+        </div>
+
+        <div class="mdl-card__actions mdl-card--border">
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--primary">LOGIN</button>
+        </div>
+
+        </form>
+
     </div>
+    <div class="mdl-layout-spacer"></div>
 </div>
 
-    </div>
-
-
-
-    <!-- FIM DO LAYOUT -->
-
-    <!--<nav class="navbar navbar-default navbar-fixed-top" ng-show="main.isLogado()">
-        <div class="container">
-
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-
-
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-
-
-                <form class="navbar-form navbar-left" role="search" ng-show="main.isAdmin()">
-                    <select id="fCliente" class="form-control" ng-model="main.clienteId" ng-change="main.mudaCliente()" ng-options="c.cnpj as c.nome_fantasia for c in main.clientes"></select>
-                </form>
-
-                <ul class="nav navbar-nav navbar-right ng-cloak">
-        			<li class="dropdown ng-cloak">
-          				<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{main.usuario.nome}} <span class="caret"></span></a>
-          				<ul class="dropdown-menu">
-            				<li><a href="#/senha">Trocar Senha</a></li>
-
-            				<li role="separator" class="divider"></li>
-            				<li><a href="" ng-click="main.logout()">Sair</a></li>
-          				</ul>
-        			</li>
-      			</ul>
-            </div>
-
-        </div>
-
-    </nav>-->
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
