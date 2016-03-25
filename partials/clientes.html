@@ -1,10 +1,4 @@
-<div>
-    <ul class="breadcrumb">
-        <li><a href="#/principal">Início</a></li>
-        <li class="active">Clientes</li>
-    </ul>
-
-<button type="button" ng-click="cliCtrl.limpaCliente()" class="btn btn-default btn-md btn-success" data-toggle="modal" data-target="#modalForm" guarda guarda-verbo="POST">
+<!--<button type="button" ng-click="cliCtrl.limpaCliente()" class="btn btn-default btn-md btn-success" data-toggle="modal" data-target="#modalForm" guarda guarda-verbo="POST">
   <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Adicionar
 </button>
 
@@ -21,22 +15,19 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
 
-    <form name="frm" ng-submit="cliCtrl.enviar()"> <!-- conteudo por controle -->
+    <form name="frm" ng-submit="cliCtrl.enviar()">
 
 
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 
-        <h4 class="modal-title" id="myModalLabel">Cliente</h4> <!-- Nome do controle -->
+        <h4 class="modal-title" id="myModalLabel">Cliente</h4>
 
       </div>
 
       <div class="modal-body">
 
-      <!-- ===============================
-                Campos do Formulário
-                      Início
-           ===============================-->
+
 
 		<div class="row">
             <div class="col-md-3">
@@ -104,10 +95,7 @@
             </tbody>
             </table>
           </fieldset>
-		<!-- ===============================
-                  Campos do Formulário
-                         FIM
-             ===============================-->
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span> Fechar</button>
@@ -117,36 +105,33 @@
       </form>
     </div>
   </div>
-</div>
+</div> -->
 
 <!--
 Tabela por controle
 -->
 
-<table class="table table-stripped table-hover" guarda guarda-verbo="GET">
+<div class="mdl-grid dark">
+
+<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--middle">
 <thead>
 	<tr>
-    	<th>CNPJ</th>
-        <th>Razão Social</th>
-        <th>Nome de Fantasia</th>
-        <th>Plano</th>
+    	<th class="mdl-data-table__cell--non-numeric">CNPJ</th>
+        <th class="mdl-data-table__cell--non-numeric">Razão Social</th>
+        <th class="mdl-data-table__cell--non-numeric">Nome de Fantasia</th>
+        <th class="mdl-data-table__cell--non-numeric">Plano</th>
         <th>Licenças</th>
-        <th>Operações</th>
     </tr>
 </thead>
 <tbody>
 	<tr ng-repeat="cli in cliCtrl.lista | filter:cliCtrl.busca">
-    	<td>{{cli.cnpj}}</td>
-    	<td>{{cli.razao_social}}</td>
-        <td>{{cli.nome_fantasia}}</td>
-        <td>{{cli.plano.nome}}</td>
+    	<td class="mdl-data-table__cell--non-numeric">{{cli.cnpj}}</td>
+    	<td class="mdl-data-table__cell--non-numeric">{{cli.razao_social}}</td>
+        <td class="mdl-data-table__cell--non-numeric">{{cli.nome_fantasia}}</td>
+        <td class="mdl-data-table__cell--non-numeric">{{cli.plano.nome}}</td>
         <td>{{cli.plano.limite_usuarios}}</td>
-        <td>
-        	<button class="btn btn-warning btn-xs" type="button" ng-click="cliCtrl.editar(cli)" data-toggle="modal" data-target="#modalForm" guarda guarda-verbo="PUT"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>
-
-            <button-spinner action="cliCtrl.remover(cli)" titulo="Remover" verbo="DELETE" size="xs" secure="true"></button-spinner>
-        </td>
     </tr>
 </tbody>
 </table>
-</div>
+
+    </div>
