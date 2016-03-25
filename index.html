@@ -4,7 +4,7 @@
 <head lang="pt">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -12,13 +12,11 @@
   <![endif]-->
 
   <title>PWBI WEB</title>
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/spinner.css">
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.indigo-pink.min.css">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.teal-purple.min.css" />
 
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
 
   <link rel="stylesheet" type="text/css" href="css/dx.common.css" />
   <link rel="stylesheet" type="text/css" href="css/dx.light.css" />
@@ -27,6 +25,61 @@
 
 <body ng-controller="MainController as main">
     <!-- Navigation -->
+
+    <!-- MDL Layout -->
+
+    <!-- The drawer is always open in large screens. The header is always shown,
+  even in small screens. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
+            mdl-layout--fixed-header" ng-show="main.isLogado()">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+      <div class="mdl-layout-spacer"></div>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
+                  mdl-textfield--floating-label mdl-textfield--align-right">
+        <label class="mdl-button mdl-js-button mdl-button--icon"
+               for="fixed-header-drawer-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" name="sample"
+                 id="fixed-header-drawer-exp">
+        </div>
+
+          <!-- MDL - Menu da barra -->
+
+          <!-- Right aligned menu below button -->
+          <button class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+            <i class="material-icons">more_vert</i>
+          </button>
+          <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"><a class="mdl-menu__link" href="#/senha">Senha</a></li>
+            <li class="mdl-menu__item"><a href="" class="mdl-menu__link" ng-click="main.logout()">Sair</a></li>
+          </ul>
+
+      <!-- Fim do menu da barra -->
+
+
+
+      </div>
+    </div>
+  </header>
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">PWBI - Web</span>
+    <nav class="mdl-navigation">
+
+      <a ng-repeat="p in main.usuario.permissoes" class="mdl-navigation__link" href="#/{{p.cadastro}}">{{p.nome}}</a>
+
+    </nav>
+  </div>
+  <main class="mdl-layout__content">
+    <div class="page-content" ng-view><!-- Your content goes here --></div>
+  </main>
+</div>
+
+
+
+
 
     <div ng-show="!main.isLogado()">
         <div class="container">
@@ -59,9 +112,13 @@
 
     </div>
 
-    <nav class="navbar navbar-default navbar-fixed-top" ng-show="main.isLogado()">
+
+
+    <!-- FIM DO LAYOUT -->
+
+    <!--<nav class="navbar navbar-default navbar-fixed-top" ng-show="main.isLogado()">
         <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
+
             <div class="navbar-header page-scroll">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
@@ -71,14 +128,10 @@
                 </button>
             </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
+
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-                <!-- <ul class="nav navbar-nav ng-cloak">
-                	<li ng-repeat="permissao in main.usuario.permissoes">
-                    	<a href="#/{{permissao.cadastro}}">{{permissao.nome}}</a>
-                    </li>
-                </ul>-->
+
 
                 <form class="navbar-form navbar-left" role="search" ng-show="main.isAdmin()">
                     <select id="fCliente" class="form-control" ng-model="main.clienteId" ng-change="main.mudaCliente()" ng-options="c.cnpj as c.nome_fantasia for c in main.clientes"></select>
@@ -89,20 +142,17 @@
           				<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{main.usuario.nome}} <span class="caret"></span></a>
           				<ul class="dropdown-menu">
             				<li><a href="#/senha">Trocar Senha</a></li>
-            				<!--<li><a href="#/mensagens">Mensagens</a></li>-->
+
             				<li role="separator" class="divider"></li>
             				<li><a href="" ng-click="main.logout()">Sair</a></li>
           				</ul>
         			</li>
       			</ul>
             </div>
-            <!-- /.navbar-collapse -->
+
         </div>
-        <!-- /.container-fluid -->
-    </nav>
 
-
-  <div class="container painel" ng-view ng-show="main.isLogado()"></div>
+    </nav>-->
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -119,9 +169,7 @@
   <script src="js/dx.webappjs.js"></script>
   <script src="js/dx.chartjs.js"></script>
 
-  <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="js/bootstrap.min.js"></script>
-
+  <!-- O Fantástico MDL -->
   <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 
   <script src="js/app.js"></script>

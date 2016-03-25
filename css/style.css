@@ -1,0 +1,9 @@
+.mdl-menu__link{
+    text-decoration: none;
+    color: inherit;
+}
+
+.mdl-more-vert__button{
+    margin-right: 10px !important;
+    display: inline-block !important;
+}
