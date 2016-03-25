@@ -977,6 +977,30 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'dx'])
         self.removerTelefone = function(index){
             self.cliente.telefones.splice(index, 1);
         };
+
+        self.toggleAll = function(){
+            if(self.headCheckBoxState){
+                self.lista.forEach(function(cli){
+                    cli.check = true;
+                });
+            }
+            else{
+                self.lista.forEach(function(cli){
+                    cli.check = false;
+                });
+            }
+
+        };
+
+        self.isClearCheck = function(){
+            var saida = true;
+
+            self.lista.forEach(function(cli){
+                saida = saida && !(cli.check)
+            });
+
+            return saida;
+        };
 	}])
     .controller('PlanosController', ['PlanosService', '$scope', function(PlanosService, $scope){
         var self = this;

@@ -113,9 +113,25 @@ Tabela por controle
 
 <div class="mdl-grid dark">
 
-<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--middle">
+    <!-- Colored FAB button with ripple -->
+<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+  <i class="material-icons">add</i>
+</button>
+
+    <!-- Colored FAB button with ripple -->
+<button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect" ng-disabled="cliCtrl.isClearCheck()">
+  <i class="material-icons">delete</i>
+</button>
+
+<table class="mdl-data-table mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--middle">
+
 <thead>
 	<tr>
+        <th>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect mdl-data-table__select" for="table-header">
+            <input type="checkbox" id="table-header" class="mdl-checkbox__input" ng-change="cliCtrl.toggleAll()" ng-model="cliCtrl.headCheckBoxState" />
+          </label>
+        </th>
     	<th class="mdl-data-table__cell--non-numeric">CNPJ</th>
         <th class="mdl-data-table__cell--non-numeric">Razão Social</th>
         <th class="mdl-data-table__cell--non-numeric">Nome de Fantasia</th>
@@ -125,6 +141,11 @@ Tabela por controle
 </thead>
 <tbody>
 	<tr ng-repeat="cli in cliCtrl.lista | filter:cliCtrl.busca">
+        <td>
+          <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect mdl-data-table__select" for="row[{{$index+1}}]">
+            <input type="checkbox" id="row[{{$index + 1}}]" class="mdl-checkbox__input" ng-model="cli.check" />
+          </label>
+        </td>
     	<td class="mdl-data-table__cell--non-numeric">{{cli.cnpj}}</td>
     	<td class="mdl-data-table__cell--non-numeric">{{cli.razao_social}}</td>
         <td class="mdl-data-table__cell--non-numeric">{{cli.nome_fantasia}}</td>
