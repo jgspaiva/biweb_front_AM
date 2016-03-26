@@ -24,14 +24,43 @@
 
 </head>
 
-<body ng-controller="MainController as main">
+<body ng-controller="MainController as main" ng-cloak>
+
     <!-- Navigation -->
+
+    <div layout="row" ng-show="main.isLogado()">
+        <md-sidenav md-component-id="left" class="md-sidenav-left">
+        <!-- Conteúdo do navegador -->
+            <md-list>
+                <md-list-item ng-repeat-start="p in main.usuario.permissoes">
+                    <md-button href="#/{{p.cadastro}}" style="width: 100px">{{p.nome}}</md-button>
+                </md-list-item>
+
+                <md-divider ng-repeat-end></md-divider>
+
+
+            </md-list>
+
+
+        </md-sidenav>
+
+        <md-content>
+            <md-button ng-click="main.openLeftMenu()">
+                Menu
+            </md-button>
+        </md-content>
+
+    </div>
+
+
+
 
     <!-- MDL Layout -->
 
     <!-- The drawer is always open in large screens. The header is always shown,
   even in small screens. -->
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
+
+<!--<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
             mdl-layout--fixed-header" ng-show="main.isLogado()">
   <header class="mdl-layout__header">
     <div class="mdl-layout__header-row">
@@ -47,9 +76,9 @@
                  id="fixed-header-drawer-exp">
         </div>
 
-          <!-- MDL - Menu da barra -->
 
-          <!-- Right aligned menu below button -->
+
+
           <button class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
             <i class="material-icons">more_vert</i>
           </button>
@@ -58,7 +87,7 @@
             <li class="mdl-menu__item"><a href="" class="mdl-menu__link" ng-click="main.logout()">Sair</a></li>
           </ul>
 
-      <!-- Fim do menu da barra -->
+
 
 
 
@@ -74,9 +103,9 @@
     </nav>
   </div>
   <main class="mdl-layout__content">
-    <div class="page-content" ng-view><!-- Your content goes here --></div>
+    <div class="page-content" ng-view></div>
   </main>
-</div>
+</div>-->
 
 
 <div class="mdl-grid dark login-grid" ng-show="!main.isLogado()">

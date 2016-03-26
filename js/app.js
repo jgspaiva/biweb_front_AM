@@ -440,7 +440,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
     }])
 
 // Controllers
-	.controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', 'ClientesService', '$location', '$cookies', '$route', function(AutenticaService, UsuariosService, Storage, ClientesService, $location, $cookies, $route){
+	.controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', 'ClientesService', '$location', '$cookies', '$route', '$mdSidenav', function(AutenticaService, UsuariosService, Storage, ClientesService, $location, $cookies, $route, $mdSidenav){
 		var self = this;
 
         self.isAdmin = function(){
@@ -602,6 +602,10 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             $cookies.cnpj = self.clienteId;
 
             $route.reload();
+        };
+
+        self.openLeftMenu = function(){
+            $mdSidenav('left').toggle();
         };
 
 	}])
