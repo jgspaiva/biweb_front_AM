@@ -30,7 +30,7 @@
 
     <!-- Navigation -->
 
-    <div layout="row" ng-show="main.isLogado()">
+    <div layout="column" ng-show="main.isLogado()">
         <md-sidenav md-component-id="left" class="md-sidenav-left">
         <!-- Conteúdo do navegador -->
 
@@ -47,23 +47,77 @@
 
         </md-sidenav>
 
-        <md-toolbar layout="row" layout-align="space-between center">
+        <md-toolbar class="md-whiteframe-z2">
+
+            <div class="md-toolbar-tools">
 
             <md-button class="md-icon-button" ng-click="main.openLeftMenu()">
                 <md-icon>menu</md-icon>
             </md-button>
 
-            <md-button class="md-icon-button" ng-click="main.openLeftMenu()">
-                <md-icon>more_vert</md-icon>
-            </md-button>
+            <span flex></span>
+
+            <md-menu>
+
+                <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                    <md-icon>more_vert</md-icon>
+                </md-button>
+
+                <md-menu-content>
+                    <md-menu-item>
+                        <md-button href="#/senha">Trocar Senha</md-button>
+                    </md-menu-item>
+
+                    <md-divider></md-divider>
+
+                    <md-menu-item>
+                        <md-button ng-click="main.logout()">Sair</md-button>
+                    </md-menu-item>
+                </md-menu-content>
+
+            </md-menu>
+
+            </div>
+
 
         </md-toolbar>
 
-    </div>
-
-    <div layout="column" ng-view>
+        <div layout="column" ng-view></div>
 
     </div>
+
+    <div layout="column" layout-align="center center" ng-show="!main.isLogado()" style="height: 100%">
+
+        <form ng-submit="main.logon()">
+
+        <md-card class="md-card-login">
+
+            <img class="logo-login" ng-src="imagens/logo_quadratica.png">
+
+            <md-card-content>
+                <md-input-container class="md-block">
+                    <md-icon>email</md-icon>
+                    <input ng-model="main.user.username" type="email" placeholder="E-mail" ng-required="true">
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <md-icon>lock</md-icon>
+                    <input ng-model="main.user.password" type="password" placeholder="Senha" ng-required="true">
+                </md-input-container>
+
+            </md-card-content>
+
+            <md-card-actions>
+                <md-button type="submit">LOGIN</md-button>
+            </md-card-actions>
+
+        </md-card>
+        </form>
+
+
+    </div>
+
+
 
 
 
@@ -121,7 +175,7 @@
 </div>-->
 
 
-<div class="mdl-grid dark login-grid" ng-show="!main.isLogado()">
+<!--<div class="mdl-grid dark login-grid" ng-show="!main.isLogado()">
     <div class="mdl-layout-spacer"></div>
     <div class="demo-card-square mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col login-card">
         <div class="mdl-card__title mdl-card--expand">
@@ -154,7 +208,7 @@
 
     </div>
     <div class="mdl-layout-spacer"></div>
-</div>
+</div>-->
 
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -165,7 +219,7 @@
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-cookies.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-resource.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-locale_pt-br.min.js"></script>
+  <script src="https://code.angularjs.org/1.4.8/i18n/angular-locale_pt-br.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
