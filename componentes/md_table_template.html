@@ -4,9 +4,11 @@
 
         <md-checkbox ng-model="i.check"></md-checkbox>
 
-        <p>{{i.razao_social}}</p>
+        <p ng-repeat="h in header">{{i[h.campo]}}</p>
 
-        <p>{{i.nome_fantasia}}</p>
+        <!--<p>{{i.razao_social}}</p>
+
+        <p>{{i.nome_fantasia}}</p>-->
 
     </md-list-item>
 

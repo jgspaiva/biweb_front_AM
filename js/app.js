@@ -385,7 +385,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
         return{
             restrict: 'E',
             scope: {
-                items: '='
+                items: '=',
+                header: '='
             },
             templateUrl: 'componentes/md_table_template.html',
             link: function($scope, $element, $attrs){
