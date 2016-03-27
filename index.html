@@ -17,6 +17,8 @@
 
   <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
 
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
   <link rel="stylesheet" type="text/css" href="css/style.css" />
 
   <link rel="stylesheet" type="text/css" href="css/dx.common.css" />
@@ -31,9 +33,10 @@
     <div layout="row" ng-show="main.isLogado()">
         <md-sidenav md-component-id="left" class="md-sidenav-left">
         <!-- Conteúdo do navegador -->
+
             <md-list>
                 <md-list-item ng-repeat-start="p in main.usuario.permissoes">
-                    <md-button href="#/{{p.cadastro}}" style="width: 100px">{{p.nome}}</md-button>
+                    <md-button class="md-menu__link" href="#/{{p.cadastro}}">{{p.nome}}</md-button>
                 </md-list-item>
 
                 <md-divider ng-repeat-end></md-divider>
@@ -44,11 +47,21 @@
 
         </md-sidenav>
 
-        <md-content>
-            <md-button ng-click="main.openLeftMenu()">
-                Menu
+        <md-toolbar layout="row" layout-align="space-between center">
+
+            <md-button class="md-icon-button" ng-click="main.openLeftMenu()">
+                <md-icon>menu</md-icon>
             </md-button>
-        </md-content>
+
+            <md-button class="md-icon-button" ng-click="main.openLeftMenu()">
+                <md-icon>more_vert</md-icon>
+            </md-button>
+
+        </md-toolbar>
+
+    </div>
+
+    <div layout="column" ng-view>
 
     </div>
 
