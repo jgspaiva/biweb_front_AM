@@ -31,8 +31,8 @@
     <!-- Navigation -->
 
     <div layout="column" ng-show="main.isLogado()">
+
         <md-sidenav md-component-id="left" class="md-sidenav-left">
-        <!-- Conteúdo do navegador -->
 
             <md-list>
                 <md-list-item ng-repeat-start="p in main.usuario.permissoes">
@@ -41,10 +41,7 @@
 
                 <md-divider ng-repeat-end></md-divider>
 
-
             </md-list>
-
-
         </md-sidenav>
 
         <md-toolbar class="md-whiteframe-z2">
@@ -86,6 +83,8 @@
 
     </div>
 
+    <!-- Card para login -->
+
     <div layout="column" layout-align="center center" ng-show="!main.isLogado()" style="height: 100%">
 
         <form ng-submit="main.logon()">
@@ -116,100 +115,6 @@
 
 
     </div>
-
-
-
-
-
-
-    <!-- MDL Layout -->
-
-    <!-- The drawer is always open in large screens. The header is always shown,
-  even in small screens. -->
-
-<!--<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
-            mdl-layout--fixed-header" ng-show="main.isLogado()">
-  <header class="mdl-layout__header">
-    <div class="mdl-layout__header-row">
-      <div class="mdl-layout-spacer"></div>
-      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
-                  mdl-textfield--floating-label mdl-textfield--align-right">
-        <label class="mdl-button mdl-js-button mdl-button--icon"
-               for="fixed-header-drawer-exp">
-          <i class="material-icons">search</i>
-        </label>
-        <div class="mdl-textfield__expandable-holder">
-          <input class="mdl-textfield__input" type="text" name="sample"
-                 id="fixed-header-drawer-exp">
-        </div>
-
-
-
-
-          <button class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
-            <i class="material-icons">more_vert</i>
-          </button>
-          <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
-            <li class="mdl-menu__item mdl-menu__item--full-bleed-divider"><a class="mdl-menu__link" href="#/senha">Senha</a></li>
-            <li class="mdl-menu__item"><a href="" class="mdl-menu__link" ng-click="main.logout()">Sair</a></li>
-          </ul>
-
-
-
-
-
-      </div>
-    </div>
-  </header>
-  <div class="mdl-layout__drawer">
-    <span class="mdl-layout-title">PWBI - Web</span>
-    <nav class="mdl-navigation">
-
-      <a ng-repeat="p in main.usuario.permissoes" class="mdl-navigation__link" href="#/{{p.cadastro}}">{{p.nome}}</a>
-
-    </nav>
-  </div>
-  <main class="mdl-layout__content">
-    <div class="page-content" ng-view></div>
-  </main>
-</div>-->
-
-
-<!--<div class="mdl-grid dark login-grid" ng-show="!main.isLogado()">
-    <div class="mdl-layout-spacer"></div>
-    <div class="demo-card-square mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col login-card">
-        <div class="mdl-card__title mdl-card--expand">
-            <h2 class="mdl-card__title-text">SEJA BEM-VINDO</h2>
-        </div>
-
-        <form ng-submit="main.logon()">
-
-        <div class="mdl-card__supporting-text">
-
-
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="fUsername" ng-model="main.user.username" required autofocus>
-                    <label class="mdl-textfield__label" for="fUsername">Username</label>
-                </div>
-
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="password" id="fPassword" ng-model="main.user.password" required>
-                    <label class="mdl-textfield__label" for="fPassword">Password</label>
-                </div>
-
-
-        </div>
-
-        <div class="mdl-card__actions mdl-card--border">
-            <button type="submit" class="mdl-button mdl-js-button mdl-button--primary">LOGIN</button>
-        </div>
-
-        </form>
-
-    </div>
-    <div class="mdl-layout-spacer"></div>
-</div>-->
-
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
