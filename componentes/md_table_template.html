@@ -1,0 +1,15 @@
+<md-list layout="column">
+
+    <md-list-item ng-repeat-start="i in items">
+
+        <md-checkbox ng-model="i.check"></md-checkbox>
+
+        <p>{{i.razao_social}}</p>
+
+        <p>{{i.nome_fantasia}}</p>
+
+    </md-list-item>
+
+    <md-divider ng-repeat-end></md-divider>
+
+</md-list>

@@ -111,14 +111,30 @@
 Tabela por controle
 -->
 
-<div class="mdl-grid dark">
+<div layout="row" layout-align="space-around center">
+    <md-button class="md-fab" style="position:relative; margin-bottom:-38px">
+        <md-icon>add</md-icon>
+    </md-button>
 
-    <!-- Colored FAB button with ripple -->
+    <md-button class="md-fab md-mini md-primary" style="position:relative; margin-bottom:-33px" ng-disabled="cliCtrl.isClearCheck()">
+        <md-icon>remove</md-icon>
+    </md-button>
+</div>
+
+<md-card>
+    <md-data-table items="cliCtrl.lista"></md-data-table>
+</md-card>
+
+
+
+<!--<div class="mdl-grid dark">
+
+
 <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
   <i class="material-icons">add</i>
 </button>
 
-    <!-- Colored FAB button with ripple -->
+
 <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect" ng-disabled="cliCtrl.isClearCheck()">
   <i class="material-icons">delete</i>
 </button>
@@ -153,6 +169,6 @@ Tabela por controle
         <td>{{cli.plano.limite_usuarios}}</td>
     </tr>
 </tbody>
-</table>
+    </table>
 
-    </div>
+    </div>-->

@@ -381,6 +381,20 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
         };
     }])
 
+    .directive('mdDataTable', [ function(){
+        return{
+            restrict: 'E',
+            scope: {
+                items: '='
+            },
+            templateUrl: 'componentes/md_table_template.html',
+            link: function($scope, $element, $attrs){
+
+            }
+
+        };
+    }])
+
     .directive('buttonChart', ['$rootScope', function($rootScope){
         return{
             restrict: 'E',
