@@ -398,6 +398,10 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                         item.check = $scope.allCheck;
                     });
                 };
+
+                $scope.$watchCollection("items", function(newValue, oldValue){
+                    $scope.items = newValue;
+                });
             }
 
         };
@@ -1018,6 +1022,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             })
             .then(
                 function(cliente) {
+                    self.lista.push(cliente);
+
                     return ClientesService.save(cliente).$promise;
                 },
                 function() {
