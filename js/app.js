@@ -885,7 +885,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             return processo;
         };
 	}])
-	.controller('ClientesController', ['ClientesService', 'PlanosService', '$scope', function(ClientesService, PlanosService, $scope){
+	.controller('ClientesController', ['ClientesService', 'PlanosService', '$scope', '$mdDialog', function(ClientesService, PlanosService, $scope, $mdDialog){
 		var self = this;
 
 		self.lista = [];
@@ -1004,18 +1004,25 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             self.cliente.telefones.splice(index, 1);
         };
 
-        self.toggleAll = function(){
-            if(self.headCheckBoxState){
-                self.lista.forEach(function(cli){
-                    cli.check = true;
-                });
-            }
-            else{
-                self.lista.forEach(function(cli){
-                    cli.check = false;
-                });
-            }
+        /* showDialog(ev) aqui */
 
+        $scope.showDialog = function(ev) {
+            var dialogo = DialogController;
+
+            $mdDialog.show({
+                controller: dialogo,
+                templateUrl: 'templates/add_cliente_dialog.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true
+            })
+            .then(
+                function(answer) {
+                    $scope.status = 'You said the information was "' + answer + '".';
+                },
+                function() {
+                    $scope.status = 'You cancelled the dialog.';
+                });
         };
 
         self.isClearCheck = function(){
