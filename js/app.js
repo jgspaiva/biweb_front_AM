@@ -993,6 +993,19 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             return processo;
 		};
 
+        self.removerChecked = function(){
+            self.lista.forEach(function(cliente){
+                if(cliente.check) {
+                    ClientesService.remove({ id: cliente._id }).$promise
+                    .then(
+                        function(response){
+                            self.lista.splice(self.lista.indexOf(cliente), 1);
+                        },
+                        function(error){});
+                }
+            });
+        };
+
         self.telefone = {};
 
         var limpaTelefone = function(){
@@ -1049,7 +1062,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                 .cancel('Cancelar a operação');
             $mdDialog.show(confirm).then(
                 function() {
-
+                    self.removerChecked();
                 },
                 function() {
 
