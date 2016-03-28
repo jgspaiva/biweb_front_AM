@@ -9,25 +9,53 @@
         </md-button>
       </div>
     </md-toolbar>
-    <md-dialog-content style="max-width:800px;max-height:810px; ">
+    <md-dialog-content style="max-width:800px;max-height:810px;width: 800px; ">
 
-        <md-content layout="row">
+        <md-content layout-padding>
 
+            <div layout="column">
 
+            <md-input-container class="md-block">
+                <label>CNPJ</label>
+
+                <input ng-model="cliente.cnpj" required>
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label>Razão Social</label>
+
+                <input ng-model="cliente.razao_social" required>
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label>Nome de Fantasia</label>
+
+                <input ng-model="cliente.nome_fantasia" required>
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label>Endereço</label>
+
+                <input ng-model="cliente.endereco">
+            </md-input-container>
+
+            <md-input-container>
+                <label>Planos</label>
+                <md-select ng-model="cliente.plano">
+                    <md-option ng-repeat="plano in planos" value="{{plano._id}}">
+                        {{plano.nome}} - {{plano.limite_usuarios}} licenças
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            </div>
 
         </md-content>
 
     </md-dialog-content>
     <md-dialog-actions layout="row">
-      <md-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" md-autofocus>
-        More on Wikipedia
-      </md-button>
       <span flex></span>
-      <md-button ng-click="answer('not useful')" >
-        Not Useful
-      </md-button>
-      <md-button ng-click="answer('useful')" style="margin-right:20px;" >
-        Useful
+      <md-button ng-click="send(cliente)" style="margin-right:20px;" >
+        Salvar
       </md-button>
     </md-dialog-actions>
   </form>

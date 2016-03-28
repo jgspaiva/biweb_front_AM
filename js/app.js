@@ -1007,21 +1007,28 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
         /* showDialog(ev) aqui */
 
         $scope.showDialog = function(ev) {
-            var dialogo = DialogController;
-
             $mdDialog.show({
-                controller: dialogo,
+                controller: DialogClienteController,
                 templateUrl: 'templates/add_cliente_dialog.tmpl.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
-                clickOutsideToClose:true
+                clickOutsideToClose:true,
+                bindToController: true,
+                locals: { planos: self.listaPlanos }
             })
             .then(
-                function(answer) {
-                    $scope.status = 'You said the information was "' + answer + '".';
+                function(cliente) {
+                    return ClientesService.save(cliente).$promise;
                 },
                 function() {
                     $scope.status = 'You cancelled the dialog.';
+                })
+            .then(
+                function(response){
+                    self.carregar();
+                },
+                function(error){
+                    alert("erro");
                 });
         };
 
