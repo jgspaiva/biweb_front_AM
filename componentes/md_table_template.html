@@ -1,3 +1,15 @@
+<div layout="row" layout-align="space-around center">
+    <md-button class="md-fab" style="position:relative; margin-bottom:-38px">
+        <md-icon>add</md-icon>
+    </md-button>
+
+    <md-button class="md-fab md-mini md-primary" style="position:relative; margin-bottom:-33px" ng-disabled="isClearCheck()">
+        <md-icon>remove</md-icon>
+    </md-button>
+</div>
+
+<md-card>
+
 <md-list layout="column">
     <md-subheader>
         <div layout="row" layout-align="space-between center">
@@ -9,7 +21,7 @@
     <md-divider></md-divider>
 
     <md-list-item>
-        <md-checkbox></md-checkbox>
+        <md-checkbox ng-model="allCheck" ng-change="toggleAllCheck()"></md-checkbox>
 
         <p ng-repeat="h in header">{{h.headerName}}</p>
 
@@ -19,14 +31,12 @@
 
     <md-list-item ng-repeat-end >
 
-        <md-checkbox ng-model="i.check"></md-checkbox>
+        <md-checkbox ng-model="check[$index]" ng-init="check[$index]=false"></md-checkbox>
 
         <p ng-repeat="h in header">{{i[h.campo]}}</p>
-
-        <!--<p>{{i.razao_social}}</p>
-
-        <p>{{i.nome_fantasia}}</p>-->
 
     </md-list-item>
 
 </md-list>
+
+</md-card>
