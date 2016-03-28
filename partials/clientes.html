@@ -111,6 +111,17 @@
 Tabela por controle
 -->
 
+<div layout="row" layout-align="space-around center">
+    <md-button class="md-fab" style="position:relative; margin-bottom:-38px">
+        <md-icon>add</md-icon>
+    </md-button>
+
+    <md-button class="md-fab md-mini md-primary" style="position:relative; margin-bottom:-33px" ng-disabled="cliCtrl.isClearCheck()">
+        <md-icon>remove</md-icon>
+    </md-button>
+</div>
+
+<md-card>
 
 <md-data-table
                titulo="Clientes"
@@ -122,6 +133,7 @@ Tabela por controle
                        ]">
 </md-data-table>
 
+</md-card>
 
 
 <!--<div class="mdl-grid dark">

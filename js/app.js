@@ -391,24 +391,12 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             },
             templateUrl: 'componentes/md_table_template.html',
             link: function($scope, $element, $attrs){
-                $scope.check = [];
-
                 $scope.allCheck = false;
 
-                $scope.isClearCheck = function(){
-                    var saida = true;
-
-                    $scope.check.forEach(function(c){
-                        saida = saida && !c;
-                    });
-
-                    return saida;
-                };
-
                 $scope.toggleAllCheck = function(){
-                    for(i=0;i < $scope.check.length; i++){
-                        $scope.check[i] = $scope.allCheck;
-                    }
+                    angular.forEach($scope.items, function(item, index){
+                        item.check = $scope.allCheck;
+                    });
                 };
             }
 
