@@ -1038,6 +1038,24 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                 });
         };
 
+        $scope.showConfirm = function(ev){
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.confirm()
+                .title('Quer realmente excluir os clientes selecionados?')
+                .textContent('Esta operação é irreversível. Todos os dados referentes serão perdidos.')
+                .ariaLabel('Exclusão')
+                .targetEvent(ev)
+                .ok('Excluir assim mesmo')
+                .cancel('Cancelar a operação');
+            $mdDialog.show(confirm).then(
+                function() {
+
+                },
+                function() {
+
+                });
+        };
+
         self.isClearCheck = function(){
             var saida = true;
 

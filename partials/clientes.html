@@ -119,7 +119,7 @@ Tabela por controle
         <md-icon>add</md-icon>
     </md-button>
 
-    <md-button class="md-fab md-mini md-primary" style="position:relative; margin-bottom:-33px" ng-disabled="cliCtrl.isClearCheck()">
+    <md-button class="md-fab md-mini md-primary" style="position:relative; margin-bottom:-33px" ng-disabled="cliCtrl.isClearCheck()" ng-click="showConfirm($event)">
         <md-tooltip md-direction="bottom">
             Remover
         </md-tooltip>
