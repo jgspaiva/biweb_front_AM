@@ -75,6 +75,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 				template: '<h1>Bem-vindo ao PWBI Web</h1>'
 			});
 	})
+    // Constantes
+    .constant('apiUrl', 'http://localhost:3100')
 
 // Services
     .service('Storage', function () {
@@ -104,90 +106,90 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
     })
 
 // Factory
-	.factory('AutenticaService', ['$resource', function($resource){
-		return $resource('http://begyn.com.br:3100/api/autentica');
+	.factory('AutenticaService', ['$resource', 'apiUrl', function($resource, apiUrl){
+		return $resource(apiUrl + '/api/autentica');
 	}])
-	.factory('UsuariosService', ['$resource', function($resource){
-		return $resource('http://begyn.com.br:3100/api/usuarios/:id', null,
+	.factory('UsuariosService', ['$resource', 'apiUrl', function($resource, apiUrl){
+		return $resource(apiUrl + '/api/usuarios/:id', null,
 			{
 				'update' : { method: 'PUT' }
 			});
 	}])
-    .factory('UsuariosResetService', ['$resource', function($resource){
-		return $resource('http://begyn.com.br:3100/api/usuarios/reset/:id', null,
+    .factory('UsuariosResetService', ['$resource', 'apiUrl', function($resource, apiUrl){
+		return $resource(apiUrl + '/api/usuarios/reset/:id', null,
 			{
 				'update' : { method: 'PUT' }
 			});
 	}])
-    .factory('UsuariosNovaSenhaService', ['$resource', function($resource){
-		return $resource('http://begyn.com.br:3100/api/usuarios/novasenha/:id', null,
+    .factory('UsuariosNovaSenhaService', ['$resource', 'apiUrl', function($resource, apiUrl){
+		return $resource(apiUrl + '/api/usuarios/novasenha/:id', null,
 			{
 				'update' : { method: 'PUT' }
 			});
 	}])
-    .factory('UsuariosClienteService', ['$resource', function($resource){
-		return $resource('http://begyn.com.br:3100/api/usuarios/cliente/:id');
+    .factory('UsuariosClienteService', ['$resource', 'apiUrl', function($resource, apiUrl){
+		return $resource(apiUrl + '/api/usuarios/cliente/:id');
 	}])
-    .factory('UsuariosClienteCnpjService', ['$resource', function($resource){
-		return $resource('http://begyn.com.br:3100/api/usuarios/cliente/cnpj/:cnpj');
+    .factory('UsuariosClienteCnpjService', ['$resource', 'apiUrl', function($resource, apiUrl){
+		return $resource(apiUrl + '/api/usuarios/cliente/cnpj/:cnpj');
 	}])
-    .factory('UsuariosAutorizaService', ['$resource', function($resource){
-		return $resource('http://begyn.com.br:3100/api/usuarios/autoriza/:id', null,
+    .factory('UsuariosAutorizaService', ['$resource', 'apiUrl', function($resource, apiUrl){
+		return $resource(apiUrl + '/api/usuarios/autoriza/:id', null,
 			{
 				'update' : { method: 'PUT' }
 			});
 	}])
-	.factory('ClientesService', ['$resource', function($resource){
-		return $resource('http://begyn.com.br:3100/api/clientes/:id', null,
+	.factory('ClientesService', ['$resource', 'apiUrl', function($resource, apiUrl){
+		return $resource(apiUrl + '/api/clientes/:id', null,
 			{
 				'update' : { method: 'PUT' }
 			});
 	}])
-    .factory('PlanosService', ['$resource', function($resource){
-		return $resource('http://begyn.com.br:3100/api/planos/:id', null,
+    .factory('PlanosService', ['$resource', 'apiUrl', function($resource, apiUrl){
+		return $resource(apiUrl + '/api/planos/:id', null,
 			{
 				'update' : { method: 'PUT' }
 			});
 	}])
-    .factory('ReportsIdService', ['$resource', function($resource){
-		return $resource('http://begyn.com.br:3100/api/relatorios/:id', null,
+    .factory('ReportsIdService', ['$resource', 'apiUrl', function($resource, apiUrl){
+		return $resource(apiUrl + '/api/relatorios/:id', null,
 			{
 				'update' : { method: 'PUT' }
 			});
 	}])
-    .factory('ReportsService', ['$resource', function($resource){
-		return $resource('http://begyn.com.br:3100/api/relatorios/cnpj/:cnpj', null,
+    .factory('ReportsService', ['$resource', 'apiUrl', function($resource, apiUrl){
+		return $resource(apiUrl + '/api/relatorios/cnpj/:cnpj', null,
 			{
 				'update' : { method: 'PUT' }
 			});
 	}])
-    .factory('ReportsUsuarioService', ['$resource', function($resource){
-		return $resource('http://begyn.com.br:3100/api/relatorios/cnpj/:cnpj/usuario/:usuario', null,
+    .factory('ReportsUsuarioService', ['$resource', 'apiUrl', function($resource, apiUrl){
+		return $resource(apiUrl + '/api/relatorios/cnpj/:cnpj/usuario/:usuario', null,
 			{
 				'update' : { method: 'PUT' }
 			});
 	}])
-    .factory('ReportsVisualizadoService', ['$resource', function($resource){
-		return $resource('http://begyn.com.br:3100/api/relatorios/visualizado/:id/usuario/:usuario', null,
+    .factory('ReportsVisualizadoService', ['$resource', 'apiUrl', function($resource, apiUrl){
+		return $resource(apiUrl + '/api/relatorios/visualizado/:id/usuario/:usuario', null,
 			{
 				'update' : { method: 'PUT' }
 			});
 	}])
-    .factory('FontesService', ['$resource', function($resource){
-		return $resource('http://begyn.com.br:3100/api/fontes/:id');
+    .factory('FontesService', ['$resource', 'apiUrl', function($resource, apiUrl){
+		return $resource(apiUrl + '/api/fontes/:id');
 	}])
-    .factory('FontesCnpjService', ['$resource', function($resource){
-		return $resource('http://begyn.com.br:3100/api/fontes/cnpj/:cnpj');
+    .factory('FontesCnpjService', ['$resource', 'apiUrl', function($resource, apiUrl){
+		return $resource(apiUrl + '/api/fontes/cnpj/:cnpj');
 	}])
-    .factory('PaineisService', ['$resource', function($resource){
-		return $resource('http://begyn.com.br:3100/api/paineis/:id', null,
+    .factory('PaineisService', ['$resource', 'apiUrl', function($resource, apiUrl){
+		return $resource(apiUrl + '/api/paineis/:id', null,
         {
             'update' : { method : 'PUT' }
 
         });
 	}])
-    .factory('PaineisCnpjService', ['$resource', function($resource){
-		return $resource('http://begyn.com.br:3100/api/paineis/cnpj/:cnpj');
+    .factory('PaineisCnpjService', ['$resource', 'apiUrl', function($resource, apiUrl){
+		return $resource(apiUrl + '/api/paineis/cnpj/:cnpj');
 	}])
 	.factory('ResourceInterceptor', ['$cookies', '$q', function($cookies, $q){
 		return {
@@ -659,6 +661,38 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
         self.isLogadoVisual = function(){
             return (usuarioLogado.perfil == 'visual');
         };
+
+        self.header = function(){
+            var saida = [
+                { campo: 'username', headerName: 'E-mail' },
+                { campo: 'nome', headerName: 'Nome' },
+                { campo: 'telefone', headerName: 'Fone' },
+                { campo: 'perfil', headerName: 'Perfil' }
+            ];
+
+            if(self.isLogadoAdmin()){
+                saida = [
+                    { campo: 'username', headerName: 'E-mail' },
+                    { campo: 'nome', headerName: 'Nome' },
+                    { campo: 'telefone', headerName: 'Fone' },
+                    { campo: 'perfil', headerName: 'Perfil' },
+                    { campo: 'clienteNome', headerName: 'Cliente' }
+                ];
+            }
+            else if(self.isLogadoMaster()){
+                saida = [
+                    { campo: 'username', headerName: 'E-mail' },
+                    { campo: 'nome', headerName: 'Nome' },
+                    { campo: 'telefone', headerName: 'Fone' },
+                    { campo: 'perfil', headerName: 'Perfil' },
+                    { campo: 'autorizado', headerName: 'Autorizado' }
+                ];
+            }
+
+            return saida;
+        };
+
+        self.headerAtual = self.header();
 
         self.lista = [];
 
