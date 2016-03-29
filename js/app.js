@@ -637,7 +637,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
         };
 
 	}])
-	.controller('UsuariosController', ['Storage', 'UsuariosService', 'UsuariosResetService', 'UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', 'UsuariosClienteCnpjService', '$scope', '$cookies', function(Storage, UsuariosService, UsuariosResetService, UsuariosClienteService, ClientesService, UsuariosAutorizaService, UsuariosClienteCnpjService, $scope, $cookies){
+	.controller('UsuariosController', ['Storage', 'UsuariosService', 'UsuariosResetService', 'UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', 'UsuariosClienteCnpjService', '$scope', '$cookies', '$mdDialog', function(Storage, UsuariosService, UsuariosResetService, UsuariosClienteService, ClientesService, UsuariosAutorizaService, UsuariosClienteCnpjService, $scope, $cookies, $mdDialog){
 		var self = this;
 
         var usuarioLogado = Storage.getUsuario();
@@ -953,6 +953,42 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 
             return saida;
         };
+
+        $scope.showConfirmRemove = function(ev){
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.confirm()
+                .title('Quer realmente excluir os usuários selecionados?')
+                .textContent('Esta operação é irreversível. Todos os dados referentes serão perdidos.')
+                .ariaLabel('Exclusão')
+                .targetEvent(ev)
+                .ok('Excluir')
+                .cancel('Cancelar');
+            $mdDialog.show(confirm).then(
+                function() {
+                    self.removerChecked();
+                },
+                function() {
+
+                });
+        };
+
+        $scope.showConfirmAuth = function(ev){
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.confirm()
+                .title('Quer realmente autorizar os usuários selecionados?')
+                .textContent('Os usuários selecionados poderão ter acesso a dados, relatórios e paineis de sua empresa.')
+                .ariaLabel('Autorizar')
+                .targetEvent(ev)
+                .ok('Autorizar')
+                .cancel('Cancelar');
+            $mdDialog.show(confirm).then(
+                function() {
+                    self.authChecked();
+                },
+                function() {
+
+                });
+        };
 	}])
 	.controller('ClientesController', ['ClientesService', 'PlanosService', '$scope', '$mdDialog', function(ClientesService, PlanosService, $scope, $mdDialog){
 		var self = this;
@@ -1123,8 +1159,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                 .textContent('Esta operação é irreversível. Todos os dados referentes serão perdidos.')
                 .ariaLabel('Exclusão')
                 .targetEvent(ev)
-                .ok('Excluir assim mesmo')
-                .cancel('Cancelar a operação');
+                .ok('Excluir')
+                .cancel('Cancelar');
             $mdDialog.show(confirm).then(
                 function() {
                     self.removerChecked();
@@ -1134,7 +1170,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                 });
         };
 
-        self.isClearCheck = function(){
+        $scope.isClearCheck = function(){
             var saida = true;
 
             self.lista.forEach(function(cli){
