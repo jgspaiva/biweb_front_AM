@@ -800,6 +800,19 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             return processo;
 		};
 
+        self.removeChecked = function(){
+            self.lista.forEach(function(usr){
+                if(usr.check) {
+                    UsuariosService.remove({ id: usr._id }).$promise
+                    .then(
+                        function(response){
+                            self.lista.splice(self.lista.indexOf(usr), 1);
+                        },
+                        function(error){});
+                }
+            });
+        };
+
 		self.limpaUsuario = function(){
             self.usuario = {
                 ativo: true,
@@ -915,6 +928,19 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             return processo;
         };
 
+        self.authChecked = function(){
+            self.lista.forEach(function(usr){
+                if(usr.check) {
+                    usr.autorizado = true;
+
+                    UsuariosAutorizaService.update({ id: usr._id}, usr).$promise
+                    .then(
+                        function(response){},
+                        function(error){});
+                }
+            });
+        };
+
         self.resetSenha = function(usr){
             var processo = Math.floor((Math.random() * 1000) + 1);
 
@@ -965,7 +991,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                 .cancel('Cancelar');
             $mdDialog.show(confirm).then(
                 function() {
-                    self.removerChecked();
+                    self.removeChecked();
                 },
                 function() {
 
