@@ -933,6 +933,26 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 
             return processo;
         };
+
+        $scope.isClearCheck = function(){
+            var saida = true;
+
+            self.lista.forEach(function(usr){
+                saida = saida && !(usr.check);
+            });
+
+            return saida;
+        };
+
+        $scope.isClearCheckUnauth = function(){
+            var saida = true;
+
+            self.lista.forEach(function(usr){
+                saida = saida && (!(usr.check) || (usr.autorizado));
+            });
+
+            return saida;
+        };
 	}])
 	.controller('ClientesController', ['ClientesService', 'PlanosService', '$scope', '$mdDialog', function(ClientesService, PlanosService, $scope, $mdDialog){
 		var self = this;

@@ -6,7 +6,15 @@
         <md-icon>add</md-icon>
     </md-button>
 
-    <md-button class="md-fab md-mini md-primary" style="position:relative; margin-bottom:-33px" ng-disabled="usrCtrl.isClearCheck()" ng-click="showConfirm($event)">
+    <md-button class="md-fab md-mini md-primary" style="position:relative; margin-bottom:-33px" ng-disabled="isClearCheckUnauth()" ng-click="showConfirm($event)">
+        <md-tooltip md-direction="bottom">
+            Autorizar
+        </md-tooltip>
+
+        <md-icon>check</md-icon>
+    </md-button>
+
+    <md-button class="md-fab md-mini md-primary" style="position:relative; margin-bottom:-33px" ng-disabled="isClearCheck()" ng-click="showConfirm($event)">
         <md-tooltip md-direction="bottom">
             Remover
         </md-tooltip>
