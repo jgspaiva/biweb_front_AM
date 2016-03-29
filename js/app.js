@@ -668,7 +668,18 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             }
             else if(self.isLogadoAdmin()) {
                 if($cookies.cliente_id == undefined){
-                    self.lista = UsuariosService.query();
+                    UsuariosService.query().$promise.then(function(response){
+                        self.lista = response;
+
+                        self.lista.forEach(function(usuario){
+                            try{
+                                usuario.clienteNome = usuario.cliente.nome_fantasia;
+                            }
+                            catch(exception){
+                                usuario.clienteNome = "";
+                            }
+                        });
+                    });
                 }
                 else{
                     self.lista = UsuariosClienteCnpjService.query({ cnpj: $cookies.cliente_id });
