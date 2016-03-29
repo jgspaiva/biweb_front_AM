@@ -16,3 +16,10 @@ body{
     width: 88px;
     margin: 33px;
 }
+
+.md-p{
+    display: block;
+    /* word-break: break-all; */
+    text-overflow: ellipsis;
+    padding-right: 10px;
+}

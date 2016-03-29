@@ -664,28 +664,28 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 
         self.header = function(){
             var saida = [
-                { campo: 'username', headerName: 'E-mail' },
-                { campo: 'nome', headerName: 'Nome' },
-                { campo: 'telefone', headerName: 'Fone' },
-                { campo: 'perfil', headerName: 'Perfil' }
+                { campo: 'username', headerName: 'E-mail', width: '40' },
+                { campo: 'nome', headerName: 'Nome', width: '40' },
+                { campo: 'telefone', headerName: 'Fone', width: '10' },
+                { campo: 'perfil', headerName: 'Perfil', width:'' }
             ];
 
             if(self.isLogadoAdmin()){
                 saida = [
-                    { campo: 'username', headerName: 'E-mail' },
-                    { campo: 'nome', headerName: 'Nome' },
-                    { campo: 'telefone', headerName: 'Fone' },
-                    { campo: 'perfil', headerName: 'Perfil' },
-                    { campo: 'clienteNome', headerName: 'Cliente' }
+                    { campo: 'username', headerName: 'E-mail', width: '30' },
+                    { campo: 'nome', headerName: 'Nome', width:'30' },
+                    { campo: 'telefone', headerName: 'Fone', width: '10' },
+                    { campo: 'perfil', headerName: 'Perfil', width: '10' },
+                    { campo: 'clienteNome', headerName: 'Cliente', width: '20' }
                 ];
             }
             else if(self.isLogadoMaster()){
                 saida = [
-                    { campo: 'username', headerName: 'E-mail' },
-                    { campo: 'nome', headerName: 'Nome' },
-                    { campo: 'telefone', headerName: 'Fone' },
-                    { campo: 'perfil', headerName: 'Perfil' },
-                    { campo: 'autorizado', headerName: 'Autorizado' }
+                    { campo: 'username', headerName: 'E-mail', width: '40' },
+                    { campo: 'nome', headerName: 'Nome', width: '30' },
+                    { campo: 'telefone', headerName: 'Fone', width: '10' },
+                    { campo: 'perfil', headerName: 'Perfil', width: '10' },
+                    { campo: 'autorizado', headerName: 'Autorizado', width: '' }
                 ];
             }
 
