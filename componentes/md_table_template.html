@@ -11,7 +11,7 @@
     <md-list-item>
         <md-checkbox ng-model="allCheck" ng-init="allCheck=false" ng-change="toggleAllCheck()"></md-checkbox>
 
-        <div layout="column" layout-gt-sm="row" layout-align="space-around start" layout-align-gt-sm="start center" flex="90">
+        <div layout="column" layout-gt-sm="row" layout-align="space-around start" layout-align-gt-sm="start center" flex="100">
 
         <p class="md-body-2 md-p" ng-repeat="h in header" flex="{{h.width}}">{{h.headerName}}</p>
 
@@ -25,9 +25,9 @@
 
         <md-checkbox ng-model="i.check"></md-checkbox>
 
-        <div layout="column" layout-gt-sm="row" layout-align="space-around start" layout-align-gt-sm="start center" flex="90">
+        <div layout="column" layout-gt-sm="row" layout-align="space-around start" layout-align-gt-sm="start center" flex="100">
 
-        <p class="md-p" ng-repeat="h in header" flex="{{h.width}}">{{i[h.campo]}}</p>
+        <p class="md-body-1 md-p" ng-repeat="h in header" flex="{{h.width}}">{{i[h.campo]}}</p>
 
         </div>
 

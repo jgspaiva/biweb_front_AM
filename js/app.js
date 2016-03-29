@@ -78,7 +78,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
     // Constantes
     .constant('apiUrl', 'http://localhost:3100')
 
-// Services
+    // Services
     .service('Storage', function () {
         var token = '';
 
