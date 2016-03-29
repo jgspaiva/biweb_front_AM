@@ -1,0 +1,67 @@
+<md-dialog aria-label="Usuário">
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Usuário</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon>close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="max-width:800px;max-height:810px;width: 800px; ">
+
+        <md-content layout-padding>
+
+            <div layout="column">
+
+            <md-input-container class="md-block">
+                <label>E-mail (username)</label>
+
+                <input ng-model="usuario.username" required>
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label>Nome</label>
+
+                <input ng-model="usuario.nome" required>
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label>Telefone</label>
+
+                <input ng-model="usuario.telefone" required>
+            </md-input-container>
+
+            <md-input-container class="md-block" ng-show="isLogadoAdmin()">
+                <label>Perfil</label>
+
+                <md-select ng-model="usuario.perfil">
+                    <md-option value="admin">Administrador (dsview)</md-option>
+                    <md-option value="facilitador">Facilitador (dsview)</md-option>
+                    <md-option value="master">Master</md-option>
+                    <md-option value="basico">Usuário Básico</md-option>
+                </md-select>
+            </md-input-container>
+
+            <md-input-container ng-show="isLogadoAdmin() && isCliente()">
+                <label>Cliente</label>
+                <md-select ng-model="usuario.cliente">
+                    <md-option ng-repeat="cliente in clientes" value="{{cliente._id}}">
+                        {{cliente.cnpj}} - {{cliente.nome_fantasia}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            </div>
+
+        </md-content>
+
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button ng-click="send(usuario)" style="margin-right:20px;" >
+        Salvar
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

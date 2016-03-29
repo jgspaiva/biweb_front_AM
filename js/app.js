@@ -667,7 +667,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                 { campo: 'username', headerName: 'E-mail', width: '40' },
                 { campo: 'nome', headerName: 'Nome', width: '40' },
                 { campo: 'telefone', headerName: 'Fone', width: '10' },
-                { campo: 'perfil', headerName: 'Perfil', width:'' }
+                { campo: 'perfil', headerName: 'Perfil', width: '10' }
             ];
 
             if(self.isLogadoAdmin()){
@@ -685,7 +685,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                     { campo: 'nome', headerName: 'Nome', width: '30' },
                     { campo: 'telefone', headerName: 'Fone', width: '10' },
                     { campo: 'perfil', headerName: 'Perfil', width: '10' },
-                    { campo: 'autorizado', headerName: 'Autorizado', width: '' }
+                    { campo: 'autorizado', headerName: 'Autorizado', width: '10' }
                 ];
             }
 
@@ -726,7 +726,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 
 		self.carregar(); // Inicializa a lista
 
-		self.enviar = function(){
+		/*self.enviar = function(){
             var processo = Math.floor((Math.random() * 1000) + 1);
 
             self.usuario.permissoes = permissoes(self.usuario.perfil);
@@ -770,6 +770,28 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 			}
 
             return processo;
+		};*/
+
+
+        self.enviar = function(usr){
+            usr.permissoes = permissoes(usr.perfil);
+
+            usr.ativo = true;
+            usr.autorizado = true;
+
+            usr.email = usr.username;
+
+            if(self.isLogadoMaster()) usr.cliente = usuarioLogado.cliente._id;
+
+            if((usr.perfil == 'admin') || (usr.perfil == 'facilitador')){
+                if(usr.hasOwnProperty('cliente')) delete usr['cliente'];
+            }
+
+            usr.password = "1234";
+
+            if(self.isLogadoAdmin() && (usr.perfil == 'basico')) usr.autorizado = false;
+
+            return UsuariosService.save(usr).$promise;
 		};
 
         var editado = false;
@@ -1013,6 +1035,34 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                 },
                 function() {
 
+                });
+        };
+
+        $scope.showDialog = function(ev) {
+            $mdDialog.show({
+                controller: DialogUsuarioController,
+                templateUrl: 'templates/add_usuario_dialog.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true,
+                bindToController: true,
+                locals: { clientes: self.listaClientes, perfilLogado: usuarioLogado.perfil }
+            })
+            .then(
+                function(usuario) {
+                    self.lista.push(usuario);
+
+                    self.enviar(usuario);
+                },
+                function() {
+                    $scope.status = 'You cancelled the dialog.';
+                })
+            .then(
+                function(response){
+                    //self.carregar();
+                },
+                function(error){
+                    alert("erro");
                 });
         };
 	}])
