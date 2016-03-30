@@ -1,4 +1,4 @@
-<md-dialog class="form" aria-label="Cliente">
+<md-dialog class="dialog-form" aria-label="Cliente">
   <ng-form>
     <md-toolbar>
       <div class="md-toolbar-tools">
@@ -18,7 +18,7 @@
             <md-input-container class="md-block" flex="100">
                 <label>Nome</label>
 
-                <input ng-model="plano.nome" required>
+                <input ng-model="plano.nome" autofocus required>
             </md-input-container>
 
             <md-input-container class="md-block" flex="100">
@@ -47,52 +47,6 @@
 
             </div>
 
-
-        <!--
-
-            <div layout="row" layout-align="center center" flex-xs="100" flex-gt-xs="100">
-
-            <span flex></span>
-
-            <div layout="column" flex="100">
-
-            <md-input-container class="md-block" flex="100">
-                <label>Nome</label>
-
-                <input ng-model="plano.nome" required>
-            </md-input-container>
-
-            <md-input-container class="md-block" flex="100">
-                <label>Descrição</label>
-
-                <input ng-model="plano.descricao">
-            </md-input-container>
-
-            <div layout="column" layout-gt-sm="row" layout-align="center center" layout-align-gt-sm="start center"  flex="100">
-
-                <md-input-container class="md-block" flex-gt-sm="50" flex="100">
-                    <label>Preço</label>
-
-                    <input type="number" step="0.01" ng-model="plano.preco" required>
-
-                </md-input-container>
-
-                <md-input-container class="md-block" flex-gt-sm="50" flex="100">
-                    <label>Limite de Usuários</label>
-
-                    <input type="number" step="1" ng-model="plano.limite_usuarios" required>
-                </md-input-container>
-
-            </div>
-
-
-            </div>
-
-            <span flex></span>
-
-            </div>
-
-        -->
         </div>
 
     </md-dialog-content>
