@@ -1,3 +1,43 @@
+<div layout="row" layout-align="space-around center">
+    <md-button class="md-fab" style="position:relative; margin-bottom:-38px" ng-click="showDialog($event)">
+        <md-tooltip md-direction="bottom">
+            Adicionar
+        </md-tooltip>
+        <md-icon>add</md-icon>
+    </md-button>
+
+    <md-button class="md-fab md-mini md-primary" style="position:relative; margin-bottom:-33px" ng-disabled="isClearCheck()" ng-click="showConfirm($event)">
+        <md-tooltip md-direction="bottom">
+            Excluir
+        </md-tooltip>
+
+        <md-icon>clear</md-icon>
+    </md-button>
+</div>
+
+<md-card>
+
+<md-data-table
+               titulo="Planos"
+               items="plaCtrl.lista"
+               header="[
+                       { campo: 'nome', headerName: 'Nome', width: '20' },
+                       { campo: 'descricao', headerName: 'Descrição', width: '40' },
+                       { campo: 'preco', headerName: 'Preço', width: '20' },
+                       { campo: 'limite_usuarios', headerName: 'Qt Usuários', width: '20' }
+                       ]">
+</md-data-table>
+
+</md-card>
+
+
+
+
+
+
+<!-- CODIGO VELHO -->
+
+<!--
 <div>
     <ul class="breadcrumb">
         <li><a href="#/principal">Início</a></li>
@@ -21,22 +61,19 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
 
-    <form name="frm" ng-submit="plaCtrl.enviar()"> <!-- conteudo por controle -->
+    <form name="frm" ng-submit="plaCtrl.enviar()">
 
 
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 
-        <h4 class="modal-title" id="myModalLabel">Plano</h4> <!-- Nome do controle -->
+        <h4 class="modal-title" id="myModalLabel">Plano</h4>
 
       </div>
 
       <div class="modal-body">
 
-      <!-- ===============================
-                Campos do Formulário
-                      Início
-           ===============================-->
+
 
 		<div class="row">
         	<div class="col-md-3">
@@ -58,10 +95,6 @@
         	</div>
     	</div>
 
-		<!-- ===============================
-                  Campos do Formulário
-                         FIM
-             ===============================-->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-eject" aria-hidden="true"></span> Fechar</button>
@@ -73,9 +106,7 @@
   </div>
 </div>
 
-<!--
-Tabela por controle
--->
+
 
 <table class="table table-stripped table-hover" guarda guarda-verbo="GET">
 <thead>
@@ -101,4 +132,4 @@ Tabela por controle
     </tr>
 </tbody>
 </table>
-</div>
+</div>-->
