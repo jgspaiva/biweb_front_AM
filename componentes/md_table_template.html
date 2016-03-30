@@ -27,7 +27,10 @@
 
         <div layout="column" layout-gt-sm="row" layout-align="space-around start" layout-align-gt-sm="start center" flex="100">
 
-        <p class="md-body-1 md-p" ng-repeat="h in header" flex="{{h.width}}">{{i[h.campo]}}</p>
+        <p layout="row" layout-align="start center" ng-repeat="h in header" flex="{{h.width}}">
+            <span class="md-body-2" hide-gt-sm>{{h.headerName}}:&nbsp;</span>
+            <span class="md-body-1 md-p">{{i[h.campo]}}</span>
+        </p>
 
         </div>
 
