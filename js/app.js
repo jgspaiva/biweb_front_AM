@@ -636,6 +636,33 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             $mdSidenav('left').toggle();
         };
 
+        self.icone = function(cadastro){
+            var saida = "";
+
+            switch(cadastro){
+                case 'usuarios':
+                    saida = 'person';
+                    break;
+                case 'clientes':
+                    saida = 'store';
+                    break;
+                case 'planos':
+                    saida = 'shopping_cart';
+                    break;
+                case 'reports':
+                    saida = 'insert_chart';
+                    break;
+                case 'painel':
+                    saida = 'view_quilt';
+                    break;
+                case 'utilizacao':
+                    saida = 'date_range';
+                    break;
+            }
+
+            return saida;
+        };
+
 	}])
 	.controller('UsuariosController', ['Storage', 'UsuariosService', 'UsuariosResetService', 'UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', 'UsuariosClienteCnpjService', '$scope', '$cookies', '$mdDialog', function(Storage, UsuariosService, UsuariosResetService, UsuariosClienteService, ClientesService, UsuariosAutorizaService, UsuariosClienteCnpjService, $scope, $cookies, $mdDialog){
 		var self = this;
