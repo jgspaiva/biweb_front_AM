@@ -14,12 +14,20 @@
         <md-icon>check</md-icon>
     </md-button>
 
-    <md-button class="md-fab md-mini md-primary" style="position:relative; margin-bottom:-33px" ng-disabled="isClearCheck()" ng-click="showConfirmRemove($event)">
+    <md-button class="md-fab md-mini md-primary" style="position:relative; margin-bottom:-33px" ng-disabled="isClearCheck()" ng-click="showConfirmRenew($event)">
         <md-tooltip md-direction="bottom">
-            Remover
+            Renovar Senha
         </md-tooltip>
 
-        <md-icon>remove</md-icon>
+        <md-icon>undo</md-icon>
+    </md-button>
+
+    <md-button class="md-fab md-mini md-primary" style="position:relative; margin-bottom:-33px" ng-disabled="isClearCheck()" ng-click="showConfirmRemove($event)">
+        <md-tooltip md-direction="bottom">
+            Excluir
+        </md-tooltip>
+
+        <md-icon>clear</md-icon>
     </md-button>
 </div>
 

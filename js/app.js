@@ -982,6 +982,14 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             return processo;
         };
 
+        self.renewChecked = function(){
+            self.lista.forEach(function(usr){
+                if(usr.check){
+                    UsuariosResetService.update({ id: usr._id}, { password: '1234' });
+                }
+            });
+        };
+
         $scope.isClearCheck = function(){
             var saida = true;
 
@@ -1032,6 +1040,24 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             $mdDialog.show(confirm).then(
                 function() {
                     self.authChecked();
+                },
+                function() {
+
+                });
+        };
+
+        $scope.showConfirmRenew = function(ev){
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.confirm()
+                .title('Quer realmente renovar a senha dos usuários selecionados?')
+                .textContent('Os usuários selecionados voltarão às senhas padrão, contudo expiradas. Será exigida a mudança da senha no primeiro logon.')
+                .ariaLabel('Renovar Senha')
+                .targetEvent(ev)
+                .ok('Restaurar')
+                .cancel('Cancelar');
+            $mdDialog.show(confirm).then(
+                function() {
+                    self.renewChecked();
                 },
                 function() {
 
