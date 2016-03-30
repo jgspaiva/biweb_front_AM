@@ -1,5 +1,5 @@
 <md-dialog aria-label="Usuário">
-  <form>
+  <ng-form>
     <md-toolbar>
       <div class="md-toolbar-tools">
         <h2>Usuário</h2>
@@ -9,31 +9,31 @@
         </md-button>
       </div>
     </md-toolbar>
-    <md-dialog-content style="max-width:800px;max-height:810px;width: 800px; ">
 
-        <md-content layout-padding>
+    <md-dialog-content>
+        <div class="md-dialog-content">
 
-            <div layout="column">
+            <div layout="column" flex="100">
 
-            <md-input-container class="md-block">
+            <md-input-container class="md-block" flex="100">
                 <label>E-mail (username)</label>
 
                 <input ng-model="usuario.username" required>
             </md-input-container>
 
-            <md-input-container class="md-block">
+            <md-input-container class="md-block" flex="100">
                 <label>Nome</label>
 
                 <input ng-model="usuario.nome" required>
             </md-input-container>
 
-            <md-input-container class="md-block">
+            <md-input-container class="md-block" flex="100">
                 <label>Telefone</label>
 
                 <input ng-model="usuario.telefone" required>
             </md-input-container>
 
-            <md-input-container class="md-block" ng-show="isLogadoAdmin()">
+            <md-input-container class="md-block" ng-show="isLogadoAdmin()" flex="100">
                 <label>Perfil</label>
 
                 <md-select ng-model="usuario.perfil">
@@ -44,7 +44,7 @@
                 </md-select>
             </md-input-container>
 
-            <md-input-container ng-show="isLogadoAdmin() && isCliente()">
+            <md-input-container ng-show="isLogadoAdmin() && isCliente()" flex="100">
                 <label>Cliente</label>
                 <md-select ng-model="usuario.cliente">
                     <md-option ng-repeat="cliente in clientes" value="{{cliente._id}}">
@@ -54,7 +54,7 @@
             </md-input-container>
             </div>
 
-        </md-content>
+        </div>
 
     </md-dialog-content>
     <md-dialog-actions layout="row">
@@ -63,5 +63,5 @@
         Salvar
       </md-button>
     </md-dialog-actions>
-  </form>
+  </ng-form>
 </md-dialog>

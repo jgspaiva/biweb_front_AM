@@ -1,5 +1,5 @@
 <md-dialog aria-label="Cliente">
-  <form>
+  <ng-form>
     <md-toolbar>
       <div class="md-toolbar-tools">
         <h2>Cliente</h2>
@@ -9,37 +9,37 @@
         </md-button>
       </div>
     </md-toolbar>
-    <md-dialog-content style="max-width:800px;max-height:810px;width: 800px; ">
 
-        <md-content layout-padding>
+    <md-dialog-content>
+        <div class="md-dialog-content">
 
-            <div layout="column">
+            <div layout="column" flex="100">
 
-            <md-input-container class="md-block">
+            <md-input-container class="md-block" flex="100">
                 <label>CNPJ</label>
 
                 <input ng-model="cliente.cnpj" required>
             </md-input-container>
 
-            <md-input-container class="md-block">
+            <md-input-container class="md-block" flex="100">
                 <label>Razão Social</label>
 
                 <input ng-model="cliente.razao_social" required>
             </md-input-container>
 
-            <md-input-container class="md-block">
+            <md-input-container class="md-block" flex="100">
                 <label>Nome de Fantasia</label>
 
                 <input ng-model="cliente.nome_fantasia" required>
             </md-input-container>
 
-            <md-input-container class="md-block">
+            <md-input-container class="md-block" flex="100">
                 <label>Endereço</label>
 
                 <input ng-model="cliente.endereco">
             </md-input-container>
 
-            <md-input-container>
+            <md-input-container flex="100">
                 <label>Planos</label>
                 <md-select ng-model="cliente.plano">
                     <md-option ng-repeat="plano in planos" value="{{plano._id}}">
@@ -47,16 +47,18 @@
                     </md-option>
                 </md-select>
             </md-input-container>
+
             </div>
 
-        </md-content>
+        </div>
 
     </md-dialog-content>
+
     <md-dialog-actions layout="row">
       <span flex></span>
       <md-button ng-click="send(cliente)" style="margin-right:20px;" >
         Salvar
       </md-button>
     </md-dialog-actions>
-  </form>
+  </ng-form>
 </md-dialog>
