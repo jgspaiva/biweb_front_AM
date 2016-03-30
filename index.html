@@ -86,11 +86,13 @@
 
     <!-- Card para login -->
 
-    <div layout="column" layout-align="center center" ng-show="!main.isLogado()" style="height: 100%">
+    <div layout="row" layout-align="center center" ng-show="!main.isLogado()" style="height: 100%" flex="100">
 
-        <form ng-submit="main.logon()">
+        <span flex></span>
 
-        <md-card class="md-card-login">
+        <md-card class="md-card-login" flex-xs="100" flex-sm="60" flex-md="40" flex-gt-md="30">
+
+            <form ng-submit="main.logon()">
 
             <img class="logo-login" ng-src="imagens/logo_quadratica.png">
 
@@ -113,9 +115,11 @@
                 <md-button type="submit">LOGIN</md-button>
             </md-card-actions>
 
-        </md-card>
-        </form>
+            </form>
 
+        </md-card>
+
+        <span flex></span>
 
     </div>
 
