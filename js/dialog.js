@@ -92,3 +92,21 @@ function DialogUsuarioController($scope, $mdDialog, clientes, perfilLogado){
         $mdDialog.hide(object);
     };
 }
+
+function DialogPlanoController($scope, $mdDialog) {
+    $scope.hide = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.cancel = function() {
+        $mdDialog.cancel();
+    };
+
+    $scope.answer = function(answer) {
+        $mdDialog.hide(answer);
+    };
+
+    $scope.send = function(object){
+        $mdDialog.hide(object);
+    };
+}

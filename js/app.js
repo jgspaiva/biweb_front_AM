@@ -664,7 +664,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
         };
 
 	}])
-	.controller('UsuariosController', ['Storage', 'UsuariosService', 'UsuariosResetService', 'UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', 'UsuariosClienteCnpjService', '$scope', '$cookies', '$mdDialog', function(Storage, UsuariosService, UsuariosResetService, UsuariosClienteService, ClientesService, UsuariosAutorizaService, UsuariosClienteCnpjService, $scope, $cookies, $mdDialog){
+	.controller('UsuariosController', ['Storage', 'UsuariosService', 'UsuariosResetService', 'UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', 'UsuariosClienteCnpjService', '$scope', '$cookies', '$mdDialog', '$mdMedia', function(Storage, UsuariosService, UsuariosResetService, UsuariosClienteService, ClientesService, UsuariosAutorizaService, UsuariosClienteCnpjService, $scope, $cookies, $mdDialog, $mdMedia){
 		var self = this;
 
         var usuarioLogado = Storage.getUsuario();
@@ -1092,6 +1092,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
         };
 
         $scope.showDialog = function(ev) {
+            var useFullScreen = $mdMedia('xs');
+
             $mdDialog.show({
                 controller: DialogUsuarioController,
                 templateUrl: 'templates/add_usuario_dialog.tmpl.html',
@@ -1099,7 +1101,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                 targetEvent: ev,
                 clickOutsideToClose:true,
                 bindToController: true,
-                locals: { clientes: self.listaClientes, perfilLogado: usuarioLogado.perfil }
+                locals: { clientes: self.listaClientes, perfilLogado: usuarioLogado.perfil },
+                fullscreen: useFullScreen
             })
             .then(
                 function(usuario) {
@@ -1119,7 +1122,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                 });
         };
 	}])
-	.controller('ClientesController', ['ClientesService', 'PlanosService', '$scope', '$mdDialog', function(ClientesService, PlanosService, $scope, $mdDialog){
+	.controller('ClientesController', ['ClientesService', 'PlanosService', '$scope', '$mdDialog', '$mdMedia', function(ClientesService, PlanosService, $scope, $mdDialog, $mdMedia){
 		var self = this;
 
 		self.lista = [];
@@ -1251,9 +1254,9 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             self.cliente.telefones.splice(index, 1);
         };
 
-        /* showDialog(ev) aqui */
-
         $scope.showDialog = function(ev) {
+            var useFullScreen = $mdMedia('xs');
+
             $mdDialog.show({
                 controller: DialogClienteController,
                 templateUrl: 'templates/add_cliente_dialog.tmpl.html',
@@ -1261,7 +1264,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                 targetEvent: ev,
                 clickOutsideToClose:true,
                 bindToController: true,
-                locals: { planos: self.listaPlanos }
+                locals: { planos: self.listaPlanos },
+                fullscreen: useFullScreen
             })
             .then(
                 function(cliente) {
@@ -1309,7 +1313,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             return saida;
         };
 	}])
-    .controller('PlanosController', ['PlanosService', '$scope', function(PlanosService, $scope){
+    .controller('PlanosController', ['PlanosService', '$scope', '$mdDialog', '$mdMedia', function(PlanosService, $scope, $mdDialog, $mdMedia){
         var self = this;
 
         self.lista = [];
@@ -1389,9 +1393,79 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             return processo;
 		};
 
+        self.removerChecked = function(){
+            self.lista.forEach(function(plano){
+                if(plano.check) {
+                    PlanosService.remove({ id: plano._id }).$promise
+                    .then(
+                        function(response){
+                            self.lista.splice(self.lista.indexOf(plano), 1);
+                        },
+                        function(error){});
+                }
+            });
+        };
+
         self.editar = function(plano){
             self.plano = plano;
             editado = true;
+        };
+
+        $scope.isClearCheck = function(){
+            var saida = true;
+
+            self.lista.forEach(function(pla){
+                saida = saida && !(pla.check);
+            });
+
+            return saida;
+        };
+
+        $scope.showConfirm = function(ev){
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.confirm()
+                .title('Quer realmente excluir os planos selecionados?')
+                .textContent('Esta operação é irreversível. Todos os dados referentes serão perdidos.')
+                .ariaLabel('Exclusão')
+                .targetEvent(ev)
+                .ok('Excluir')
+                .cancel('Cancelar');
+            $mdDialog.show(confirm).then(
+                function() {
+                    self.removerChecked();
+                },
+                function() {
+
+                });
+        };
+
+        $scope.showDialog = function(ev) {
+            var useFullScreen = $mdMedia('xs');
+
+            $mdDialog.show({
+                controller: DialogPlanoController,
+                templateUrl: 'templates/add_plano_dialog.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true,
+                fullscreen: useFullScreen
+            })
+            .then(
+                function(plano) {
+                    self.lista.push(plano);
+
+                    return PlanosService.save(plano).$promise;
+                },
+                function() {
+                    $scope.status = 'You cancelled the dialog.';
+                })
+            .then(
+                function(response){
+                    carregar();
+                },
+                function(error){
+                    alert("erro");
+                });
         };
 
     }])
