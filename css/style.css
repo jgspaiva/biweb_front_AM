@@ -22,3 +22,8 @@
 .dialog-form{
     min-width: 320px;
 }
+
+[flex].md-block {
+    -webkit-flex: 1 1 44px !important;
+
+}

@@ -27,23 +27,17 @@
                 <input ng-model="plano.descricao">
             </md-input-container>
 
-            <div layout="row" layout-align="start center" flex="100">
+            <md-input-container class="md-block" flex="100">
+                <label>Preço</label>
 
-                <md-input-container class="md-block" flex="50">
-                    <label>Preço</label>
+                <input type="number" step="0.01" ng-model="plano.preco" required>
+            </md-input-container>
 
-                    <input type="number" step="0.01" ng-model="plano.preco" required>
+            <md-input-container class="md-block" flex="100">
+                <label>Limite de Usuários</label>
 
-                </md-input-container>
-
-                <md-input-container class="md-block" flex="50">
-                    <label>Limite de Usuários</label>
-
-                    <input type="number" step="1" ng-model="plano.limite_usuarios" required>
-                </md-input-container>
-
-            </div>
-
+                <input type="number" step="1" ng-model="plano.limite_usuarios" required>
+            </md-input-container>
 
             </div>
 
