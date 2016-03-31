@@ -194,8 +194,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 	.factory('ResourceInterceptor', ['$cookies', '$q', function($cookies, $q){
 		return {
 			request: function(config){
-				config.headers['x-access-token'] = $cookies.token;
-                config.headers['usuario_id'] = $cookies.usuario_id;
+				config.headers['x-access-token'] = $cookies.get('token');
+                config.headers['usuario_id'] = $cookies.get('usuario_id');
 
 				return config;
 			},
@@ -493,17 +493,17 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
         self.isLogado = function(){
             var saida = false;
 
-            if($cookies.logado === 'true') saida = true;
+            if($cookies.get('logado') === 'true') saida = true;
             else saida = false;
 
             return saida;
         };
 
-		if($cookies.logado == undefined){
-            $cookies.logado = 'false';
+		if($cookies.get('logado') == undefined){
+            $cookies.put('logado', 'false');
         }
-        else if($cookies.usuario_id != undefined){
-            UsuariosService.get({ id: $cookies.usuario_id }).$promise
+        else if($cookies.get('usuario_id') != undefined){
+            UsuariosService.get({ id: $cookies.get('usuario_id') }).$promise
             .then(
                 function(response){
                     self.usuario = response;
@@ -521,8 +521,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                 function(res){
                     self.clientes = res;
 
-                    if($cookies.cliente_id != undefined){
-                        self.clienteId = $cookies.cliente_id;
+                    if($cookies.get('cliente_id') != undefined){
+                        self.clienteId = $cookies.get('cliente_id');
                     }
                     else{
                         self.clienteId = 0;
@@ -557,19 +557,19 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 
 				if(response.success) {
                     self.usuario = response.usuario;
-                    $cookies.token = response.token;
-                    $cookies.usuario_id = self.usuario._id;
+                    $cookies.put('token', response.token);
+                    $cookies.put('usuario_id', self.usuario._id);
 
                     try{
-                        $cookies.cnpj = self.usuario.cliente.cnpj;
+                        $cookies.put('cnpj', self.usuario.cliente.cnpj);
                     }
                     catch(error){
-                        $cookies.cnpj = "";
+                        $cookies.put('cnpj', '');
                     }
 
                     Storage.setUsuario(self.usuario);
 
-					$cookies.logado = 'true';
+					$cookies.put('logado', 'true');
 
                     self.statusLogin.mensagem = '';
                     self.statusLogin.erro = false;
@@ -606,17 +606,17 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 
         self.logout = function(){
             if(confirm('Deseja realmente sair?')){
-                $cookies.logado = 'false';
+                $cookies.put('logado', 'false');
 
                 self.usuario = { nome: 'Convidado' };
                 self.user = { username: '', password: '' };
 
                 Storage.setUsuario({ id: '' });
 
-                delete $cookies.token;
-                delete $cookies.usuario_id;
-                delete $cookies.cliente_id;
-                delete $cookies.cnpj;
+                $cookies.remove('token');
+                $cookies.remove('usuario_id');
+                $cookies.remove('cliente_id');
+                $cookies.remove('cnpj');
 
                 delete self.clienteId;
 
@@ -625,9 +625,9 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
         };
 
         self.mudaCliente = function(){
-            $cookies.cliente_id = self.clienteId;
+            $cookies.put('cliente_id', self.clienteId);
 
-            $cookies.cnpj = self.clienteId;
+            $cookies.put('cnpj', self.clienteId);
 
             $route.reload();
         };
@@ -728,7 +728,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                 self.lista = UsuariosClienteService.query({ id: usuarioLogado.cliente._id });
             }
             else if(self.isLogadoAdmin()) {
-                if($cookies.cliente_id == undefined){
+                if($cookies.get('cliente_id') == undefined){
                     UsuariosService.query().$promise.then(function(response){
                         self.lista = response;
 
@@ -743,7 +743,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                     });
                 }
                 else{
-                    self.lista = UsuariosClienteCnpjService.query({ cnpj: $cookies.cliente_id });
+                    self.lista = UsuariosClienteCnpjService.query({ cnpj: $cookies.get('cliente_id') });
                 }
 
             }
@@ -1482,7 +1482,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
         var editado = false;
 
         self.carregarFontes = function(){
-            if($cookies.cnpj != undefined && $cookies.cnpj != "") self.fontes = FontesCnpjService.query({ cnpj: $cookies.cnpj });
+            if($cookies.get('cnpj') != undefined && $cookies.get('cnpj') != "") self.fontes = FontesCnpjService.query({ cnpj: $cookies.get('cnpj') });
         };
 
         self.carregarFontes();
@@ -1490,14 +1490,14 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
         self.lista = [];
 
         self.carregarPaineis = function(){
-            if($cookies.cnpj != undefined && $cookies.cnpj != "") self.lista = PaineisCnpjService.query({ cnpj: $cookies.cnpj });
+            if($cookies.get('cnpj') != undefined && $cookies.get('cnpj') != "") self.lista = PaineisCnpjService.query({ cnpj: $cookies.get('cnpj') });
         };
 
         self.carregarPaineis();
 
         self.novoPainel = function(){
             self.painel = {
-                cnpj: $cookies.cnpj,
+                cnpj: $cookies.get('cnpj'),
                 titulo: "",
                 descricao: "",
                 componentes: []
@@ -1692,7 +1692,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 
         self.carregaUsuarios = function(){
             if(self.isAdmin()){
-                if($cookies.cliente_id == undefined){
+                if($cookies.get('cliente_id') == undefined){
                     //carrega todos
 
                     self.usuarios = UsuariosService.query();
@@ -1700,7 +1700,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                 else{
                     // carrega pelo cnpj da navbar
 
-                    self.usuarios = UsuariosClienteCnpjService.query({ cnpj: $cookies.cliente_id });
+                    self.usuarios = UsuariosClienteCnpjService.query({ cnpj: $cookies.get('cliente_id') });
                 }
             }
             else if(self.isMaster()){
@@ -1714,14 +1714,14 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 
         self.carregarReports = function(){
             if(self.isAdmin()){
-                if($cookies.cliente_id != undefined){
+                if($cookies.get('cliente_id') != undefined){
                     if(self.usuarioId == undefined){
-                        self.listaReports = ReportsService.query({ cnpj: $cookies.cliente_id });
+                        self.listaReports = ReportsService.query({ cnpj: $cookies.get('cliente_id') });
                     }
                     else{
                         self.listaReports = ReportsUsuarioService.query(
                             {
-                                cnpj: $cookies.cliente_id,
+                                cnpj: $cookies.get('cliente_id'),
                                 usuario: self.usuarioId
                             });
                     }
