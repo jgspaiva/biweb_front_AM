@@ -35,7 +35,17 @@
 
         <md-sidenav md-component-id="left" class="md-sidenav-left">
 
+            <div layout="column" layout-align="start center" layout-padding>
+
+                <img ng-src="imagens/logo_quadratica.png">
+
+                <p class="md-title">{{main.usuario.nome}}</p>
+
+            </div>
+
             <md-list>
+                <md-divider></md-divider>
+
                 <md-list-item ng-repeat-start="p in main.usuario.permissoes">
                     <md-button class="md-menu__link" href="#/{{p.cadastro}}">
                         <md-icon flex="20">{{main.icone(p.cadastro)}}</md-icon><span style="margin-left: 10px">{{p.nome}}</span></md-button>
@@ -44,6 +54,7 @@
                 <md-divider ng-repeat-end></md-divider>
 
             </md-list>
+
         </md-sidenav>
 
         <md-toolbar class="md-whiteframe-2dp">
