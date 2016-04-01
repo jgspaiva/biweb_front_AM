@@ -1,27 +1,34 @@
+/* Cor do fundo padrão */
 .back-gray{
     background-color: rgb(240, 240, 240);
 }
 
+/* Botões do Sidenav */
 .md-menu__link{
     width: 100%;
     text-align: left;
     padding-left: 44px
 }
 
+/* Exibição da logo na tela de login */
 .logo-login{
     width: 88px;
     margin: 33px;
 }
 
+/* Utilizado na diretiva md-data-table para comprimir o texto quando em colunas menores */
 .md-p{
     display: block;
     word-break: break-all;
     text-overflow: ellipsis;
 }
 
+/* Utilizado nos dialogs de add */
 .dialog-form{
     min-width: 320px;
 }
+
+/* Corrige problemas de posicionamento de itens dentro de layout="column" com flex no Safari */
 
 [flex].md-block {
     -webkit-flex: 1 1 44px !important;
