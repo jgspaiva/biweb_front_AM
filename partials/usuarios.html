@@ -1,12 +1,12 @@
-<div layout="row" layout-align="space-around center">
-    <md-button class="md-fab" style="position:relative; margin-bottom:-38px" ng-click="showDialog($event)">
-        <md-tooltip md-direction="bottom">
+<div layout="row" layout-align="space-around center" >
+    <md-button class="md-fab md-fab-bottom-right" style="position: fixed" ng-click="showDialog($event)">
+        <md-tooltip md-direction="left">
             Adicionar
         </md-tooltip>
         <md-icon>add</md-icon>
     </md-button>
 
-    <md-button class="md-fab md-mini md-primary" style="position:relative; margin-bottom:-33px" ng-disabled="isClearCheckUnauth()" ng-click="showConfirmAuth($event)">
+    <!--<md-button class="md-fab md-fab-middle-right md-mini md-primary" style="position:fixed" ng-disabled="isClearCheckUnauth()" ng-click="showConfirmAuth($event)">
         <md-tooltip md-direction="bottom">
             Autorizar
         </md-tooltip>
@@ -14,16 +14,16 @@
         <md-icon>check</md-icon>
     </md-button>
 
-    <md-button class="md-fab md-mini md-primary" style="position:relative; margin-bottom:-33px" ng-disabled="isClearCheck()" ng-click="showConfirmRenew($event)">
+    <md-button class="md-fab md-mini md-primary" style="position:fixed" ng-disabled="isClearCheck()" ng-click="showConfirmRenew($event)">
         <md-tooltip md-direction="bottom">
             Renovar Senha
         </md-tooltip>
 
         <md-icon>undo</md-icon>
-    </md-button>
+    </md-button>-->
 
-    <md-button class="md-fab md-mini md-primary" style="position:relative; margin-bottom:-33px" ng-disabled="isClearCheck()" ng-click="showConfirmRemove($event)">
-        <md-tooltip md-direction="bottom">
+    <md-button class="md-fab md-fab-bottom-right md-mini md-primary" style="position:fixed; margin-bottom: 88px; margin-right: 16px" ng-disabled="isClearCheck()" ng-click="showConfirmRemove($event)">
+        <md-tooltip md-direction="left">
             Excluir
         </md-tooltip>
 
