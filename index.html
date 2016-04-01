@@ -44,6 +44,27 @@
             </div>
 
             <md-list>
+                <md-divider ng-show="main.isAdmin()"></md-divider>
+
+                <md-list-item ng-show="main.isAdmin()">
+
+                    <div layout="column" flex="100">
+
+                        <md-input-container flex="100">
+                            <label>Cliente</label>
+
+                            <md-select ng-model="main.clienteId" ng-change="main.mudaCliente()">
+                                <md-option ng-repeat="cliente in main.clientes" value="{{cliente.cnpj}}">
+                                    {{cliente.nome_fantasia | limitTo: 30 }}
+                                </md-option>
+                            </md-select>
+
+                        </md-input-container>
+
+                    </div>
+
+                </md-list-item>
+
                 <md-divider></md-divider>
 
                 <md-list-item ng-repeat-start="p in main.usuario.permissoes">
