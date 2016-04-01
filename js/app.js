@@ -669,6 +669,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 
         var usuarioLogado = Storage.getUsuario();
 
+        $scope.isOpen = true;
+
         self.isLogadoAdmin = function(){
             return (usuarioLogado.perfil == 'admin');
         };

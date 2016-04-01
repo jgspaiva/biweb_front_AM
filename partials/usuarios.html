@@ -1,4 +1,27 @@
-<div layout="row" layout-align="space-around center" >
+<div layout="row" layout-align="space-around center">
+    <md-fab-speed-dial md-direction="left" md-open="isOpen" class="md-fling md-fab-top-right" style="position: fixed; margin-top: 88px; margin-right: 8px">
+
+        <md-fab-trigger>
+
+            <md-button class="md-fab md-mini md-primary">
+                <md-tooltip md-direction="bottom">Mais</md-tooltip>
+            <md-icon>more_horiz</md-icon>
+            </md-button>
+
+        </md-fab-trigger>
+
+        <md-fab-actions>
+            <md-button class="md-fab md-mini md-raised md-primary" ng-disabled="isClearCheckUnauth()" ng-click="showConfirmAuth($event)">
+                <md-icon>check</md-icon>
+            </md-button>
+
+            <md-button class="md-fab md-mini md-raised md-primary" ng-disabled="isClearCheck()" ng-click="showConfirmRenew($event)">
+                <md-icon>undo</md-icon>
+            </md-button>
+        </md-fab-actions>
+
+    </md-fab-speed-dial>
+
     <md-button class="md-fab md-fab-bottom-right" style="position: fixed" ng-click="showDialog($event)">
         <md-tooltip md-direction="left">
             Adicionar
