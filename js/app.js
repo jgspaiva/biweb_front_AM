@@ -468,7 +468,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
     }])
 
 // Controllers
-	.controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', 'ClientesService', '$location', '$cookies', '$route', '$mdSidenav', function(AutenticaService, UsuariosService, Storage, ClientesService, $location, $cookies, $route, $mdSidenav){
+	.controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', 'ClientesService', '$location', '$cookies', '$route', '$mdSidenav', '$scope', function(AutenticaService, UsuariosService, Storage, ClientesService, $location, $cookies, $route, $mdSidenav, $scope){
 		var self = this;
 
         self.isAdmin = function(){
@@ -666,6 +666,18 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 
             return saida;
         };
+
+        $scope.$on('cliente', function(event, data){
+            if(self.isAdmin()) {
+                self.carregaClientes().then(
+                    function(res){
+                        self.clientes = res;
+                    },
+                    function(error){}
+                );
+            }
+        });
+
 
 	}])
 	.controller('UsuariosController', ['Storage', 'UsuariosService', 'UsuariosResetService', 'UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', 'UsuariosClienteCnpjService', '$scope', '$cookies', '$mdDialog', '$mdMedia', function(Storage, UsuariosService, UsuariosResetService, UsuariosClienteService, ClientesService, UsuariosAutorizaService, UsuariosClienteCnpjService, $scope, $cookies, $mdDialog, $mdMedia){
@@ -1127,8 +1139,12 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                     alert("erro");
                 });
         };
+
+        $scope.$on('cliente', function(event, data){
+            carregarClientes();
+        });
 	}])
-	.controller('ClientesController', ['ClientesService', 'PlanosService', '$scope', '$mdDialog', '$mdMedia', function(ClientesService, PlanosService, $scope, $mdDialog, $mdMedia){
+	.controller('ClientesController', ['ClientesService', 'PlanosService', '$scope', '$mdDialog', '$mdMedia', '$rootScope', function(ClientesService, PlanosService, $scope, $mdDialog, $mdMedia, $rootScope){
 		var self = this;
 
 		self.lista = [];
@@ -1284,6 +1300,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                 })
             .then(
                 function(response){
+                    $rootScope.$broadcast('cliente', { operacao: 'add' });
+
                     self.carregar();
                 },
                 function(error){
@@ -1302,6 +1320,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                 .cancel('Cancelar');
             $mdDialog.show(confirm).then(
                 function() {
+                    $rootScope.$broadcast('cliente', { operacao: 'remove' });
+
                     self.removerChecked();
                 },
                 function() {
@@ -1318,8 +1338,12 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 
             return saida;
         };
+
+        $scope.$on('plano', function(event, data){
+            carregarPlanos();
+        });
 	}])
-    .controller('PlanosController', ['PlanosService', '$scope', '$mdDialog', '$mdMedia', function(PlanosService, $scope, $mdDialog, $mdMedia){
+    .controller('PlanosController', ['PlanosService', '$scope', '$mdDialog', '$mdMedia', '$rootScope', function(PlanosService, $scope, $mdDialog, $mdMedia, $rootScope){
         var self = this;
 
         self.lista = [];
@@ -1438,6 +1462,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                 .cancel('Cancelar');
             $mdDialog.show(confirm).then(
                 function() {
+                    $rootScope.$broadcast('plano', { operacao: 'remove' });
+
                     self.removerChecked();
                 },
                 function() {
@@ -1467,6 +1493,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                 })
             .then(
                 function(response){
+                    $rootScope.$broadcast('plano', { operacao: 'add' });
+
                     carregar();
                 },
                 function(error){
