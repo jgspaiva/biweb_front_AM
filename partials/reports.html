@@ -1,3 +1,15 @@
+<div layout="column" md-layout-padding style="padding: 10px">
+<md-grid-list layout-fill flex md-cols-xs="1" md-cols-sm="3" md-cols-md="5" md-cols-gt-md="5"
+              md-row-height="1.6:1" md-gutter="10px">
+    <md-grid-tile ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] track by $index">
+        <md-card layout-fill></md-card>
+    </md-grid-tile>
+</md-grid-list>
+</div>
+
+
+<!--
+
 <div>
     <ul class="breadcrumb">
         <li><a href="#/principal">Início</a></li>
@@ -38,7 +50,7 @@
     </div>
 </div>
 
-<!-- Modal -->
+
 <div class="modal fade modal-x" id="modalMaximo" tabindex="-1" role="dialog" style="position: absolute" aria-labelledby="myModalLabel">
   <div class="modal-dialog full modal-dialog-x" role="document">
     <div class="modal-content content-full modal-content-x">
@@ -48,7 +60,7 @@
       </div>
       <div class="modal-body modal-body-x">
         <div class="params">{{repCtrl.reportAtual.parametros}}</div>
-        <!-- Conteúdo aqui -->
+
         <iframe class="full" id="frameHtml" src="" ng-show="repCtrl.isHtml(repCtrl.reportAtual)"></iframe>
 
         <figure ng-show="repCtrl.isImage(repCtrl.reportAtual)">
@@ -58,4 +70,4 @@
 
     </div>
   </div>
-</div>
+</div>-->
