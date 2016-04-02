@@ -30,7 +30,8 @@
 
 /* Corrige problemas de posicionamento de itens dentro de layout="column" com flex no Safari */
 
-[flex].md-block {
+[flex].md-block,
+[flex].sel-cliente{
     -webkit-flex: 1 1 44px !important;
 
 }
