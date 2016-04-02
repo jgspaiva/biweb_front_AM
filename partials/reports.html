@@ -1,9 +1,45 @@
 <div layout="column" md-layout-padding style="padding: 10px">
 <md-grid-list layout-fill flex md-cols-xs="1" md-cols-sm="3" md-cols-md="5" md-cols-gt-md="5"
               md-row-height="1.6:1" md-gutter="10px">
+
     <md-grid-tile ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] track by $index">
-        <md-card layout-fill></md-card>
+
+
+
+        <md-card layout-fill>
+
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">Card with  image</span>
+                    <span class="md-subhead">Extra Large</span>
+                </md-card-title-text>
+            </md-card-title>
+
+            <md-card-content layout="row" layout-align="space-between">
+                <div class="md-media-xl card-media"></div>
+                <md-card-actions layout="column">
+                    <md-button class="md-icon-button" aria-label="Favorito">
+                        <md-icon>favorite</md-icon>
+                    </md-button>
+
+                    <md-button class="md-icon-button" aria-label="Excluir">
+                        <md-icon>cancel</md-icon>
+                    </md-button>
+
+                    <md-button class="md-icon-button" aria-label="Compartilhar">
+                        <md-icon>share_arrow</md-icon>
+                    </md-button>
+                </md-card-actions>
+
+            </md-card-content>
+
+        </md-card>
+
+
+
     </md-grid-tile>
+
+
 </md-grid-list>
 </div>
 
