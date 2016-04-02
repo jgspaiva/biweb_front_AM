@@ -625,9 +625,14 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
         };
 
         self.mudaCliente = function(){
-            $cookies.put('cliente_id', self.clienteId);
-
-            $cookies.put('cnpj', self.clienteId);
+            if(self.clienteId == "") {
+                $cookies.remove('cliente_id');
+                delete self.clienteId;
+            }
+            else{
+                $cookies.put('cliente_id', self.clienteId);
+                $cookies.put('cnpj', self.clienteId);
+            }
 
             $route.reload();
         };
