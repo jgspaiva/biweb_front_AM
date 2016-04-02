@@ -47,11 +47,11 @@
 
                 <div layout="column" flex="100">
 
-                    <md-input-container flex="100">
+                    <md-input-container class="sel-cliente" flex="100">
                         <label>Cliente</label>
 
                         <md-select ng-model="main.clienteId" ng-change="main.mudaCliente()">
-                            <md-option value="">TODOS</md-option>
+                            <md-option ng-value="null">TODOS</md-option>
 
                             <md-option ng-repeat="cliente in main.clientes" value="{{cliente.cnpj}}">
                                 {{cliente.nome_fantasia | limitTo: 30 }}
