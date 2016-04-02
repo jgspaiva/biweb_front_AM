@@ -25,7 +25,7 @@
 
 /* Utilizado nos dialogs de add */
 .dialog-form{
-    min-width: 320px;
+    min-width: 480px;
 }
 
 /* Corrige problemas de posicionamento de itens dentro de layout="column" com flex no Safari */
