@@ -657,7 +657,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                     saida = 'insert_chart';
                     break;
                 case 'painel':
-                    saida = 'view_quilt';
+                    saida = 'dashboard';
                     break;
                 case 'utilizacao':
                     saida = 'date_range';
