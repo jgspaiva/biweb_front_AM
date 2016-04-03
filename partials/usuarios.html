@@ -13,10 +13,16 @@
         <md-fab-actions>
             <md-button class="md-fab md-mini md-raised md-primary" ng-disabled="isClearCheckUnauth()" ng-click="showConfirmAuth($event)">
                 <md-icon>check</md-icon>
+                <md-tooltip md-direction="bottom" md-visible="true" md-autohide="false">
+                    Autorizar
+                </md-tooltip>
             </md-button>
 
             <md-button class="md-fab md-mini md-raised md-primary" ng-disabled="isClearCheck()" ng-click="showConfirmRenew($event)">
                 <md-icon>undo</md-icon>
+                <md-tooltip md-direction="bottom" md-visible="true" md-autohide="false">
+                    Reset Senha
+                </md-tooltip>
             </md-button>
         </md-fab-actions>
 
