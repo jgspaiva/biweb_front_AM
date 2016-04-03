@@ -605,23 +605,21 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 		};
 
         self.logout = function(){
-            if(confirm('Deseja realmente sair?')){
-                $cookies.put('logado', 'false');
+            $cookies.put('logado', 'false');
 
-                self.usuario = { nome: 'Convidado' };
-                self.user = { username: '', password: '' };
+            self.usuario = { nome: 'Convidado' };
+            self.user = { username: '', password: '' };
 
-                Storage.setUsuario({ id: '' });
+            Storage.setUsuario({ id: '' });
 
-                $cookies.remove('token');
-                $cookies.remove('usuario_id');
-                $cookies.remove('cliente_id');
-                $cookies.remove('cnpj');
+            $cookies.remove('token');
+            $cookies.remove('usuario_id');
+            $cookies.remove('cliente_id');
+            $cookies.remove('cnpj');
 
-                delete self.clienteId;
+            delete self.clienteId;
 
-                $location.path('/');
-            }
+            $location.path('/');
         };
 
         self.mudaCliente = function(){
@@ -660,7 +658,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                     saida = 'dashboard';
                     break;
                 case 'utilizacao':
-                    saida = 'date_range';
+                    saida = 'history';
                     break;
             }
 
