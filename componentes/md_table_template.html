@@ -11,7 +11,7 @@
     <md-list-item hide-sm hide-xs>
         <md-checkbox ng-model="allCheck" ng-init="allCheck=false" ng-change="toggleAllCheck()" ng-show="{{selecionavel}}"></md-checkbox>
 
-        <div layout="column" layout-gt-sm="row" layout-align="space-around start" layout-align-gt-sm="start center" flex="100">
+        <div layout="column" layout-gt-sm="row" layout-align="space-around start" layout-align-gt-sm="start center" flex="100" layout-padding-xs layout-padding-sm>
 
         <p class="md-body-2 md-p" ng-repeat="h in header" flex="{{h.width}}">{{h.headerName}}</p>
 
@@ -25,7 +25,7 @@
 
         <md-checkbox ng-model="i.check" ng-show="{{selecionavel}}"></md-checkbox>
 
-        <div layout="column" layout-gt-sm="row" layout-align="space-around start" layout-align-gt-sm="start center" flex="100">
+        <div layout="column" layout-gt-sm="row" layout-align="space-around start" layout-align-gt-sm="start center" flex="100" layout-padding-xs layout-padding-sm>
 
         <span layout="row" layout-align="start center" ng-repeat="h in header" flex="{{h.width}}">
             <span class="md-body-2" hide-gt-sm>{{h.headerName}}:&nbsp;</span>
