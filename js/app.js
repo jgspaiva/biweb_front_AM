@@ -76,7 +76,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 			});
 	})
     // Constantes
-    .constant('apiUrl', 'http://localhost:3100')
+    .constant('apiUrl', 'http://begyn.com.br:3100')
 
     // Services
     .service('Storage', function () {
@@ -389,7 +389,9 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             scope: {
                 items: '=',
                 header: '=',
-                titulo: '@'
+                titulo: '@',
+                selecionavel: '=',
+                action: '&?'
             },
             templateUrl: 'componentes/md_table_template.html',
             link: function($scope, $element, $attrs){
@@ -404,6 +406,12 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                 $scope.$watchCollection("items", function(newValue, oldValue){
                     $scope.items = newValue;
                 });
+
+                $scope.clique = function(){
+                    if($attrs['action']){
+                        $scope.action();
+                    }
+                };
             }
 
         };
@@ -1702,7 +1710,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             return saida;
         };
     }])
-    .controller('ReportsController', ['ClientesService','ReportsService','ReportsUsuarioService', 'ReportsVisualizadoService', 'ReportsIdService', 'UsuariosService', 'UsuariosClienteCnpjService', 'Storage', '$cookies', function(ClientesService, ReportsService, ReportsUsuarioService, ReportsVisualizadoService, ReportsIdService, UsuariosService, UsuariosClienteCnpjService, Storage, $cookies){
+    .controller('ReportsController', ['ClientesService','ReportsService','ReportsUsuarioService', 'ReportsVisualizadoService', 'ReportsIdService', 'UsuariosService', 'UsuariosClienteCnpjService', 'Storage', '$cookies', '$scope', function(ClientesService, ReportsService, ReportsUsuarioService, ReportsVisualizadoService, ReportsIdService, UsuariosService, UsuariosClienteCnpjService, Storage, $cookies, $scope){
         // Controller de Reports
         var self = this;
 
@@ -1858,6 +1866,10 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 
         self.mudaUsuario = function(){
             self.carregarReports();
+        };
+
+        $scope.simplesClique = function(){
+            alert('Simples Clique');
         };
 
     }])

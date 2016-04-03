@@ -9,7 +9,7 @@
     <md-divider hide-sm hide-xs></md-divider>
 
     <md-list-item hide-sm hide-xs>
-        <md-checkbox ng-model="allCheck" ng-init="allCheck=false" ng-change="toggleAllCheck()"></md-checkbox>
+        <md-checkbox ng-model="allCheck" ng-init="allCheck=false" ng-change="toggleAllCheck()" ng-show="{{selecionavel}}"></md-checkbox>
 
         <div layout="column" layout-gt-sm="row" layout-align="space-around start" layout-align-gt-sm="start center" flex="100">
 
@@ -21,9 +21,9 @@
 
     <md-divider ng-repeat-start="i in items"></md-divider>
 
-    <md-list-item ng-repeat-end >
+    <md-list-item ng-repeat-end ng-click="clique()">
 
-        <md-checkbox ng-model="i.check"></md-checkbox>
+        <md-checkbox ng-model="i.check" ng-show="{{selecionavel}}"></md-checkbox>
 
         <div layout="column" layout-gt-sm="row" layout-align="space-around start" layout-align-gt-sm="start center" flex="100">
 

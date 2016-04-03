@@ -1,47 +1,35 @@
-<div layout="column" md-layout-padding style="padding: 10px">
-<md-grid-list layout-fill flex md-cols-xs="1" md-cols-sm="3" md-cols-md="5" md-cols-gt-md="5"
-              md-row-height="1.6:1" md-gutter="10px">
+<div layout="row" layout-align="space-around center">
+    <md-button class="md-fab md-fab-bottom-right" style="position:fixed" ng-click="showDialog($event)">
+        <md-tooltip md-direction="left">
+            Adicionar
+        </md-tooltip>
+        <md-icon>add</md-icon>
+    </md-button>
 
-    <md-grid-tile ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] track by $index">
+    <md-button class="md-fab md-fab-bottom-right md-mini md-primary" style="position:fixed; margin-bottom: 88px; margin-right: 16px" ng-disabled="isClearCheck()" ng-click="showConfirm($event)">
+        <md-tooltip md-direction="left">
+            Excluir
+        </md-tooltip>
 
-
-
-        <md-card layout-fill>
-
-            <md-card-title>
-                <md-card-title-text>
-                    <span class="md-headline">Card with  image</span>
-                    <span class="md-subhead">Extra Large</span>
-                </md-card-title-text>
-            </md-card-title>
-
-            <md-card-content layout="row" layout-align="space-between">
-                <div class="md-media-xl card-media"></div>
-                <md-card-actions layout="column">
-                    <md-button class="md-icon-button" aria-label="Favorito">
-                        <md-icon>favorite</md-icon>
-                    </md-button>
-
-                    <md-button class="md-icon-button" aria-label="Excluir">
-                        <md-icon>cancel</md-icon>
-                    </md-button>
-
-                    <md-button class="md-icon-button" aria-label="Compartilhar">
-                        <md-icon>share_arrow</md-icon>
-                    </md-button>
-                </md-card-actions>
-
-            </md-card-content>
-
-        </md-card>
-
-
-
-    </md-grid-tile>
-
-
-</md-grid-list>
+        <md-icon>clear</md-icon>
+    </md-button>
 </div>
+
+<md-card>
+
+<md-data-table
+               titulo="Reports"
+               items="repCtrl.listaReports"
+               header="[
+                       { campo: 'titulo', headerName: 'Título', width: '40' },
+                       { campo: 'data', headerName: 'Data', width: '30' },
+                       { campo: 'idag', headerName: 'ID Agenda', width: '30' }
+                       ]",
+               selecionavel="false",
+               action="simplesClique()">
+</md-data-table>
+
+</md-card>
 
 
 <!--
