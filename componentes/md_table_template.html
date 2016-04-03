@@ -27,10 +27,14 @@
 
         <div layout="column" layout-gt-sm="row" layout-align="space-around start" layout-align-gt-sm="start center" flex="100">
 
-        <p layout="row" layout-align="start center" ng-repeat="h in header" flex="{{h.width}}">
+        <span layout="row" layout-align="start center" ng-repeat="h in header" flex="{{h.width}}">
             <span class="md-body-2" hide-gt-sm>{{h.headerName}}:&nbsp;</span>
-            <span class="md-body-1 md-p">{{i[h.campo]}}</span>
-        </p>
+
+            <span class="md-body-1 md-p" ng-show="isDate(h.type)">{{i[h.campo] | date: 'dd/MM/yyyy hh:mm:ss'}}</span>
+            <span class="md-body-1 md-p" ng-show="isString(h.type) || isNumber(h.type)">{{i[h.campo]}}</span>
+            <span class="md-body-1 md-p" ng-show="isIcon(h.type)"><md-icon>{{i[h.campo]}}</md-icon></span>
+            <md-checkbox ng-show="isBoolean(h.type)" style="padding: 0; margin: 0" ng-model="i[h.campo]" ng-disabled="true"></md-checkbox>
+        </span>
 
         </div>
 

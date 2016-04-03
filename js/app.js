@@ -76,7 +76,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 			});
 	})
     // Constantes
-    .constant('apiUrl', 'http://begyn.com.br:3100')
+    .constant('apiUrl', 'http://localhost:3100')
 
     // Services
     .service('Storage', function () {
@@ -412,6 +412,56 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                         $scope.action();
                     }
                 };
+
+                $scope.isString = function(type){
+                    var saida = false;
+
+                    if(type.toLowerCase() == 'string'){
+                        saida = true;
+                    }
+
+                    return saida;
+                };
+
+                $scope.isNumber = function(type){
+                    var saida = false;
+
+                    if(type.toLowerCase() == 'number'){
+                        saida = true;
+                    }
+
+                    return saida;
+                };
+
+                $scope.isDate = function(type){
+                    var saida = false;
+
+                    if(type.toLowerCase() == 'date'){
+                        saida = true;
+                    }
+
+                    return saida;
+                };
+
+                $scope.isIcon = function(type){
+                    var saida = false;
+
+                    if(type.toLowerCase() == 'icon'){
+                        saida = true;
+                    }
+
+                    return saida;
+                };
+
+                $scope.isBoolean = function(type){
+                    var saida = false;
+
+                    if(type.toLowerCase() == 'boolean'){
+                        saida = true;
+                    }
+
+                    return saida;
+                };
             }
 
         };
@@ -715,28 +765,28 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 
         self.header = function(){
             var saida = [
-                { campo: 'username', headerName: 'E-mail', width: '40' },
-                { campo: 'nome', headerName: 'Nome', width: '40' },
-                { campo: 'telefone', headerName: 'Fone', width: '10' },
-                { campo: 'perfil', headerName: 'Perfil', width: '10' }
+                { campo: 'username', headerName: 'E-mail', width: '40', type: 'String' },
+                { campo: 'nome', headerName: 'Nome', width: '40', type: 'String' },
+                { campo: 'telefone', headerName: 'Fone', width: '10', type: 'String' },
+                { campo: 'perfil', headerName: 'Perfil', width: '10', type: 'String' }
             ];
 
             if(self.isLogadoAdmin()){
                 saida = [
-                    { campo: 'username', headerName: 'E-mail', width: '30' },
-                    { campo: 'nome', headerName: 'Nome', width:'30' },
-                    { campo: 'telefone', headerName: 'Fone', width: '10' },
-                    { campo: 'perfil', headerName: 'Perfil', width: '10' },
-                    { campo: 'clienteNome', headerName: 'Cliente', width: '20' }
+                    { campo: 'username', headerName: 'E-mail', width: '30', type: 'String' },
+                    { campo: 'nome', headerName: 'Nome', width:'30', type: 'String' },
+                    { campo: 'telefone', headerName: 'Fone', width: '10', type: 'String' },
+                    { campo: 'perfil', headerName: 'Perfil', width: '10', type: 'String' },
+                    { campo: 'clienteNome', headerName: 'Cliente', width: '20', type: 'String' }
                 ];
             }
             else if(self.isLogadoMaster()){
                 saida = [
-                    { campo: 'username', headerName: 'E-mail', width: '40' },
-                    { campo: 'nome', headerName: 'Nome', width: '30' },
-                    { campo: 'telefone', headerName: 'Fone', width: '10' },
-                    { campo: 'perfil', headerName: 'Perfil', width: '10' },
-                    { campo: 'autorizado', headerName: 'Autorizado', width: '10' }
+                    { campo: 'username', headerName: 'E-mail', width: '40', type: 'String' },
+                    { campo: 'nome', headerName: 'Nome', width: '30', type: 'String' },
+                    { campo: 'telefone', headerName: 'Fone', width: '10', type: 'String' },
+                    { campo: 'perfil', headerName: 'Perfil', width: '10', type: 'String' },
+                    { campo: 'autorizado', headerName: 'Autorizado', width: '10', type: 'Boolean' }
                 ];
             }
 
