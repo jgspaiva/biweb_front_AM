@@ -21,7 +21,7 @@
 
     <md-divider ng-repeat-start="i in items"></md-divider>
 
-    <md-list-item ng-repeat-end ng-click="clique()">
+    <md-list-item ng-repeat-end ng-click="clique($event, $index)">
 
         <md-checkbox ng-model="i.check" ng-show="{{selecionavel}}"></md-checkbox>
 

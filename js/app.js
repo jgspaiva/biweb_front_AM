@@ -407,9 +407,9 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
                     $scope.items = newValue;
                 });
 
-                $scope.clique = function(){
+                $scope.clique = function(event, index){
                     if($attrs['action']){
-                        $scope.action();
+                        $scope.action({ evento: event, objeto: $scope.items[index] } );
                     }
                 };
 
@@ -1760,7 +1760,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             return saida;
         };
     }])
-    .controller('ReportsController', ['ClientesService','ReportsService','ReportsUsuarioService', 'ReportsVisualizadoService', 'ReportsIdService', 'UsuariosService', 'UsuariosClienteCnpjService', 'Storage', '$cookies', '$scope', function(ClientesService, ReportsService, ReportsUsuarioService, ReportsVisualizadoService, ReportsIdService, UsuariosService, UsuariosClienteCnpjService, Storage, $cookies, $scope){
+    .controller('ReportsController', ['ClientesService','ReportsService','ReportsUsuarioService', 'ReportsVisualizadoService', 'ReportsIdService', 'UsuariosService', 'UsuariosClienteCnpjService', 'Storage', '$cookies', '$scope', '$mdDialog', '$mdMedia',  function(ClientesService, ReportsService, ReportsUsuarioService, ReportsVisualizadoService, ReportsIdService, UsuariosService, UsuariosClienteCnpjService, Storage, $cookies, $scope, $mdDialog, $mdMedia){
         // Controller de Reports
         var self = this;
 
@@ -1952,8 +1952,32 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             self.carregarReports();
         };
 
-        $scope.simplesClique = function(){
-            alert('Simples Clique');
+        $scope.showDialog = function(ev, report) {
+            $mdDialog.show({
+                controller: DialogReportController,
+                templateUrl: 'templates/view_report_dialog.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                bindToController: true,
+                locals: { report: report },
+                clickOutsideToClose:false
+            })
+            .then(
+                function(usuario) {
+                    self.lista.push(usuario);
+
+                    self.enviar(usuario);
+                },
+                function() {
+                    $scope.status = 'You cancelled the dialog.';
+                })
+            .then(
+                function(response){
+                    //self.carregar();
+                },
+                function(error){
+                    alert("erro");
+                });
         };
 
     }])

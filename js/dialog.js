@@ -110,3 +110,23 @@ function DialogPlanoController($scope, $mdDialog) {
         $mdDialog.hide(object);
     };
 }
+
+function DialogReportController($scope, $mdDialog, report) {
+    $scope.report = report;
+
+    $scope.hide = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.cancel = function() {
+        $mdDialog.cancel();
+    };
+
+    $scope.answer = function(answer) {
+        $mdDialog.hide(answer);
+    };
+
+    $scope.send = function(object){
+        $mdDialog.hide(object);
+    };
+}
