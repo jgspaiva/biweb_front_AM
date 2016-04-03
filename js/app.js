@@ -76,7 +76,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 			});
 	})
     // Constantes
-    .constant('apiUrl', 'http://localhost:3100')
+    .constant('apiUrl', 'http://begyn.com.br:3100')
 
     // Services
     .service('Storage', function () {
@@ -1802,40 +1802,74 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
 
         self.carregaUsuarios();
 
+        self.insereIcones = function(lista){
+            lista.forEach(function(item){
+                if(self.isHtml(item)){
+                    item.icone = 'view_comfy';
+                }
+                else if(self.isImage(item)){
+                    item.icone = 'pie_chart';
+                }
+            });
+        };
+
         self.carregarReports = function(){
             if(self.isAdmin()){
                 if($cookies.get('cliente_id') != undefined){
                     if(self.usuarioId == undefined){
-                        self.listaReports = ReportsService.query({ cnpj: $cookies.get('cliente_id') });
+                        ReportsService.query({ cnpj: $cookies.get('cliente_id') }).$promise
+                        .then(
+                            function(res){
+                                self.listaReports = res;
+
+                                self.insereIcones(self.listaReports);
+                            },
+                            function(error){});
                     }
                     else{
-                        self.listaReports = ReportsUsuarioService.query(
-                            {
-                                cnpj: $cookies.get('cliente_id'),
-                                usuario: self.usuarioId
-                            });
+                        ReportsUsuarioService.query({ cnpj: $cookies.get('cliente_id'), usuario: self.usuarioId }).$promise
+                        .then(
+                            function(res){
+                                self.listaReports = res;
+
+                                self.insereIcones(self.listaReports);
+                            },
+                            function(error){});
                     }
                 }
 
             }
             else if(self.isMaster()){
                 if(self.usuarioId == undefined){
-                    self.listaReports = ReportsService.query({ cnpj: Storage.getUsuario().cliente.cnpj });
+                    ReportsService.query({ cnpj: Storage.getUsuario().cliente.cnpj }).$promise
+                        .then(
+                            function(res){
+                                self.listaReports = res;
+
+                                self.insereIcones(self.listaReports);
+                            },
+                            function(error){});
                 }
                 else{
-                    self.listaReports = ReportsUsuarioService.query(
-                    {
-                        cnpj: Storage.getUsuario().cliente.cnpj,
-                        usuario: self.usuarioId
-                    });
+                    ReportsUsuarioService.query({ cnpj: Storage.getUsuario().cliente.cnpj, usuario: self.usuarioId }).$promise
+                        .then(
+                            function(res){
+                                self.listaReports = res;
+
+                                self.insereIcones(self.listaReports);
+                            },
+                            function(error){});
                 }
             }
             else{
-                self.listaReports = ReportsUsuarioService.query(
-                    {
-                        cnpj: Storage.getUsuario().cliente.cnpj,
-                        usuario: Storage.getUsuario().username
-                    });
+                ReportsUsuarioService.query({ cnpj: Storage.getUsuario().cliente.cnpj, usuario: Storage.getUsuario().username }).$promise
+                        .then(
+                            function(res){
+                                self.listaReports = res;
+
+                                self.insereIcones(self.listaReports);
+                            },
+                            function(error){});
             }
 
         };
