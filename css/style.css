@@ -20,7 +20,15 @@
 .md-p{
     display: block;
     word-break: break-all;
-    text-overflow: ellipsis;
+}
+
+/* Mais espaço interno para item-list dentro do md-data-table */
+@media only screen and (max-width: 959px) {
+    /* For mobile phones: */
+    md-list-item.alta{
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
 }
 
 /* Utilizado nos dialogs de add */
