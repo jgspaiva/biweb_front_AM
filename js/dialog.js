@@ -111,8 +111,39 @@ function DialogPlanoController($scope, $mdDialog) {
     };
 }
 
-function DialogReportController($scope, $mdDialog, report) {
+function DialogReportController($scope, $mdDialog, $sce, report) {
     $scope.report = report;
+
+    $scope.isHtml = function(report){
+        return (report.imagem.contentType.indexOf('html') != -1);
+    };
+
+    $scope.isImagem = function(report){
+        return (report.imagem.contentType.indexOf('image') != -1);
+    };
+
+    $scope.html = function(report){
+        var saida = "";
+
+        if($scope.isHtml(report)) saida = decodeURIComponent(escape(atob($scope.report.imagem.data)));
+
+        saida = saida.replace("body { margin: 8px; }", "");
+
+        return $sce.trustAsHtml(saida);
+    };
+
+    $scope.html_code = $scope.html($scope.report);
+
+    $scope.imagem = function(report){
+        var saida = '';
+
+        if($scope.isImagem(report)) saida = 'data:' + report.imagem.contentType + ';base64,' + report.imagem.data;
+        else if($scope.isHtml(report)) saida = 'imagens/painel.jpg';
+
+        return saida;
+    };
+
+    $scope.save = function(){};
 
     $scope.hide = function() {
         $mdDialog.hide();

@@ -11,16 +11,26 @@
     </md-toolbar>
 
     <md-dialog-content>
-        <div class="md-dialog-content">
+        <div class="md-dialog-content" style="height: 100%">
 
-            <h1>Olá</h1>
+            <md-subheader class="md-primary" ng-show="isHtml(report)">{{report.parametros}}</md-subheader>
+
+            <md-content>
+
+                <div ng-bind-html="html_code" ng-show="isHtml(report)"></div>
+
+            </md-content>
+
+            <figure ng-show="isImagem(report)">
+                <img ng-src="{{imagem(report)}}" style="width: 100%; height: auto;">
+            </figure>
 
         </div>
     </md-dialog-content>
 
     <md-dialog-actions layout="row">
       <span flex></span>
-      <md-button ng-click="" style="margin-right:20px;" >
+      <md-button ng-click="save()" style="margin-right:20px;" >
         Salvar
       </md-button>
     </md-dialog-actions>

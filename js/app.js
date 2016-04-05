@@ -1,4 +1,4 @@
-angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','dx'])
+angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 'ngSanitize', 'dx'])
 
 // Router
 	.config(function($routeProvider){
@@ -1760,7 +1760,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
             return saida;
         };
     }])
-    .controller('ReportsController', ['ClientesService','ReportsService','ReportsUsuarioService', 'ReportsVisualizadoService', 'ReportsIdService', 'UsuariosService', 'UsuariosClienteCnpjService', 'Storage', '$cookies', '$scope', '$mdDialog', '$mdMedia',  function(ClientesService, ReportsService, ReportsUsuarioService, ReportsVisualizadoService, ReportsIdService, UsuariosService, UsuariosClienteCnpjService, Storage, $cookies, $scope, $mdDialog, $mdMedia){
+    .controller('ReportsController', ['ClientesService','ReportsService','ReportsUsuarioService', 'ReportsVisualizadoService', 'ReportsIdService', 'UsuariosService', 'UsuariosClienteCnpjService', 'Storage', '$cookies', '$scope', '$mdDialog', '$mdMedia', function(ClientesService, ReportsService, ReportsUsuarioService, ReportsVisualizadoService, ReportsIdService, UsuariosService, UsuariosClienteCnpjService, Storage, $cookies, $scope, $mdDialog, $mdMedia){
         // Controller de Reports
         var self = this;
 
@@ -1805,9 +1805,13 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
         self.insereIcones = function(lista){
             lista.forEach(function(item){
                 if(self.isHtml(item)){
+                    item.html = true;
+                    item.image = false;
                     item.icone = 'view_comfy';
                 }
                 else if(self.isImage(item)){
+                    item.html = false;
+                    item.image = true;
                     item.icone = 'pie_chart';
                 }
             });
@@ -1953,31 +1957,30 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial','
         };
 
         $scope.showDialog = function(ev, report) {
-            $mdDialog.show({
-                controller: DialogReportController,
-                templateUrl: 'templates/view_report_dialog.tmpl.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                bindToController: true,
-                locals: { report: report },
-                clickOutsideToClose:false
-            })
+            ReportsIdService.get({ id: report._id }).$promise
             .then(
-                function(usuario) {
-                    self.lista.push(usuario);
-
-                    self.enviar(usuario);
+                function(response){
+                    return $mdDialog.show({
+                        controller: DialogReportController,
+                        templateUrl: 'templates/view_report_dialog.tmpl.html',
+                        parent: angular.element(document.body),
+                        targetEvent: ev,
+                        bindToController: true,
+                        locals: { report: response },
+                        clickOutsideToClose: false
+                    });
+                },
+                function(error){}
+            ).
+            then(
+                function(objeto) {
+                    alert(objeto);
                 },
                 function() {
                     $scope.status = 'You cancelled the dialog.';
-                })
-            .then(
-                function(response){
-                    //self.carregar();
-                },
-                function(error){
-                    alert("erro");
                 });
+
+
         };
 
     }])
