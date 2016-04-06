@@ -76,7 +76,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
 			});
 	})
     // Constantes
-    .constant('apiUrl', 'http://begyn.com.br:3100')
+    .constant('apiUrl', 'http://localhost:3100')
 
     // Services
     .service('Storage', function () {
@@ -461,6 +461,10 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
                     }
 
                     return saida;
+                };
+
+                $scope.largura = function(index){
+                    return 'width : ' + Math.floor(($element.width() - 87) * $scope.header[index].width / 100.0) + 'px';
                 };
             }
 

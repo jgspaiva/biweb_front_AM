@@ -49,7 +49,9 @@ md-dialog.fullscreen {
 /* Corrige problemas de posicionamento de itens dentro de layout="column" com flex no Safari */
 
 [flex].md-block,
-[flex].sel-cliente{
+[flex].sel-cliente,
+[flex].linha
+{
     -webkit-flex: 1 1 44px !important;
 
 }
