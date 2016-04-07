@@ -462,10 +462,6 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
 
                     return saida;
                 };
-
-                $scope.largura = function(index){
-                    return 'width : ' + Math.floor(($element.width() - 87) * $scope.header[index].width / 100.0) + 'px';
-                };
             }
 
         };
