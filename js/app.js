@@ -469,8 +469,6 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
                     return saida;
                 };
 
-                $scope.isLoading = true;
-
 
             }
 
