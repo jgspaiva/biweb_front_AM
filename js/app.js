@@ -76,7 +76,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
 			});
 	})
     // Constantes
-    .constant('apiUrl', 'http://begyn.com.br:3100')
+    .constant('apiUrl', 'http://localhost:3100')
 
     // Services
     .service('Storage', function () {
@@ -468,6 +468,10 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
 
                     return saida;
                 };
+
+                $scope.isLoading = true;
+
+
             }
 
         };
@@ -532,7 +536,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
     }])
 
 // Controllers
-	.controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', 'ClientesService', '$location', '$cookies', '$route', '$mdSidenav', '$scope', '$mdDialog', function(AutenticaService, UsuariosService, Storage, ClientesService, $location, $cookies, $route, $mdSidenav, $scope, $mdDialog){
+	.controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', 'ClientesService', '$location', '$cookies', '$route', '$mdSidenav', '$scope', '$mdDialog', '$timeout', function(AutenticaService, UsuariosService, Storage, ClientesService, $location, $cookies, $route, $mdSidenav, $scope, $mdDialog, $timeout){
 		var self = this;
 
         self.isAdmin = function(){
@@ -696,6 +700,14 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
             }
 
             $route.reload();
+        };
+
+        $scope.goto = function(rota){
+            $mdSidenav('left').toggle();
+
+            $timeout(function(){
+                $location.path('/' + rota);
+            }, 707);
         };
 
         self.openLeftMenu = function(){
