@@ -76,7 +76,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
 			});
 	})
     // Constantes
-    .constant('apiUrl', 'http://localhost:3100')
+    .constant('apiUrl', 'http://begyn.com.br:3100')
 
     // Services
     .service('Storage', function () {
@@ -191,11 +191,13 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
     .factory('PaineisCnpjService', ['$resource', 'apiUrl', function($resource, apiUrl){
 		return $resource(apiUrl + '/api/paineis/cnpj/:cnpj');
 	}])
-	.factory('ResourceInterceptor', ['$cookies', '$q', function($cookies, $q){
+	.factory('ResourceInterceptor', ['$cookies', '$q', '$rootScope', function($cookies, $q, $rootScope){
 		return {
 			request: function(config){
 				config.headers['x-access-token'] = $cookies.get('token');
                 config.headers['usuario_id'] = $cookies.get('usuario_id');
+
+                $rootScope.$broadcast('start', { data: 'req'});
 
 				return config;
 			},
@@ -205,10 +207,14 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
 				return $q.reject(rejection);
 			},
 			response: function(response){
+                $rootScope.$broadcast('done');
+
                 return response;
 			},
 			responseError: function(rejection){
                 alert('O servidor retornou uma falha.');
+
+                $rootScope.$broadcast('fail');
 
 				return $q.reject(rejection);
 			}
@@ -526,7 +532,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
     }])
 
 // Controllers
-	.controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', 'ClientesService', '$location', '$cookies', '$route', '$mdSidenav', '$scope', function(AutenticaService, UsuariosService, Storage, ClientesService, $location, $cookies, $route, $mdSidenav, $scope){
+	.controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', 'ClientesService', '$location', '$cookies', '$route', '$mdSidenav', '$scope', '$mdDialog', function(AutenticaService, UsuariosService, Storage, ClientesService, $location, $cookies, $route, $mdSidenav, $scope, $mdDialog){
 		var self = this;
 
         self.isAdmin = function(){
@@ -734,7 +740,9 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
             }
         });
 
+        $scope.$on('start', function(event, data){
 
+        });
 	}])
 	.controller('UsuariosController', ['Storage', 'UsuariosService', 'UsuariosResetService', 'UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', 'UsuariosClienteCnpjService', '$scope', '$cookies', '$mdDialog', '$mdMedia', function(Storage, UsuariosService, UsuariosResetService, UsuariosClienteService, ClientesService, UsuariosAutorizaService, UsuariosClienteCnpjService, $scope, $cookies, $mdDialog, $mdMedia){
 		var self = this;

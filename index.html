@@ -67,7 +67,7 @@
             <md-divider></md-divider>
 
             <md-list-item ng-repeat-start="p in main.usuario.permissoes">
-                <md-button class="md-menu__link" href="#/{{p.cadastro}}">
+                <md-button class="md-menu__link" href="#/{{p.cadastro}}" ng-click="main.openLeftMenu()">
                     <md-icon flex="20">{{main.icone(p.cadastro)}}</md-icon><span style="margin-left: 10px">{{p.nome}}</span>
                 </md-button>
             </md-list-item>
