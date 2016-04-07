@@ -740,8 +740,18 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
             }
         });
 
-        $scope.$on('start', function(event, data){
+        $scope.loads = 0;
 
+        $scope.$on('start', function(event, data){
+            $scope.loads++;
+        });
+
+        $scope.$on('done', function(event, data){
+            $scope.loads--;
+        });
+
+        $scope.$on('fail', function(event, data){
+            $scope.loads--;
         });
 	}])
 	.controller('UsuariosController', ['Storage', 'UsuariosService', 'UsuariosResetService', 'UsuariosClienteService', 'ClientesService', 'UsuariosAutorizaService', 'UsuariosClienteCnpjService', '$scope', '$cookies', '$mdDialog', '$mdMedia', function(Storage, UsuariosService, UsuariosResetService, UsuariosClienteService, ClientesService, UsuariosAutorizaService, UsuariosClienteCnpjService, $scope, $cookies, $mdDialog, $mdMedia){
