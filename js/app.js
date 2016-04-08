@@ -902,7 +902,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
 		};*/
 
 
-        self.enviar = function(usr){
+        var enviar = function(usr){
             usr.permissoes = permissoes(usr.perfil);
 
             usr.ativo = true;
@@ -922,6 +922,18 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
 
             return UsuariosService.save(usr).$promise;
 		};
+
+        var atualizar = function(usr){
+            usr.permissoes = permissoes(usr.perfil);
+
+            usr.email = usr.username;
+
+            if((usr.perfil == 'admin') || (usr.perfil == 'facilitador')){
+                if(usr.hasOwnProperty('cliente')) delete usr['cliente'];
+            }
+
+            return UsuariosService.update({ id: usr._id }, usr).$promise;
+        };
 
         var editado = false;
 
@@ -1193,31 +1205,40 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
                 });
         };
 
-        $scope.showDialog = function(ev) {
+        $scope.showDialog = function(evento, objeto) {
             var useFullScreen = $mdMedia('xs');
 
             $mdDialog.show({
                 controller: DialogUsuarioController,
                 templateUrl: 'templates/add_usuario_dialog.tmpl.html',
                 parent: angular.element(document.body),
-                targetEvent: ev,
+                targetEvent: evento,
                 clickOutsideToClose:true,
                 bindToController: true,
-                locals: { clientes: self.listaClientes, perfilLogado: usuarioLogado.perfil },
+                locals: { clientes: self.listaClientes, perfilLogado: usuarioLogado.perfil, usuario: objeto },
                 fullscreen: useFullScreen
             })
             .then(
                 function(usuario) {
-                    self.lista.push(usuario);
+                    if(usuario.editado){
+                        return atualizar(usuario);
+                    }
+                    else{
+                        self.lista.push(usuario);
 
-                    self.enviar(usuario);
+                        return enviar(usuario);
+                    }
                 },
                 function() {
-                    $scope.status = 'You cancelled the dialog.';
+                    // Cancelado
                 })
             .then(
                 function(response){
-                    //self.carregar();
+                    // Retorno da API
+
+                    if(response != undefined){
+                        alert(response.message);
+                    }
                 },
                 function(error){
                     alert("erro");

@@ -36,7 +36,7 @@
             <md-input-container class="md-block" ng-show="isLogadoAdmin()" flex="100">
                 <label>Perfil</label>
 
-                <md-select ng-model="usuario.perfil">
+                <md-select ng-model="usuario.perfil" ng-change="mudaPerfil()">
                     <md-option value="admin">Administrador (dsview)</md-option>
                     <md-option value="facilitador">Facilitador (dsview)</md-option>
                     <md-option value="master">Master</md-option>
@@ -46,7 +46,7 @@
 
             <md-input-container ng-show="isLogadoAdmin() && isCliente()" flex="100">
                 <label>Cliente</label>
-                <md-select ng-model="usuario.cliente">
+                <md-select ng-model="usuario.cliente" ng-change="mudaCliente()">
                     <md-option ng-repeat="cliente in clientes" value="{{cliente._id}}">
                         {{cliente.cnpj}} - {{cliente.nome_fantasia}}
                     </md-option>

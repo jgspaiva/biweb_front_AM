@@ -28,7 +28,7 @@
 
     </md-fab-speed-dial>
 
-    <md-button class="md-fab md-fab-bottom-right" style="position: fixed" ng-click="showDialog($event)">
+    <md-button class="md-fab md-fab-bottom-right" style="position: fixed" ng-click="showDialog($event, null)">
         <md-tooltip md-direction="left">
             Adicionar
         </md-tooltip>
@@ -50,7 +50,8 @@
                titulo="Usuários"
                items="usrCtrl.lista"
                header="usrCtrl.headerAtual",
-               selecionavel="true">
+               selecionavel="true"
+               action="showDialog(evento, objeto)">
 </md-data-table>
 
 </md-card>

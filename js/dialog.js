@@ -34,11 +34,37 @@ function DialogClienteController($scope, $mdDialog, planos, cliente) {
     };
 }
 
-function DialogUsuarioController($scope, $mdDialog, clientes, perfilLogado){
+function DialogUsuarioController($scope, $mdDialog, clientes, perfilLogado, usuario){
     $scope.clientes = clientes;
     $scope.perfilLogado = perfilLogado;
 
-    $scope.usuario = {};
+    if(!((usuario === undefined) || (usuario === null))) {
+        $scope.usuario = usuario;
+
+        $scope.usuario.editado = true;
+
+        try{
+            if($scope.usuario.cliente._id != undefined) {
+                $scope.usuario.cliente = $scope.usuario.cliente._id;
+            }
+        }
+        catch(exc){}
+    }
+    else{
+        $scope.usuario = { editado: false };
+    }
+
+    $scope.mudaCliente = function(){
+        $scope.clientes.forEach(function(cliente){
+            if($scope.usuario.cliente == cliente._id) $scope.usuario.clienteNome = cliente.nome_fantasia;
+        });
+    };
+
+    $scope.mudaPerfil = function(){
+        if($scope.isAdmin() || $scope.isFacilitador()){
+            if($scope.usuario.hasOwnProperty('clienteNome')) delete $scope.usuario['clienteNome'];
+        }
+    };
 
     $scope.isLogadoAdmin = function(){
         var saida = false;
