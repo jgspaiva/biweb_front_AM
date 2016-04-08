@@ -1360,33 +1360,38 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
             self.cliente.telefones.splice(index, 1);
         };
 
-        $scope.showDialog = function(ev) {
+        $scope.showDialog = function(evento, objeto) {
             var useFullScreen = $mdMedia('xs');
 
             $mdDialog.show({
                 controller: DialogClienteController,
                 templateUrl: 'templates/add_cliente_dialog.tmpl.html',
                 parent: angular.element(document.body),
-                targetEvent: ev,
-                clickOutsideToClose:true,
+                targetEvent: evento,
+                clickOutsideToClose: true,
                 bindToController: true,
-                locals: { planos: self.listaPlanos },
+                locals: { planos: self.listaPlanos, cliente: objeto },
                 fullscreen: useFullScreen
             })
             .then(
                 function(cliente) {
-                    self.lista.push(cliente);
+                    if(cliente.editado) {
+                        return ClientesService.update({ id: cliente._id }, cliente).$promise;
+                    }
+                    else {
+                        self.lista.push(cliente);
 
-                    return ClientesService.save(cliente).$promise;
+                        return ClientesService.save(cliente).$promise;
+                    }
                 },
                 function() {
-                    $scope.status = 'You cancelled the dialog.';
+                    // Cancelado
                 })
             .then(
                 function(response){
-                    $rootScope.$broadcast('cliente', { operacao: 'add' });
-
-                    self.carregar();
+                    if(response != undefined) {
+                        $rootScope.$broadcast('cliente', { operacao: 'add' });
+                    }
                 },
                 function(error){
                     alert("erro");

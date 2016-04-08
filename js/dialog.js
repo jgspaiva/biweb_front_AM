@@ -1,5 +1,21 @@
-function DialogClienteController($scope, $mdDialog, planos) {
+function DialogClienteController($scope, $mdDialog, planos, cliente) {
     $scope.planos = planos;
+
+    if(!((cliente === undefined) || (cliente === null))) {
+        $scope.cliente = cliente;
+
+        $scope.cliente.editado = true;
+
+        try{
+            if($scope.cliente.plano._id != undefined) {
+                $scope.cliente.plano = $scope.cliente.plano._id;
+            }
+        }
+        catch(exc){}
+    }
+    else{
+        $scope.cliente = { editado: false };
+    }
 
     $scope.hide = function() {
         $mdDialog.hide();
