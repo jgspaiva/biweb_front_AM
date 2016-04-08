@@ -21,11 +21,11 @@
 
     <md-divider ng-repeat-start="i in items"></md-divider>
 
-    <md-list-item ng-repeat-end ng-click="clique($event, $index)" class="alta">
+    <md-list-item ng-repeat-end class="alta">
 
         <md-checkbox ng-model="i.check" ng-show="{{selecionavel}}"></md-checkbox>
 
-        <div layout="column" layout-gt-sm="row" layout-align="space-around start" layout-align-gt-sm="start center" flex="100">
+        <div ng-click="clique($event, $index)" layout="column" layout-gt-sm="row" layout-align="space-around start" layout-align-gt-sm="start center" flex="100">
 
         <p class="md-body-1 md-p" layout="row" layout-align="start center" ng-repeat="h in header" flex="{{h.width}}">
             <span class="md-body-2" hide-gt-sm>{{h.headerName}}:&nbsp;</span>
