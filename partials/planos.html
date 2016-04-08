@@ -1,5 +1,5 @@
 <div layout="row" layout-align="space-around center">
-    <md-button class="md-fab md-fab-bottom-right" style="position:fixed" ng-click="showDialog($event)">
+    <md-button class="md-fab md-fab-bottom-right" style="position:fixed" ng-click="showDialog($event, null)">
         <md-tooltip md-direction="left">
             Adicionar
         </md-tooltip>
@@ -26,7 +26,8 @@
                        { campo: 'preco', headerName: 'Preço', width: '20', type: 'Number' },
                        { campo: 'limite_usuarios', headerName: 'Qt Usuários', width: '20', type: 'Number' }
                        ]"
-               selecionavel="true">
+               selecionavel="true"
+               action="showDialog(evento, objeto)">
 </md-data-table>
 
 </md-card>

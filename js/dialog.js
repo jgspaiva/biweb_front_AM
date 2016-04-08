@@ -109,7 +109,16 @@ function DialogUsuarioController($scope, $mdDialog, clientes, perfilLogado){
     };
 }
 
-function DialogPlanoController($scope, $mdDialog) {
+function DialogPlanoController($scope, $mdDialog, plano) {
+    if(!((plano === undefined) || (plano === null))) {
+        $scope.plano = plano;
+
+        $scope.plano.editado = true;
+    }
+    else{
+        $scope.plano = { editado: false };
+    }
+
     $scope.hide = function() {
         $mdDialog.hide();
     };

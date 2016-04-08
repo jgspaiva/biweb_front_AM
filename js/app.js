@@ -1560,31 +1560,38 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
                 });
         };
 
-        $scope.showDialog = function(ev) {
+        $scope.showDialog = function(evento, objeto) {
             var useFullScreen = $mdMedia('xs');
 
             $mdDialog.show({
                 controller: DialogPlanoController,
                 templateUrl: 'templates/add_plano_dialog.tmpl.html',
                 parent: angular.element(document.body),
-                targetEvent: ev,
+                targetEvent: evento,
+                bindToController: true,
+                locals: { plano: objeto },
                 clickOutsideToClose:true,
                 fullscreen: useFullScreen
             })
             .then(
                 function(plano) {
-                    self.lista.push(plano);
+                    if(plano.editado){
+                        return PlanosService.update({ id: plano._id }, plano).$promise;
+                    }
+                    else{
+                        self.lista.push(plano);
 
-                    return PlanosService.save(plano).$promise;
+                        return PlanosService.save(plano).$promise;
+                    }
                 },
                 function() {
-                    $scope.status = 'You cancelled the dialog.';
+                    // Cancelado
                 })
             .then(
                 function(response){
-                    $rootScope.$broadcast('plano', { operacao: 'add' });
-
-                    carregar();
+                    if(response != undefined){
+                        $rootScope.$broadcast('plano', { operacao: 'add' });
+                    }
                 },
                 function(error){
                     alert("erro");
