@@ -18,7 +18,7 @@
 
 /* Utilizado na diretiva md-data-table para comprimir o texto quando em colunas menores */
 .md-p{
-    word-break: break-all;
+    /* word-break: break-all; */
 }
 
 /* Mais espaço interno para item-list dentro do md-data-table */
