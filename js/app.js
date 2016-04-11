@@ -1237,7 +1237,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
                     // Retorno da API
 
                     if(response != undefined){
-                        alert(response.message);
+                        //alert(response.message);
                     }
                 },
                 function(error){
