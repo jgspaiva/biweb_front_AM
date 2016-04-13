@@ -224,171 +224,6 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
 		$httpProvider.interceptors.push('ResourceInterceptor');
 	}])
 
-// Diretivas
-
-    .directive('guarda', ['$location', 'Storage', function($location, Storage){
-        return {
-            restrict: 'AE',
-            scope: {
-                guardaUsuario: '=',
-                guardaVerbo: '@'
-            },
-            link: function($scope, $element, $attrs){
-                var usuario = $scope.guardaUsuario;
-                var verbo = $scope.guardaVerbo;
-                var cadastro = $location.path().replace(/\W/g, '');
-
-                var esconder = function(usuario_id){
-                    var saida = false;
-
-                    if(Storage.getUsuario()._id == usuario_id) saida = true;
-
-                    return saida;
-                };
-
-                var exibir = function(verbo_, cadastro_){
-                    var saida = false;
-
-                    Storage.getUsuario().permissoes.forEach(function(permissao){
-                        if(permissao.cadastro == cadastro_){
-                            permissao.verbos.forEach(function(v){
-                                if(v == verbo_) saida = true;
-                            });
-                        }
-                    });
-
-                    return saida;
-                };
-
-                if(exibir(verbo, cadastro) && !esconder(usuario._id)) $element.css("visibility", "visible");
-                else $element.css("display", "none");
-            }
-
-        };
-
-    }])
-    /*
-    ==========================================================================
-    Para utilizar esta diretiva (button-spinner) é necessário:
-    a) action() deve retornar o número do processo;
-    b) Devem ser lançados os eventos 'done' ou 'fail';
-    c) Cada evento deve enviar o objeto 'data' contendo o número do processo.
-    ==========================================================================
-    */
-
-    .directive('buttonSpinner',['$location', 'Storage', function($location, Storage){
-        return {
-            restrict: 'E',
-            scope: {
-                action: '&',
-                verbo: '@',
-                titulo: '@',
-                show: '&?',
-                disabled: '&?',
-                secure: '@?',
-                perfil: '@?',
-                size: '@?'
-            },
-            templateUrl: 'componentes/button_spinner.html',
-            link: function($scope, $element, $attrs){
-                var processing = false;
-                var processo = 0;
-
-                $scope.classeVerbo = function(){
-                    var classe = {
-                        button : "btn btn-primary",
-                        spinner: "ajax-loader",
-                        icone: "glyphicon glyphicon-plus-sign"
-                    };
-
-                    var verbo = $scope.verbo;
-
-                    if(verbo == 'GET') {
-                        classe.button = "btn btn-default";
-                        classe.icone = "glyphicon glyphicon-list";
-                    }
-                    else if(verbo == 'POST') {
-                        classe.button = "btn btn-success";
-                        classe.icone = "glyphicon glyphicon-send";
-                    }
-                    else if(verbo == 'PUT') {
-                        classe.button = "btn btn-info";
-                        classe.icone = "glyphicon glyphicon-edit";
-                    }
-                    else if(verbo == 'DELETE'){
-                        classe.button = "btn btn-danger";
-                        classe.icone = "glyphicon glyphicon-remove-sign";
-                    }
-
-                    if($attrs.size) {
-                        classe.button = classe.button + " btn-" + $scope.size;
-
-                        if(($scope.size == 'sm') || ($scope.size == 'xs')) classe.spinner = "ajax-loader-sm";
-                    }
-
-                    return classe;
-                };
-
-                $scope.$on('done', function(event, data){
-                    if(data.processo == processo) processing = false;
-                });
-
-                $scope.$on('fail', function(event, data){
-                    if(data.processo == -1) processing = false;
-                    if(data.processo == processo) processing = false;
-                });
-
-                $scope.isProcessing = function(){
-                    return processing;
-                };
-
-                $scope.isDisabled = function(){
-                    var saida = processing;
-                    var cadastro = $location.path().replace(/\W/g, '');
-                    var verbo = $scope.verbo;
-
-                    if($attrs.disabled) saida = saida || ($scope.disabled());
-
-                    if($attrs.secure) {
-                        if($scope.secure == "true") saida = saida || (!exibir(verbo, cadastro));
-                    }
-
-                    return saida;
-                };
-
-                $scope.clique = function(){
-                    processing = true;
-
-                    processo = $scope.action();
-                };
-
-                $scope.intraShow = function(){
-                    var saida = true;
-
-                    if($attrs.show) saida = $scope.show();
-
-                    if($attrs.perfil && (Storage.getUsuario().perfil != $scope.perfil)) saida = false;
-
-                    return saida;
-                };
-
-                var exibir = function(verbo, cadastro){
-                    var saida = false;
-
-                    Storage.getUsuario().permissoes.forEach(function(permissao){
-                        if(permissao.cadastro == cadastro){
-                            permissao.verbos.forEach(function(v){
-                                if(v == verbo) saida = true;
-                            });
-                        }
-                    });
-
-                    return saida;
-                };
-            }
-        };
-    }])
-
     .directive('mdDataTable', [ function(){
         return{
             restrict: 'E',
@@ -827,14 +662,29 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
 
 		self.carregar = function(){
             if(self.isLogadoMaster()){
-                self.lista = UsuariosClienteService.query({ id: usuarioLogado.cliente._id });
+                UsuariosClienteService.query({ id: usuarioLogado.cliente._id }).$promise
+                .then(function(response){
+                    self.lista = response;
+
+                    var indexExcluir = -1;
+
+                    self.lista.forEach(function(usuario, index){
+                        if(usuario._id === usuarioLogado._id) indexExcluir = index;
+                    });
+
+                    self.lista.splice(indexExcluir, 1);
+                });
             }
             else if(self.isLogadoAdmin()) {
                 if($cookies.get('cliente_id') == undefined){
                     UsuariosService.query().$promise.then(function(response){
                         self.lista = response;
 
-                        self.lista.forEach(function(usuario){
+                        var indexExcluir = -1;
+
+                        self.lista.forEach(function(usuario, index){
+                            if(usuario._id === usuarioLogado._id) indexExcluir = index;
+
                             try{
                                 usuario.clienteNome = usuario.cliente.nome_fantasia;
                             }
@@ -842,65 +692,21 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
                                 usuario.clienteNome = "";
                             }
                         });
+
+                        self.lista.splice(indexExcluir, 1);
                     });
                 }
                 else{
-                    self.lista = UsuariosClienteCnpjService.query({ cnpj: $cookies.get('cliente_id') });
+                    UsuariosClienteCnpjService.query({ cnpj: $cookies.get('cliente_id') }).$promise
+                    .then(function(response){
+                        self.lista = response;
+                    });
                 }
 
             }
-
-            return self.lista;
 		};
 
 		self.carregar(); // Inicializa a lista
-
-		/*self.enviar = function(){
-            var processo = Math.floor((Math.random() * 1000) + 1);
-
-            self.usuario.permissoes = permissoes(self.usuario.perfil);
-
-            self.usuario.email = self.usuario.username;
-
-            if(self.isLogadoAdmin()) self.usuario.cliente = self.clienteAtual;
-            else if(self.isLogadoMaster()) self.usuario.cliente = usuarioLogado.cliente._id;
-
-            if(self.isAdmin() || self.isFacilitador()){
-                if(self.usuario.hasOwnProperty('cliente')) delete self.usuario['cliente'];
-            }
-
-			if(!editado) {
-				self.usuario.password = "1234";
-
-                if(self.isLogadoAdmin() && self.isBasico()) self.usuario.autorizado = false;
-
-				UsuariosService.save(self.usuario).$promise
-                    .then(function(response){
-						self.limpaUsuario();
-						self.carregar();
-
-                        $scope.$broadcast('done', { processo: processo });
-					}, function(error){
-                        $scope.$broadcast('fail', { processo: processo });
-                    });
-			}
-			else{
-				UsuariosService.update({ id: self.usuario._id }, self.usuario).$promise
-                    .then(function(response){
-						self.limpaUsuario();
-						self.carregar();
-
-                        $scope.$broadcast('done', { processo: processo });
-
-						$('#modalForm').modal('hide');
-					}, function(error){
-                        $scope.$broadcast('done', { processo: processo });
-                    });
-			}
-
-            return processo;
-		};*/
-
 
         var enviar = function(usr){
             usr.permissoes = permissoes(usr.perfil);
@@ -1237,7 +1043,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
                     // Retorno da API
 
                     if(response != undefined){
-                        //alert(response.message);
+
                     }
                 },
                 function(error){
