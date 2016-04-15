@@ -1,0 +1,49 @@
+<md-dialog class="dialog-form" aria-label="Senha">
+  <form name="formSenha">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Mudar Senha</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon>close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div class="md-dialog-content">
+
+            <div layout="column" flex="100">
+
+            <md-input-container class="md-block" flex="100">
+                <label>Nova Senha</label>
+
+                <input type="password" name="nova_senha" ng-model="novasenha" required minlength="4">
+
+                <div ng-messages="formSenha.nova_senha.$error" role="alert">
+                    <div ng-message-exp="['minlength', 'required']">
+                        A senha precisa ter 4 caracteres ou mais
+                    </div>
+                </div>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex="100">
+                <label>Repita Nova Senha</label>
+
+                <input type="password" name="repete_senha" ng-model="repetesenha" required minlength="4">
+            </md-input-container>
+
+            </div>
+
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button ng-click="send(novasenha)" style="margin-right:20px;" ng-disabled="(novasenha != repetesenha) || formSenha.nova_senha.$invalid">
+        Salvar
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

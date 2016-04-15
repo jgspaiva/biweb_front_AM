@@ -1,4 +1,4 @@
-angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 'ngSanitize', 'dx'])
+angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 'ngSanitize', 'dx', 'ngMessages'])
 
 // Router
 	.config(function($routeProvider){
@@ -1853,44 +1853,45 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
         };
 
     }])
-    .controller('SenhaController', ['UsuariosNovaSenhaService', 'Storage', '$scope', '$location', function(UsuariosNovaSenhaService, Storage, $scope, $location){
+    .controller('SenhaController', ['UsuariosNovaSenhaService', 'Storage', '$scope', '$location', '$mdDialog', '$mdMedia', function(UsuariosNovaSenhaService, Storage, $scope, $location, $mdDialog, $mdMedia){
         // Controller de Senha
 
         var self = this;
 
-        self.usuario = {};
+        // Dialog da senha
 
-        self.enviar = function(){
-            var processo = Math.floor((Math.random() * 1000) + 1);
+        var useFullScreen = $mdMedia('xs');
 
-            if(self.usuario.novasenha == self.usuario.confere){
-                UsuariosNovaSenhaService.update({ id: Storage.getUsuario()._id },
-                                                { password: self.usuario.novasenha }).$promise
-                .then(
-                    function(res){
-                        alert(res.message);
+        $mdDialog.show({
+            controller: DialogSenhaController,
+            templateUrl: 'templates/change_senha_dialog.tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:false,
+            fullscreen: useFullScreen
+        })
+        .then(
+            function(novasenha) {
+                return UsuariosNovaSenhaService.update({ id: Storage.getUsuario()._id }, { password: novasenha }).$promise;
+            },
+            function() {
+                // Cancelado
+                $location.path('/principal');
+            })
+        .then(
+            function(response){
+                // Retorno da API
 
-                        Storage.getUsuario().expirada = false;
+                if(response != undefined){
+                    Storage.getUsuario().expirada = false;
 
-                        $scope.$broadcast('done', { processo: processo });
+                    $location.path('/principal');
 
-                        $location.path('/principal');
-                    },
-                    function(error){
-                        alert('Erro ao atualizar');
-
-                        $scope.$broadcast('fail', { processo: processo });
-                    }
-                );
-            }
-            else{
-                alert('As senhas não conferem.');
-
-                $scope.$broadcast('fail', { processo: -1 });
-            }
-
-            return processo;
-        };
+                    // Toast aqui!!!!
+                }
+            },
+            function(error){
+                alert("erro");
+            });
 
 
     }])

@@ -212,3 +212,24 @@ function DialogReportController($scope, $mdDialog, $sce, report) {
         $mdDialog.hide(object);
     };
 }
+
+function DialogSenhaController($scope, $mdDialog) {
+    $scope.novasenha = '';
+    $scope.repetesenha = '';
+
+    $scope.hide = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.cancel = function() {
+        $mdDialog.cancel();
+    };
+
+    $scope.answer = function(answer) {
+        $mdDialog.hide(answer);
+    };
+
+    $scope.send = function(object){
+        $mdDialog.hide(object);
+    };
+}
