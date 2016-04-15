@@ -249,6 +249,8 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
                 });
 
                 $scope.clique = function(event, index){
+                    event.stopPropagation();
+
                     if($attrs['action']){
                         $scope.action({ evento: event, objeto: $scope.items[index] } );
                     }
