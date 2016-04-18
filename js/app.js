@@ -1870,7 +1870,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
         };
 
     }])
-    .controller('SenhaController', ['UsuariosNovaSenhaService', 'Storage', '$scope', '$location', '$mdDialog', '$mdMedia', function(UsuariosNovaSenhaService, Storage, $scope, $location, $mdDialog, $mdMedia){
+    .controller('SenhaController', ['UsuariosNovaSenhaService', 'Storage', '$scope', '$location', '$mdDialog', '$mdMedia', '$mdToast', function(UsuariosNovaSenhaService, Storage, $scope, $location, $mdDialog, $mdMedia, $mdToast){
         // Controller de Senha
 
         var self = this;
@@ -1901,9 +1901,13 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
                 if(response != undefined){
                     Storage.getUsuario().expirada = false;
 
-                    $location.path('/principal');
+                    //$location.path('/principal');
 
-                    // Toast aqui!!!!
+                    $mdToast.show(
+                        $mdToast.simple()
+                        .textContent('Senha alterada')
+                        .position('bottom right')
+                        .hideDelay(2000));
                 }
             },
             function(error){
