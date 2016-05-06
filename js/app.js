@@ -76,7 +76,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
 			});
 	})
     // Constantes
-    .constant('apiUrl', 'http://localhost:3100')
+    .constant('apiUrl', 'http://begyn.com.br:3100')
 
     // Services
     .service('Storage', function () {
