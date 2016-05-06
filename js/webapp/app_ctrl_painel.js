@@ -2,6 +2,41 @@ angular.module('biwebApp').
 
 controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisService', 'PaineisCnpjService', 'Storage', '$scope', '$cookies', function(FontesService, FontesCnpjService, PaineisService, PaineisCnpjService, Storage, $scope, $cookies){
 
+    $scope.fontes = [];
 
+    var carregaFontes = function(){
+        $scope.fontes = FontesCnpjService.query({ cnpj: $cookies.get('cnpj') });
+    };
+
+    carregaFontes();
+
+    // Chart Editor
+
+    var chartEditor = null;
+
+    $scope.loadEditor = function (){
+        // Create the chart to edit.
+
+        var wrapper = new google.visualization.ChartWrapper({
+            'chartType':'LineChart',
+            'dataTable': [
+                ['Brasil', 'Estados Unidos', 'Cuba'],
+                [202, 300, 25]
+            ],
+            'options': {'title':'População (milhões)', 'legend':'none'},
+            'containerId': 'vis_div'
+        });
+
+        wrapper.draw();
+
+        chartEditor = new google.visualization.ChartEditor();
+        google.visualization.events.addListener(chartEditor, 'ok', redrawChart);
+        chartEditor.openDialog(wrapper, {});
+    };
+
+    // On "OK" save the chart to a <div> on the page.
+    function redrawChart(){
+      chartEditor.getChartWrapper().draw(document.getElementById('vis_div'));
+    }
 
 }]);
