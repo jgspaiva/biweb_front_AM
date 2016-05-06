@@ -14,15 +14,17 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
     var chartEditor = null;
 
+    var dados = [
+        ['Brasil', 'Estados Unidos', 'Cuba'],
+        [202, 300, 25]
+    ];
+
     $scope.loadEditor = function (){
         // Create the chart to edit.
 
         var wrapper = new google.visualization.ChartWrapper({
-            'chartType':'LineChart',
-            'dataTable': [
-                ['Brasil', 'Estados Unidos', 'Cuba'],
-                [202, 300, 25]
-            ],
+            'chartType':'Table',
+            'dataTable': dados,
             'options': {'title':'População (milhões)', 'legend':'none'},
             'containerId': 'vis_div'
         });
@@ -38,5 +40,12 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
     function redrawChart(){
       chartEditor.getChartWrapper().draw(document.getElementById('vis_div'));
     }
+
+    $scope.mudaDados = function(){
+        dados = [
+            ['Brasil', 'Estados Unidos', 'Cuba'],
+            [220, 308, 25]
+        ];
+    };
 
 }]);
