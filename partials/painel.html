@@ -14,13 +14,13 @@
         md-row-height-gt-md="2:2" md-row-height="2:2"
         md-gutter="12px" md-gutter-gt-sm="8px" style="margin: 10px">
 
-        <md-grid-tile ng-repeat="c in celulas" class="dashed" layout="column" layout-align="center center">
-            {{c.id}}
-            <!--<md-card class="full">
-                <md-card-content layout="row" layout-align="space-between">
-                    {{painelAtual.titulo}}
-                </md-card-content>
-            </md-card>-->
+        <md-grid-tile ng-repeat="c in celulas" ng-class="classCelula(c.empty)" layout="column" layout-align="center center">
+            <!-- Botão adicionar ou md-card chart -->
+            <md-card class="full" ng-show="!c.empty"></md-card>
+
+            <md-button class="md-fab md-mini" ng-click="" ng-show="c.empty">
+                <md-icon>add</md-icon>
+            </md-button>
         </md-grid-tile>
 
     </md-grid-list>

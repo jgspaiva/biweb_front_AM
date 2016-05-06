@@ -8,7 +8,8 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
     $scope.celulas = [];
 
-    $scope.celulas.push({ id: 'Nova' });
+    $scope.celulas.push({ id: 'Nova', empty: false });
+    $scope.celulas.push({ id: 'Nova', empty: true });
 
     var carregaFontes = function(){
         $scope.fontes = FontesCnpjService.query({ cnpj: $cookies.get('cnpj') });
@@ -52,6 +53,14 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
             ['Brasil', 'Estados Unidos', 'Cuba'],
             [220, 308, 25]
         ];
+    };
+
+    $scope.classCelula = function(empty){
+        var saida = "";
+
+        if(empty) saida = "dashed";
+
+        return saida;
     };
 
 }]);
