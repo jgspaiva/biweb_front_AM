@@ -4,6 +4,12 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
     $scope.fontes = [];
 
+    $scope.painelAtual = {};
+
+    $scope.celulas = [];
+
+    $scope.celulas.push({ id: 'Nova' });
+
     var carregaFontes = function(){
         $scope.fontes = FontesCnpjService.query({ cnpj: $cookies.get('cnpj') });
     };

@@ -53,3 +53,15 @@ md-dialog.fullscreen {
     -webkit-flex: 1 1 44px !important;
 
 }
+
+.dashed{
+    border-style: dashed;
+    border-width: 2px;
+    border-color: darkgray;
+    border-radius: 4px;
+}
+
+md-card.full{
+    width: 100%;
+    height: 100%;
+}
