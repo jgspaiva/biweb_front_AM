@@ -16,9 +16,11 @@
 
         <md-grid-tile ng-repeat="c in celulas" ng-class="classCelula(c.empty)" layout="column" layout-align="center center">
             <!-- Botão adicionar ou md-card chart -->
-            <md-card class="full" ng-show="!c.empty"></md-card>
+            <md-card class="full" ng-show="!c.empty">
+                <div id="vis_div" style="width: 100%; height: 100%"></div>
+            </md-card>
 
-            <md-button class="md-fab md-mini" ng-click="" ng-show="c.empty">
+            <md-button class="md-fab md-mini" ng-click="loadEditor()" ng-show="c.empty">
                 <md-icon>add</md-icon>
             </md-button>
         </md-grid-tile>

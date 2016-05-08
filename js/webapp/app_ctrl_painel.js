@@ -30,9 +30,9 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         // Create the chart to edit.
 
         var wrapper = new google.visualization.ChartWrapper({
-            'chartType':'Table',
+            'chartType':'ColumnChart',
             'dataTable': dados,
-            'options': {'title':'População (milhões)', 'legend':'none'},
+            'options': {'title':'População (milhões)', 'legend':'bottom' },
             'containerId': 'vis_div'
         });
 
@@ -45,7 +45,17 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
     // On "OK" save the chart to a <div> on the page.
     function redrawChart(){
-      chartEditor.getChartWrapper().draw(document.getElementById('vis_div'));
+        var wrapper = chartEditor.getChartWrapper();
+        var options = wrapper.getOptions();
+
+        options["width"] = 400;
+        options["height"] = 400;
+
+        alert(wrapper.toJSON());
+
+        wrapper.setOptions(options);
+
+        wrapper.draw(document.getElementById('vis_div'));
     }
 
     $scope.mudaDados = function(){
