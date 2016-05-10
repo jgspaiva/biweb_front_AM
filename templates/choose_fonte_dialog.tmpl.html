@@ -1,0 +1,81 @@
+<md-dialog class="dialog-form" aria-label="Componente">
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Componente</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon>close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div class="md-dialog-content">
+
+            <div layout="column" flex="100">
+
+            <md-input-container class="md-block" flex="100">
+                <label>Título</label>
+
+                <input ng-model="componente.titulo" autofocus required>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex="100">
+                <label>Descrição</label>
+
+                <input ng-model="componente.descricao" required>
+            </md-input-container>
+
+            <md-input-container flex="100">
+                <label>Fontes</label>
+                <md-select ng-model="componente.fonte.id">
+                    <md-option ng-repeat="fonte in fontes" value="{{fonte._id}}" ng-selected="mudaFonte($index)">
+                        {{fonte.nome | uppercase}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+                <div layout="row" flex="100">
+                    <md-input-container flex="50">
+                        <label>Argumento</label>
+                        <md-select ng-model="componente.fonte.x">
+                            <md-optgroup label="TEXTO">
+                                <md-option ng-repeat="col in fonteAtual.header | filter: {tipo : 'String'}" value="{{col.campo}}">
+                                    {{col.campo | uppercase}}
+                                </md-option>
+                            </md-optgroup>
+
+                            <md-optgroup label="DATA">
+                                <md-option ng-repeat="col in fonteAtual.header | filter: {tipo : 'Date'}" value="{{col.campo}}">
+                                    {{col.campo | uppercase}}
+                                </md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container flex="50">
+                        <label>Valor</label>
+                        <md-select ng-model="componente.fonte.yLinha" multiple>
+
+                            <md-optgroup label="NÚMERO">
+                                <md-option ng-repeat="col in fonteAtual.header | filter: {tipo : 'Number'}" value="{{col.campo}}">
+                                    {{col.campo | uppercase}}
+                                </md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
+                </div>
+            </div>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button ng-click="send(componente)" style="margin-right:20px;" >
+        Adicionar
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

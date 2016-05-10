@@ -233,3 +233,44 @@ function DialogSenhaController($scope, $mdDialog) {
         $mdDialog.hide(object);
     };
 }
+
+function DialogFonteController($scope, $mdDialog, fontes, componente){
+    $scope.fontes = fontes;
+
+    if(!((componente === undefined) || (componente === null))) {
+        $scope.componente = componente;
+
+        $scope.componente.editado = true;
+    }
+    else{
+        $scope.componente = {
+            editado: false,
+            chartType: 'Table'
+        };
+    }
+
+    $scope.mudaFonte = function(index){
+        $scope.fonteAtual = $scope.fontes[index];
+    };
+
+    $scope.hide = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.cancel = function() {
+        $mdDialog.cancel();
+    };
+
+    $scope.answer = function(answer) {
+        $mdDialog.hide(answer);
+    };
+
+    $scope.send = function(object){
+        var texto = "" + object.fonte.yLinha;
+
+        object.fonte.y = texto.split(',');
+
+        $mdDialog.hide(object);
+    };
+
+}
