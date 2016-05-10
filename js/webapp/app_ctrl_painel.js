@@ -1,10 +1,12 @@
 angular.module('biwebApp').
 
-controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisService', 'PaineisCnpjService', 'Storage', '$scope', '$cookies', function(FontesService, FontesCnpjService, PaineisService, PaineisCnpjService, Storage, $scope, $cookies){
+controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisService', 'PaineisCnpjService', 'Storage', '$scope', '$cookies', '$mdDialog', '$mdMedia', function(FontesService, FontesCnpjService, PaineisService, PaineisCnpjService, Storage, $scope, $cookies, $mdDialog, $mdMedia){
 
     $scope.fontes = [];
 
-    $scope.painelAtual = {};
+    $scope.painelAtual = {
+        componentes: []
+    };
 
     $scope.celulas = [];
 
@@ -48,22 +50,14 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         var wrapper = chartEditor.getChartWrapper();
         var options = wrapper.getOptions();
 
+        // Define o tamanho do gráfico externamente
         options["width"] = 400;
         options["height"] = 400;
-
-        alert(wrapper.toJSON());
 
         wrapper.setOptions(options);
 
         wrapper.draw(document.getElementById('vis_div'));
     }
-
-    $scope.mudaDados = function(){
-        dados = [
-            ['Brasil', 'Estados Unidos', 'Cuba'],
-            [220, 308, 25]
-        ];
-    };
 
     $scope.classCelula = function(empty){
         var saida = "";
@@ -71,6 +65,35 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         if(empty) saida = "dashed";
 
         return saida;
+    };
+
+    $scope.showDialog = function(evento, objeto) {
+        var useFullScreen = $mdMedia('xs');
+
+        $mdDialog.show({
+            controller: DialogFonteController,
+            templateUrl: 'templates/choose_fonte_dialog.tmpl.html',
+            parent: angular.element(document.body),
+            targetEvent: evento,
+            clickOutsideToClose: false,
+            bindToController: true,
+            locals: { fontes: $scope.fontes, componente: objeto },
+            fullscreen: useFullScreen
+        })
+        .then(
+            function(componente) {
+                if(componente.editado) {
+                    // Recebe componente editado
+                }
+                else {
+                    // Recebe componente novo
+
+                    $scope.painelAtual.componentes.push(componente);
+                }
+            },
+            function() {
+                    // Cancelado
+            });
     };
 
 }]);
