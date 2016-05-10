@@ -74,6 +74,14 @@ function DialogUsuarioController($scope, $mdDialog, clientes, perfilLogado, usua
         return saida;
     };
 
+    $scope.isLogadoMaster = function(){
+        var saida = false;
+
+        if($scope.perfilLogado == 'master') saida = true;
+
+        return saida;
+    };
+
     $scope.isAdmin = function(){
         var saida = false;
 
