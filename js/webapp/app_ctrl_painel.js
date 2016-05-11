@@ -28,18 +28,7 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         [202, 300, 25]
     ];
 
-    $scope.loadEditor = function (){
-        // Create the chart to edit.
-
-        var wrapper = new google.visualization.ChartWrapper({
-            'chartType':'ColumnChart',
-            'dataTable': dados,
-            'options': {'title':'População (milhões)', 'legend':'bottom' },
-            'containerId': 'vis_div'
-        });
-
-        wrapper.draw();
-
+    $scope.loadEditor = function (wrapper){
         chartEditor = new google.visualization.ChartEditor();
         google.visualization.events.addListener(chartEditor, 'ok', redrawChart);
         chartEditor.openDialog(wrapper, {});
@@ -79,8 +68,8 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
             bindToController: true,
             locals: { fontes: $scope.fontes, componente: objeto },
             fullscreen: useFullScreen
-        })
-        .then(
+        }).
+        then(
             function(componente) {
                 if(componente.editado) {
                     // Recebe componente editado
@@ -89,11 +78,70 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
                     // Recebe componente novo
 
                     $scope.painelAtual.componentes.push(componente);
+
+                    FontesService.get({ id: componente.fonte.id }).$promise.
+                    then(function(response){
+                        var dataTable = getDados(componente.fonte, response.dados);
+
+                        var wrapper = desenhaGrafico(componente.chartType, componente.titulo, dataTable, 'vis_div');
+
+                        $scope.loadEditor(wrapper);
+                    });
+
+
                 }
             },
             function() {
                     // Cancelado
-            });
+            }
+        );
     };
+
+    // Funções de Gráficos
+    function desenhaGrafico(tipo, titulo, dados, tagId) {
+        var wrapper = new google.visualization.ChartWrapper({
+        chartType: tipo,
+        dataTable: dados,
+        options: {'title': titulo },
+        containerId: tagId });
+
+        wrapper.draw();
+
+        return wrapper;
+    }
+
+    function getDados(header, dados){
+        var saida = new google.visualization.DataTable();
+        var headerDataTable = [];
+
+        saida.addColumn(header.x.tipo.toLowerCase(), header.x.campo);
+        headerDataTable.push(header.x.campo);
+
+        header.y.forEach(function(y_i){
+            saida.addColumn(y_i.tipo.toLowerCase(), y_i.campo);
+            headerDataTable.push(y_i.campo);
+        });
+
+        var rows = [];
+
+        dados.forEach(function(dado){
+            var row = [];
+
+            headerDataTable.forEach(function(col){
+                if(String(dado[col]).split('/').length == 3){
+                    var data = String(dado[col]).split('/');
+
+                    row.push(new Date(data[2], data[1], data[0]));
+                }
+                else row.push(dado[col]);
+            });
+
+            rows.push(row);
+        });
+
+        saida.addRows(rows);
+
+        return saida;
+    }
 
 }]);
