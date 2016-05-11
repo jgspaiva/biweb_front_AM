@@ -274,9 +274,17 @@ function DialogFonteController($scope, $mdDialog, fontes, componente){
     };
 
     $scope.send = function(object){
-        var texto = "" + object.fonte.yLinha;
+        var texto = "" + object.fonte.yLinhaIds;
 
-        object.fonte.y = texto.split(',');
+        var ids = texto.split(',');
+
+        object.fonte.y = [];
+
+        ids.forEach(function(id){
+            $scope.fonteAtual.header.forEach(function(col){
+                if(id === col._id) object.fonte.y.push(col);
+            });
+        });
 
         $mdDialog.hide(object);
     };

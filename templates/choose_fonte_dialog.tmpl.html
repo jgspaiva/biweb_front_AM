@@ -41,13 +41,13 @@
                         <label>Argumento</label>
                         <md-select ng-model="componente.fonte.x">
                             <md-optgroup label="TEXTO">
-                                <md-option ng-repeat="col in fonteAtual.header | filter: {tipo : 'String'}" value="{{col.campo}}">
+                                <md-option ng-repeat="col in fonteAtual.header | filter: {tipo : 'String'}" ng-value="col">
                                     {{col.campo | uppercase}}
                                 </md-option>
                             </md-optgroup>
 
                             <md-optgroup label="DATA">
-                                <md-option ng-repeat="col in fonteAtual.header | filter: {tipo : 'Date'}" value="{{col.campo}}">
+                                <md-option ng-repeat="col in fonteAtual.header | filter: {tipo : 'Date'}" ng-value="col">
                                     {{col.campo | uppercase}}
                                 </md-option>
                             </md-optgroup>
@@ -56,10 +56,10 @@
 
                     <md-input-container flex="50">
                         <label>Valor</label>
-                        <md-select ng-model="componente.fonte.yLinha" multiple>
+                        <md-select ng-model="componente.fonte.yLinhaIds" multiple>
 
                             <md-optgroup label="NÚMERO">
-                                <md-option ng-repeat="col in fonteAtual.header | filter: {tipo : 'Number'}" value="{{col.campo}}">
+                                <md-option ng-repeat="col in fonteAtual.header | filter: {tipo : 'Number'}" ng-value="col._id">
                                     {{col.campo | uppercase}}
                                 </md-option>
                             </md-optgroup>
