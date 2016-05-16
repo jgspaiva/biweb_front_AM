@@ -82,7 +82,7 @@
 
         <md-toolbar class="md-whiteframe-2dp">
 
-            <div class="md-toolbar-tools">
+            <div class="md-toolbar-tools" layout="row" layout-align="space-between end">
 
             <md-button class="md-icon-button" ng-click="main.openLeftMenu()">
                 <md-icon>menu</md-icon>
@@ -91,6 +91,12 @@
             <md-progress-circular style="color: white" class="md-hue-3" ng-show="loads > 0" md-mode="indeterminate"></md-progress-circular>
 
             <span flex></span>
+
+            <input class="searchInput" ng-show="showSearch" name="searchField" ng-model="searchTerm" placeholder="Busca">
+
+            <md-button class="md-icon-button" ng-click="showSearch = !showSearch" aria-label="Search">
+                <md-icon>search</md-icon>
+            </md-button>
 
             <md-menu>
 
