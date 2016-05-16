@@ -19,7 +19,7 @@
 
     </md-list-item>
 
-    <md-divider ng-repeat-start="i in items"></md-divider>
+    <md-divider ng-repeat-start="i in items | filter: searchTerm"></md-divider>
 
     <md-list-item ng-repeat-end class="alta">
 

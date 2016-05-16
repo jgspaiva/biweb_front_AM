@@ -1,5 +1,5 @@
 angular.module('biwebApp').
-controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', 'ClientesService', '$location', '$cookies', '$route', '$mdSidenav', '$scope', '$mdDialog', '$timeout', function(AutenticaService, UsuariosService, Storage, ClientesService, $location, $cookies, $route, $mdSidenav, $scope, $mdDialog, $timeout){
+controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', 'ClientesService', '$location', '$cookies', '$route', '$mdSidenav', '$scope', '$rootScope','$mdDialog', '$timeout', function(AutenticaService, UsuariosService, Storage, ClientesService, $location, $cookies, $route, $mdSidenav, $scope, $rootScope, $mdDialog, $timeout){
 		var self = this;
 
         self.isAdmin = function(){
@@ -168,6 +168,8 @@ controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', 
         $scope.goto = function(rota){
             $mdSidenav('left').toggle();
 
+            $scope.searchTerm = "";
+
             $timeout(function(){
                 $location.path('/' + rota);
             }, 707);
@@ -228,4 +230,20 @@ controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', 
         $scope.$on('fail', function(event, data){
             $scope.loads--;
         });
-	}]);
+
+    $scope.showSearch = false;
+
+    $scope.mudaBusca = function(){
+        $rootScope.$broadcast('search', { searchTerm: $scope.searchTerm });
+    };
+
+    $scope.cliqueSearch = function(){
+        $scope.showSearch = !$scope.showSearch;
+
+        $scope.searchTerm = "";
+
+        if(!$scope.showSearch) $scope.mudaBusca();
+    };
+
+
+}]);

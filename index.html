@@ -92,9 +92,9 @@
 
             <span flex></span>
 
-            <input class="searchInput" ng-show="showSearch" name="searchField" ng-model="searchTerm" placeholder="Busca">
+            <input class="searchInput" ng-show="showSearch" name="searchField" ng-model="searchTerm" placeholder="Busca" ng-change="mudaBusca()">
 
-            <md-button class="md-icon-button" ng-click="showSearch = !showSearch" aria-label="Search">
+            <md-button class="md-icon-button" ng-click="cliqueSearch()" aria-label="Search">
                 <md-icon>search</md-icon>
             </md-button>
 

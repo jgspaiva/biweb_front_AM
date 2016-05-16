@@ -137,6 +137,11 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
             templateUrl: 'componentes/md_table_template.html',
             link: function($scope, $element, $attrs){
                 $scope.allCheck = false;
+                $scope.searchTerm = "";
+
+                $scope.$on('search', function(event, data){
+                    $scope.searchTerm = data.searchTerm;
+                });
 
                 $scope.toggleAllCheck = function(){
                     angular.forEach($scope.items, function(item, index){
