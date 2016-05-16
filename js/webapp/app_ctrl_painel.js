@@ -114,17 +114,41 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         var saida = new google.visualization.DataTable();
         var headerDataTable = [];
 
+        var sqlConsulta = "";
+        var sqlCampos = [];
+        var argumento = "";
+
         saida.addColumn(header.x.tipo.toLowerCase(), header.x.campo);
         headerDataTable.push(header.x.campo);
+
+        // Inclusão do argumento
+        argumento = header.x.campo;
+        sqlCampos.push(argumento);
 
         header.y.forEach(function(y_i){
             saida.addColumn(y_i.tipo.toLowerCase(), y_i.campo);
             headerDataTable.push(y_i.campo);
+
+            // Inclusão de totalizadores de valores
+            /*
+            Reescrever assim:
+            =================
+
+            sqlCampos.push(y_i.totalizador + "([" + y_i.campo + "]) AS [" + y_i.campo + "]");
+
+            */
+            sqlCampos.push("SUM([" + y_i.campo + "]) AS [" + y_i.campo + "]");
         });
+
+        // Consulta SQL (Alasql)
+        sqlConsulta = "SELECT " + sqlCampos.join() + " FROM ? GROUP BY " + argumento;
+
+        // Array obtido da consulta SQL
+        var interArray = alasql(sqlConsulta, [dados]);
 
         var rows = [];
 
-        dados.forEach(function(dado){
+        interArray.forEach(function(dado){
             var row = [];
 
             headerDataTable.forEach(function(col){
