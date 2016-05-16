@@ -74,6 +74,14 @@ function DialogUsuarioController($scope, $mdDialog, clientes, perfilLogado, usua
         return saida;
     };
 
+    $scope.isLogadoMaster = function(){
+        var saida = false;
+
+        if($scope.perfilLogado == 'master') saida = true;
+
+        return saida;
+    };
+
     $scope.isAdmin = function(){
         var saida = false;
 
@@ -232,4 +240,53 @@ function DialogSenhaController($scope, $mdDialog) {
     $scope.send = function(object){
         $mdDialog.hide(object);
     };
+}
+
+function DialogFonteController($scope, $mdDialog, fontes, componente){
+    $scope.fontes = fontes;
+
+    if(!((componente === undefined) || (componente === null))) {
+        $scope.componente = componente;
+
+        $scope.componente.editado = true;
+    }
+    else{
+        $scope.componente = {
+            editado: false,
+            chartType: 'Table'
+        };
+    }
+
+    $scope.mudaFonte = function(index){
+        $scope.fonteAtual = $scope.fontes[index];
+    };
+
+    $scope.hide = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.cancel = function() {
+        $mdDialog.cancel();
+    };
+
+    $scope.answer = function(answer) {
+        $mdDialog.hide(answer);
+    };
+
+    $scope.send = function(object){
+        var texto = "" + object.fonte.yLinhaIds;
+
+        var ids = texto.split(',');
+
+        object.fonte.y = [];
+
+        ids.forEach(function(id){
+            $scope.fonteAtual.header.forEach(function(col){
+                if(id === col._id) object.fonte.y.push(col);
+            });
+        });
+
+        $mdDialog.hide(object);
+    };
+
 }

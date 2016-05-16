@@ -33,14 +33,15 @@
                 <input ng-model="usuario.telefone" required>
             </md-input-container>
 
-            <md-input-container class="md-block" ng-show="isLogadoAdmin()" flex="100">
+            <md-input-container class="md-block" ng-show="isLogadoAdmin() || isLogadoMaster()" flex="100">
                 <label>Perfil</label>
 
                 <md-select ng-model="usuario.perfil" ng-change="mudaPerfil()">
-                    <md-option value="admin">Administrador (dsview)</md-option>
-                    <md-option value="facilitador">Facilitador (dsview)</md-option>
-                    <md-option value="master">Master</md-option>
+                    <md-option value="admin" ng-show="isLogadoAdmin()">Administrador (dsview)</md-option>
+                    <md-option value="facilitador" ng-show="isLogadoAdmin()">Facilitador (dsview)</md-option>
+                    <md-option value="master" ng-show="isLogadoAdmin()">Master</md-option>
                     <md-option value="basico">Usuário Básico</md-option>
+                    <md-option value="visual">Usuário Básico Visual</md-option>
                 </md-select>
             </md-input-container>
 
