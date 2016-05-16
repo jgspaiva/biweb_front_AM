@@ -153,11 +153,11 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
                     $scope.items = newValue;
                 });
 
-                $scope.clique = function(event, index){
+                $scope.clique = function(event, item){
                     event.stopPropagation();
 
                     if($attrs['action']){
-                        $scope.action({ evento: event, objeto: $scope.items[index] } );
+                        $scope.action({ evento: event, objeto: item } );
                     }
                 };
 
