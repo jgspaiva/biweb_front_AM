@@ -3,6 +3,8 @@ controller('ReportsController', ['ClientesService','ReportsService','ReportsUsua
         // Controller de Reports
         var self = this;
 
+        $scope.selecionavel = false;
+
         self.isAdmin = function(){
             return (Storage.getUsuario().perfil == 'admin');
         };
@@ -10,6 +12,12 @@ controller('ReportsController', ['ClientesService','ReportsService','ReportsUsua
         self.isMaster = function(){
             return (Storage.getUsuario().perfil == 'master');
         };
+
+        self.isBasico = function(){
+            return (Storage.getUsuario().perfil == 'basico');
+        };
+
+        $scope.selecionavel = self.isAdmin() || self.isMaster();
 
         // o relatorio clicado
         self.reportAtual = {};
@@ -195,6 +203,19 @@ controller('ReportsController', ['ClientesService','ReportsService','ReportsUsua
             self.carregarReports();
         };
 
+        self.removerChecked = function(){
+            self.listaReports.forEach(function(report){
+                if(report.check) {
+                    ReportsIdService.remove({ id: report._id }).$promise
+                    .then(
+                        function(response){
+                            self.listaReports.splice(self.listaReports.indexOf(report), 1);
+                        },
+                        function(error){});
+                }
+            });
+        };
+
         $scope.showDialog = function(ev, report) {
             ReportsIdService.get({ id: report._id }).$promise
             .then(
@@ -220,6 +241,36 @@ controller('ReportsController', ['ClientesService','ReportsService','ReportsUsua
                 });
 
 
+        };
+
+        $scope.isClearCheck = function(){
+            var saida = true;
+
+            self.listaReports.forEach(function(rep){
+                saida = saida && !(rep.check)
+            });
+
+            return saida;
+        };
+
+        $scope.showConfirm = function(ev){
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.confirm()
+                .title('Quer realmente excluir os reports selecionados?')
+                .textContent('Esta operação é irreversível.')
+                .ariaLabel('Exclusão')
+                .targetEvent(ev)
+                .ok('Excluir')
+                .cancel('Cancelar');
+            $mdDialog.show(confirm).then(
+                function() {
+                    //$rootScope.$broadcast('cliente', { operacao: 'remove' });
+
+                    self.removerChecked();
+                },
+                function() {
+
+                });
         };
 
     }]);
