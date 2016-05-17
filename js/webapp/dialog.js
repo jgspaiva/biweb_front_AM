@@ -253,9 +253,16 @@ function DialogFonteController($scope, $mdDialog, fontes, componente){
     else{
         $scope.componente = {
             editado: false,
-            chartType: 'Table'
+            chartType: 'Table',
+            fonte: {
+                id: '',
+                x: '',
+                y: []
+            }
         };
     }
+
+    $scope.y = {};
 
     $scope.mudaFonte = function(index){
         $scope.fonteAtual = $scope.fontes[index];
@@ -274,19 +281,14 @@ function DialogFonteController($scope, $mdDialog, fontes, componente){
     };
 
     $scope.send = function(object){
-        var texto = "" + object.fonte.yLinhaIds;
-
-        var ids = texto.split(',');
-
-        object.fonte.y = [];
-
-        ids.forEach(function(id){
-            $scope.fonteAtual.header.forEach(function(col){
-                if(id === col._id) object.fonte.y.push(col);
-            });
-        });
-
         $mdDialog.hide(object);
+    };
+
+    $scope.addValor = function(){
+        $scope.y.tipo = 'number';
+        $scope.componente.fonte.y.push($scope.y);
+
+        $scope.y = {};
     };
 
 }

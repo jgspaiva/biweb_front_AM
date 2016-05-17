@@ -36,37 +36,66 @@
                 </md-select>
             </md-input-container>
 
-                <div layout="row" flex="100">
-                    <md-input-container flex="50">
-                        <label>Argumento</label>
-                        <md-select ng-model="componente.fonte.x">
-                            <md-optgroup label="TEXTO">
-                                <md-option ng-repeat="col in fonteAtual.header | filter: {tipo : 'String'}" ng-value="col">
+            <md-input-container flex="50">
+                <label>Argumento</label>
+                <md-select ng-model="componente.fonte.x">
+                    <md-optgroup label="TEXTO">
+                        <md-option ng-repeat="col in fonteAtual.header | filter: {tipo : 'String'}" ng-value="col">
+                            {{col.campo | uppercase}}
+                        </md-option>
+                    </md-optgroup>
+
+                    <md-optgroup label="DATA">
+                        <md-option ng-repeat="col in fonteAtual.header | filter: {tipo : 'Date'}" ng-value="col">
+                            {{col.campo | uppercase}}
+                        </md-option>
+                    </md-optgroup>
+                </md-select>
+            </md-input-container>
+
+
+            <div layout="row" layout-align="space-between center" flex="100">
+
+
+                <md-input-container flex="40">
+                    <label>Valor</label>
+                    <md-select ng-model="y.campo">
+
+                        <md-optgroup label="NÚMERO">
+                                <md-option ng-repeat="col in fonteAtual.header | filter: {tipo : 'Number'}" ng-value="col.campo">
                                     {{col.campo | uppercase}}
                                 </md-option>
-                            </md-optgroup>
+                        </md-optgroup>
+                    </md-select>
+                </md-input-container>
 
-                            <md-optgroup label="DATA">
-                                <md-option ng-repeat="col in fonteAtual.header | filter: {tipo : 'Date'}" ng-value="col">
-                                    {{col.campo | uppercase}}
-                                </md-option>
-                            </md-optgroup>
-                        </md-select>
-                    </md-input-container>
+                <md-input-container flex="40">
+                    <label>Totalizador</label>
+                    <md-select ng-model="y.totalizador">
+                        <md-option value="SUM">Soma</md-option>
+                        <md-option value="AVG">Média</md-option>
+                        <md-option value="COUNT">Quantidade</md-option>
+                        <md-option value="MAX">Máximo</md-option>
+                        <md-option value="MIN">Mínimo</md-option>
+                        <md-option value="STDEV">Desvio Padrão</md-option>
+                        <md-option value="VAR">Variância</md-option>
+                    </md-select>
+                </md-input-container>
 
-                    <md-input-container flex="50">
-                        <label>Valor</label>
-                        <md-select ng-model="componente.fonte.yLinhaIds" multiple>
-
-                            <md-optgroup label="NÚMERO">
-                                <md-option ng-repeat="col in fonteAtual.header | filter: {tipo : 'Number'}" ng-value="col._id">
-                                    {{col.campo | uppercase}}
-                                </md-option>
-                            </md-optgroup>
-                        </md-select>
-                    </md-input-container>
-                </div>
+                <md-button class="md-icon-button" ng-click="addValor()">
+                    <md-icon>add</md-icon>
+                </md-button>
             </div>
+
+                <md-divider></md-divider>
+             <md-list>
+                 <md-subheader class="md-no-sticky">Valores</md-subheader>
+                 <md-list-item ng-repeat="y in componente.fonte.y">
+                     <p class="md-body-2">{{y.campo}}</p>
+                     <p class="md-body-1">{{y.totalizador}}</p>
+                 </md-list-item>
+            </md-list>
+        </div>
         </div>
 
     </md-dialog-content>
