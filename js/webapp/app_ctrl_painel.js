@@ -130,14 +130,8 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
             headerDataTable.push(y_i.campo);
 
             // Inclusão de totalizadores de valores
-            /*
-            Reescrever assim:
-            =================
 
             sqlCampos.push(y_i.totalizador + "([" + y_i.campo + "]) AS [" + y_i.campo + "]");
-
-            */
-            sqlCampos.push("SUM([" + y_i.campo + "]) AS [" + y_i.campo + "]");
         });
 
         // Consulta SQL (Alasql)
