@@ -2,16 +2,8 @@ angular.module('biwebApp').
 
 controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisService', 'PaineisCnpjService', 'Storage', '$scope', '$cookies', '$mdDialog', '$mdMedia', '$mdSidenav', function(FontesService, FontesCnpjService, PaineisService, PaineisCnpjService, Storage, $scope, $cookies, $mdDialog, $mdMedia, $mdSidenav){
 
+    // Fontes de Dados
     $scope.fontes = [];
-
-    $scope.painelAtual = {
-        componentes: []
-    };
-
-    $scope.celulas = [];
-
-    $scope.celulas.push({ id: 'Nova', empty: false });
-    $scope.celulas.push({ id: 'Nova', empty: true });
 
     var carregaFontes = function(){
         $scope.fontes = FontesCnpjService.query({ cnpj: $cookies.get('cnpj') });
@@ -19,14 +11,49 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
     carregaFontes();
 
-    // Chart Editor
+    // Menu de Paineis
+    $scope.openRightMenu = function(){
+        $mdSidenav('right').toggle();
+    };
 
+    // Dashboard
+    // Cria um novo dashboard em branco
+    $scope.newDashboard = function(){
+        console.log('newDashboard');
+
+        $scope.dashboardAtivo = {
+            graficos: [],
+            controladores: [],
+            fonte: {}
+        };
+    };
+
+    // Salva o dashboard ativo
+    $scope.saveDashboard = function(){
+        console.log('saveDashboard');
+    };
+
+    // Abre o dashboard
+    $scope.openDashboard = function(){
+        console.log('openDashboard')
+    };
+
+    // Remove Dashboard
+    $scope.removeDashboard = function(dashboard){
+        console.log('removeDashboard');
+    };
+
+
+    // Manipulação das celulas do GRID
+    $scope.celulas = [];
+
+    $scope.celulas.push({ id: 'Nova', empty: false });
+    $scope.celulas.push({ id: 'Nova', empty: true });
+
+
+    // Funções para Google Charts
+    // 1 - Chart Editor
     var chartEditor = null;
-
-    var dados = [
-        ['Brasil', 'Estados Unidos', 'Cuba'],
-        [202, 300, 25]
-    ];
 
     $scope.loadEditor = function (wrapper){
         chartEditor = new google.visualization.ChartEditor();
@@ -34,7 +61,7 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         chartEditor.openDialog(wrapper, {});
     };
 
-    // On "OK" save the chart to a <div> on the page.
+    // 1.1 - Redraw Chart
     function redrawChart(){
         var wrapper = chartEditor.getChartWrapper();
         var options = wrapper.getOptions();
@@ -47,55 +74,6 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
         wrapper.draw(document.getElementById('vis_div'));
     }
-
-    $scope.classCelula = function(empty){
-        var saida = "";
-
-        if(empty) saida = "dashed";
-
-        return saida;
-    };
-
-    $scope.showDialog = function(evento, objeto) {
-        var useFullScreen = $mdMedia('xs');
-
-        $mdDialog.show({
-            controller: DialogFonteController,
-            templateUrl: 'templates/choose_fonte_dialog.tmpl.html',
-            parent: angular.element(document.body),
-            targetEvent: evento,
-            clickOutsideToClose: false,
-            bindToController: true,
-            locals: { fontes: $scope.fontes, componente: objeto },
-            fullscreen: useFullScreen
-        }).
-        then(
-            function(componente) {
-                if(componente.editado) {
-                    // Recebe componente editado
-                }
-                else {
-                    // Recebe componente novo
-
-                    $scope.painelAtual.componentes.push(componente);
-
-                    FontesService.get({ id: componente.fonte.id }).$promise.
-                    then(function(response){
-                        var dataTable = getDados(componente.fonte, response.dados);
-
-                        var wrapper = desenhaGrafico(componente.chartType, componente.titulo, dataTable, 'vis_div');
-
-                        $scope.loadEditor(wrapper);
-                    });
-
-
-                }
-            },
-            function() {
-                    // Cancelado
-            }
-        );
-    };
 
     // Funções de Gráficos
     function desenhaGrafico(tipo, titulo, dados, tagId) {
@@ -110,6 +88,8 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         return wrapper;
     }
 
+    // Prepara a fonte de dados
+    // ANALISAR
     function getDados(header, dados){
         var saida = new google.visualization.DataTable();
         var headerDataTable = [];
@@ -162,8 +142,42 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         return saida;
     }
 
-    $scope.openRightMenu = function(){
-        $mdSidenav('right').toggle();
+    $scope.classCelula = function(empty){
+        var saida = "";
+
+        if(empty) saida = "dashed";
+
+        return saida;
     };
+
+    $scope.showDialog = function(evento, objeto) {
+        var useFullScreen = $mdMedia('xs');
+
+        $mdDialog.show({
+            controller: DialogFonteController,
+            templateUrl: 'templates/choose_fonte_dialog.tmpl.html',
+            parent: angular.element(document.body),
+            targetEvent: evento,
+            clickOutsideToClose: false,
+            bindToController: true,
+            locals: { fontes: $scope.fontes, componente: objeto },
+            fullscreen: useFullScreen
+        }).
+        then(
+            function(grafico) {
+                if(grafico.editado) {
+                    // Recebe grafico editado
+                }
+                else {
+                    // Recebe grafico novo
+                }
+            },
+            function() {
+                    // Cancelado
+            }
+        );
+    };
+
+
 
 }]);

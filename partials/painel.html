@@ -1,5 +1,5 @@
 <div>
-    <div layout="row">
+    <div layout="row" layout-align="space-between center">
         <span flex></span>
         <md-input-container class="md-block" flex="40">
             <label>Painel</label>
@@ -32,9 +32,34 @@
 </div>
 
 <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
-    <md-list>
+    <md-subheader layout="row" layout-align="space-between center">
+        <md-button class="md-icon-button" ng-click="newDashboard()">
+            <md-icon>
+                note_add
+            </md-icon>
 
-    </md-list>
+            <md-tooltip md-direction="bottom">
+                Novo
+            </md-tooltip>
+        </md-button>
+
+        <md-button class="md-icon-button" ng-click="saveDashboard()">
+            <md-icon>
+                save
+            </md-icon>
+
+            <md-tooltip md-direction="bottom">
+                Salvar
+            </md-tooltip>
+        </md-button>
+    </md-subheader>
+
+    <md-divider></md-divider>
+
+    <md-content>
+        <md-list>
+        </md-list>
+    </md-content>
 </md-sidenav>
 
 
