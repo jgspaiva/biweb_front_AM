@@ -7,6 +7,9 @@
             <input ng-model="painelAtual.titulo" required>
         </md-input-container>
         <span flex></span>
+        <md-button class="md-icon-button" ng-click="openRightMenu()">
+            <md-icon>menu</md-icon>
+        </md-button>
     </div>
 
     <md-grid-list
@@ -27,6 +30,12 @@
 
     </md-grid-list>
 </div>
+
+<md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+    <md-list>
+
+    </md-list>
+</md-sidenav>
 
 
 <!--

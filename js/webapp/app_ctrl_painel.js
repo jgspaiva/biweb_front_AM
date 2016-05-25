@@ -1,6 +1,6 @@
 angular.module('biwebApp').
 
-controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisService', 'PaineisCnpjService', 'Storage', '$scope', '$cookies', '$mdDialog', '$mdMedia', function(FontesService, FontesCnpjService, PaineisService, PaineisCnpjService, Storage, $scope, $cookies, $mdDialog, $mdMedia){
+controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisService', 'PaineisCnpjService', 'Storage', '$scope', '$cookies', '$mdDialog', '$mdMedia', '$mdSidenav', function(FontesService, FontesCnpjService, PaineisService, PaineisCnpjService, Storage, $scope, $cookies, $mdDialog, $mdMedia, $mdSidenav){
 
     $scope.fontes = [];
 
@@ -161,5 +161,9 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
         return saida;
     }
+
+    $scope.openRightMenu = function(){
+        $mdSidenav('right').toggle();
+    };
 
 }]);
