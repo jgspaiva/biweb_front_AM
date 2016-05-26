@@ -78,7 +78,7 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         chartType: tipo,
         dataTable: dados,
         options: {'title': titulo },
-        containerId: 'vid_div_' + tagId });
+        containerId: 'vis_div_' + tagId });
 
         wrapper.draw();
 
@@ -174,23 +174,24 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
                 else {
                     // Recebe grafico novo
                     console.log('Dados novos');
+                    console.log($scope.fonte._id);
 
-                    var dados = getDados(grafico.dados, $scope.fonte.dados);
                     var tagId = $scope.dashboardAtivo.graficos.length;
-
-                    console.log('linha 1')
-
                     $scope.dashboardAtivo.graficos.push(grafico);
 
-                    console.log('linha 2')
+                    FontesService.get({ id: $scope.fonte._id }).$promise.
+                    then(function(response){
+                        console.log(response.dados[0].QTD)
+                        var dados = getDados(grafico.dados, response.dados);
 
-                    var wrapper = desenhaGrafico(grafico.chartType, grafico.titulo, dados, tagId);
+                        var wrapper = desenhaGrafico(grafico.chartType, grafico.titulo, dados, tagId);
 
-                    console.log('linha 3')
+                        $scope.loadEditor(wrapper);
 
-                    $scope.loadEditor(wrapper);
+                        // var wrapper = desenhaGrafico(componente.chartType, componente.titulo, dataTable, 'vis_div');
 
-                    console.log('linha 4')
+                        // $scope.loadEditor(wrapper);
+                    });
                 }
             },
             function() {
