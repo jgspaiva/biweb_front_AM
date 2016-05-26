@@ -18,7 +18,7 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
     // Dashboard
     // Cria um novo dashboard em branco
-    $scope.newDashboard = function(){
+    $scope.newDashboard = function(evento){
         console.log('newDashboard');
 
         $scope.dashboardAtivo = {
@@ -26,6 +26,8 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
             controladores: [],
             fonte: {}
         };
+
+        $scope.showDialogFonte(evento);
     };
 
     // Salva o dashboard ativo
@@ -150,7 +152,41 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         return saida;
     };
 
-    $scope.showDialog = function(evento, objeto) {
+    $scope.showDialogDados = function(evento, objeto) {
+        var useFullScreen = $mdMedia('xs');
+
+        $mdDialog.show({
+            controller: DialogDadosController,
+            templateUrl: 'templates/choose_dados_dialog.tmpl.html',
+            parent: angular.element(document.body),
+            targetEvent: evento,
+            clickOutsideToClose: false,
+            bindToController: true,
+            locals: { fonte: $scope.fonte, componente: objeto },
+            fullscreen: useFullScreen
+        }).
+        then(
+            function(grafico) {
+                if(grafico.editado) {
+                    // Recebe os dados escolhidos
+                    console.log('Dados atualizados');
+                }
+                else {
+                    // Recebe grafico novo
+                    console.log('Dados novos');
+                    $scope.dashboardAtivo.graficos.push({});
+
+
+                }
+            },
+            function() {
+                // Cancelado
+                console.log('Cancelado');
+            }
+        );
+    };
+
+    $scope.showDialogFonte = function(evento) {
         var useFullScreen = $mdMedia('xs');
 
         $mdDialog.show({
@@ -160,20 +196,18 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
             targetEvent: evento,
             clickOutsideToClose: false,
             bindToController: true,
-            locals: { fontes: $scope.fontes, componente: objeto },
+            locals: { fontes: $scope.fontes },
             fullscreen: useFullScreen
         }).
         then(
-            function(grafico) {
-                if(grafico.editado) {
-                    // Recebe grafico editado
-                }
-                else {
-                    // Recebe grafico novo
-                }
+            function(fonte) {
+                console.log('Fonte escolhida');
+                $scope.fonte = fonte;
+                $scope.openRightMenu();
             },
             function() {
-                    // Cancelado
+                // Cancelado
+                console.log('Cancelado');
             }
         );
     };
