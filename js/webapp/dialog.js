@@ -255,7 +255,7 @@ function DialogDadosController($scope, $mdDialog, fonte, componente){
             editado: false,
             chartType: 'Table',
             dados: {
-                x: '',
+                x: {},
                 y: []
             }
         };
