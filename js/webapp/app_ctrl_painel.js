@@ -98,24 +98,37 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         saida.addColumn(header.x.tipo.toLowerCase(), header.x.campo);
         headerDataTable.push(header.x.campo);
 
+        console.log('1 @ getDados');
+
         // Inclusão do argumento
         argumento = header.x.campo;
         sqlCampos.push(argumento);
+
+        console.log('2 @ getDados');
 
         header.y.forEach(function(y_i){
             saida.addColumn(y_i.tipo.toLowerCase(), y_i.campo);
             headerDataTable.push(y_i.campo);
 
+            console.log('3 loop @ getDados');
+
             // Inclusão de totalizadores de valores
 
             sqlCampos.push(y_i.totalizador + "([" + y_i.campo + "]) AS [" + y_i.campo + "]");
+
+            console.log('4 loop @ getDados');
         });
 
         // Consulta SQL (Alasql)
         sqlConsulta = "SELECT " + sqlCampos.join() + " FROM ? GROUP BY " + argumento;
 
+        console.log('5 @ getDados');
+        console.log(sqlConsulta);
+
         // Array obtido da consulta SQL
         var interArray = alasql(sqlConsulta, [dados]);
+
+        console.log('6 @ getDados');
 
         var rows = [];
 
@@ -165,11 +178,19 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
                     var dados = getDados(grafico.dados, $scope.fonte.dados);
                     var tagId = $scope.dashboardAtivo.graficos.length;
 
+                    console.log('linha 1')
+
                     $scope.dashboardAtivo.graficos.push(grafico);
+
+                    console.log('linha 2')
 
                     var wrapper = desenhaGrafico(grafico.chartType, grafico.titulo, dados, tagId);
 
+                    console.log('linha 3')
+
                     $scope.loadEditor(wrapper);
+
+                    console.log('linha 4')
                 }
             },
             function() {
