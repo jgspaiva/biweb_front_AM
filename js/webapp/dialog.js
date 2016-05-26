@@ -242,8 +242,8 @@ function DialogSenhaController($scope, $mdDialog) {
     };
 }
 
-function DialogFonteController($scope, $mdDialog, fontes, componente){
-    $scope.fontes = fontes;
+function DialogDadosController($scope, $mdDialog, fonte, componente){
+    $scope.fonte = fonte;
 
     if(!((componente === undefined) || (componente === null))) {
         $scope.componente = componente;
@@ -254,8 +254,7 @@ function DialogFonteController($scope, $mdDialog, fontes, componente){
         $scope.componente = {
             editado: false,
             chartType: 'Table',
-            fonte: {
-                id: '',
+            dados: {
                 x: '',
                 y: []
             }
@@ -263,10 +262,6 @@ function DialogFonteController($scope, $mdDialog, fontes, componente){
     }
 
     $scope.y = {};
-
-    $scope.mudaFonte = function(index){
-        $scope.fonteAtual = $scope.fontes[index];
-    };
 
     $scope.hide = function() {
         $mdDialog.hide();
@@ -286,9 +281,29 @@ function DialogFonteController($scope, $mdDialog, fontes, componente){
 
     $scope.addValor = function(){
         $scope.y.tipo = 'number';
-        $scope.componente.fonte.y.push($scope.y);
+        $scope.componente.dados.y.push($scope.y);
 
         $scope.y = {};
     };
 
+}
+
+function DialogFonteController($scope, $mdDialog, fontes){
+    $scope.fontes = fontes;
+
+    $scope.hide = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.cancel = function() {
+        $mdDialog.cancel();
+    };
+
+    $scope.answer = function(answer) {
+        $mdDialog.hide(answer);
+    };
+
+    $scope.send = function(object){
+        $mdDialog.hide(object);
+    };
 }
