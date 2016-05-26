@@ -5,6 +5,8 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
     // Fontes de Dados
     $scope.fontes = [];
 
+    $scope.fonte = {};
+
     var carregaFontes = function(){
         $scope.fontes = FontesCnpjService.query({ cnpj: $cookies.get('cnpj') });
     };
@@ -46,13 +48,6 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
     };
 
 
-    // Manipulação das celulas do GRID
-    $scope.celulas = [];
-
-    $scope.celulas.push({ id: 'Nova', empty: false });
-    $scope.celulas.push({ id: 'Nova', empty: true });
-
-
     // Funções para Google Charts
     // 1 - Chart Editor
     var chartEditor = null;
@@ -74,7 +69,7 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
         wrapper.setOptions(options);
 
-        wrapper.draw(document.getElementById('vis_div'));
+        wrapper.draw(document.getElementById(wrapper.containerId));
     }
 
     // Funções de Gráficos
@@ -83,7 +78,7 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         chartType: tipo,
         dataTable: dados,
         options: {'title': titulo },
-        containerId: tagId });
+        containerId: 'vid_div_' + tagId });
 
         wrapper.draw();
 
@@ -144,14 +139,6 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         return saida;
     }
 
-    $scope.classCelula = function(empty){
-        var saida = "";
-
-        if(empty) saida = "dashed";
-
-        return saida;
-    };
-
     $scope.showDialogDados = function(evento, objeto) {
         var useFullScreen = $mdMedia('xs');
 
@@ -174,9 +161,15 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
                 else {
                     // Recebe grafico novo
                     console.log('Dados novos');
-                    $scope.dashboardAtivo.graficos.push({});
 
+                    var dados = getDados(grafico.dados, $scope.fonte.dados);
+                    var tagId = $scope.dashboardAtivo.graficos.length;
 
+                    $scope.dashboardAtivo.graficos.push(grafico);
+
+                    var wrapper = desenhaGrafico(grafico.chartType, grafico.titulo, dados, tagId);
+
+                    $scope.loadEditor(wrapper);
                 }
             },
             function() {
