@@ -279,9 +279,31 @@ function DialogDadosController($scope, $mdDialog, fonte, componente){
         $mdDialog.hide(object);
     };
 
+    var getIndiceFonte = function(campo){
+        var saida = -1;
+
+        $scope.fonte.header.forEach(function(col, indice){
+            if(col.campo.toLowerCase() == campo.toLowerCase()) saida = indice;
+        });
+
+        return saida;
+    };
+
+    $scope.escolheArgumento = function(){
+        var indice = getIndiceFonte($scope.componente.dados.x.campo)
+        $scope.componente.dados.x.indice = indice;
+
+        console.log('Indice arg: ' + indice)
+    };
+
     $scope.addValor = function(){
+        var indice = getIndiceFonte($scope.y.campo);
+
         $scope.y.tipo = 'number';
+        $scope.y.indice = indice;
         $scope.componente.dados.y.push($scope.y);
+
+        console.log('Indice ' + indice);
 
         $scope.y = {};
     };

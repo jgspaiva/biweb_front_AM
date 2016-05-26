@@ -23,7 +23,7 @@
 
             <md-input-container flex="50">
                 <label>Argumento</label>
-                <md-select ng-model="componente.dados.x">
+                <md-select ng-model="componente.dados.x" ng-change="escolheArgumento()">
                     <md-optgroup label="TEXTO">
                         <md-option ng-repeat="col in fonte.header | filter: {tipo : 'String'}" ng-value="col">
                             {{col.campo | uppercase}}
