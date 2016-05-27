@@ -7,6 +7,12 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
     $scope.fonte = {};
 
+    var dataTable = null;
+    $scope.filtros = [];
+    self.graficos = [];
+    $scope.charts = [];
+    $scope.chartAtual = null;
+
     var carregaFontes = function(){
         $scope.fontes = FontesCnpjService.query({ cnpj: $cookies.get('cnpj') });
     };
@@ -34,6 +40,12 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
             controladores: [],
             fonte: {}
         };
+
+        dataTable = null;
+        $scope.filtros = [];
+        self.graficos = [];
+        $scope.charts = [];
+        $scope.chartAtual = null;
 
         $scope.showDialogFonte(evento);
     };
@@ -87,18 +99,47 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
         wrapper.setOptions(options);
 
-        componenteCharts.push({ componente: componenteAtual, chart: wrapper});
+        $scope.charts[$scope.charts.indexOf($scope.chartAtual)] = wrapper; // Atualiza o Chart no Array
+
+        //componenteCharts.push({ componente: componenteAtual, chart: wrapper});
 
         wrapper.draw(document.getElementById(wrapper.containerId));
     }
 
     // Funções de Gráficos
-    function desenhaGrafico(tipo, titulo, dados, tagId) {
-        var wrapper = new google.visualization.ChartWrapper({
-        chartType: tipo,
-        dataTable: dados,
-        options: {'title': titulo },
-        containerId: 'vis_div_' + tagId });
+    function desenhaGrafico(grafico_, dados_, tagId_) {
+        var cols = [];
+        var columns = [0];
+        var i = 1;
+
+        grafico_.dados.y.forEach(function(val){
+            var aggreg = google.visualization.data.sum;
+
+            if(val.totalizador == 'AVG') aggreg = google.visualization.data.avg;
+            else if(val.totalizador == 'MAX') aggreg = google.visualization.data.max;
+            else if(val.totalizador == 'MIN') aggreg = google.visualization.data.min;
+            else if(val.totalizador == 'COUNT') aggreg = google.visualization.data.count;
+
+            var reg = { 'column' : val.indice, 'aggregation' : aggreg, 'type' : val.tipo.toLowerCase() }
+
+            cols.push(reg);
+
+            columns.push(i);
+            i++;
+        });
+
+        var grouped_dt = google.visualization.data.group(
+                          dados_, [grafico_.dados.x.indice],
+                          cols);
+
+        var wrapper = new google.visualization.ChartWrapper(
+            {
+                chartType: grafico_.chartType,
+                dataTable: grouped_dt,
+                options: {'title': grafico_.titulo },
+                containerId: 'vis_div_' + tagId_
+            }
+        );
 
         wrapper.draw();
 
@@ -307,25 +348,16 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
                 }
                 else {
                     // Recebe grafico novo
-                    console.log('Dados novos');
-                    console.log($scope.fonte._id);
 
-                    var tagId = $scope.dashboardAtivo.graficos.length;
-                    $scope.dashboardAtivo.graficos.push(grafico);
+                    var tagId = self.graficos.length;
 
-                    FontesService.get({ id: $scope.fonte._id }).$promise.
-                    then(function(response){
-                        console.log(response.dados[0].QTD)
-                        var dados = getDados(grafico.dados, response.dados);
+                    self.graficos.push(grafico);
 
-                        var wrapper = desenhaGrafico(grafico.chartType, grafico.titulo, dados, tagId);
+                    var wrapper = desenhaGrafico(grafico, dataTable, tagId);
+                    $scope.chartAtual = wrapper;
+                    $scope.charts.push($scope.chartAtual);
 
-                        componenteAtual = grafico;
-
-                        //componenteCharts.push({ componente: grafico, chart: wrapper});
-
-                        $scope.loadEditor(wrapper);
-                    });
+                    $scope.loadEditor($scope.chartAtual);
                 }
             },
             function() {
@@ -353,6 +385,11 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
                 console.log('Fonte escolhida');
                 $scope.fonte = fonte;
                 $scope.openRightMenu();
+
+                FontesService.get({ id: $scope.fonte._id }).$promise.
+                then(function(response){
+                    dataTable = getDadosNovo(fonte.header, response.dados);
+                });
             },
             function() {
                 // Cancelado
@@ -376,20 +413,7 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         }).
         then(
             function(filtro) {
-                console.log('Novo Filtro: ' + filtro );
-
-                $scope.dashboardAtivo.controladores.push(filtro);
-
-                var controller = new google.visualization.ControlWrapper({
-                    'controlType': 'CategoryFilter',
-                    'containerId': 'ctr_teste',
-                    'options': {
-                        'filterColumnLabel': filtro
-                    }
-                });
-
-                filters.push(controller);
-
+                $scope.filtros.push(filtro);
             },
             function() {
                 // Cancelado

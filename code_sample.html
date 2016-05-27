@@ -1,0 +1,128 @@
+        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+        <script type="text/javascript">
+            google.load('visualization', '1.1', {packages: ['controls']});
+            google.load('visualization', '1', {packages:['table']});
+
+		function drawVisualization() {
+        // Prepare the data
+       var query = new google.visualization.Query('http://spreadsheets.google.com/tq?key=0AozvCNI02VmpdFBsVkxOQ3NENVZ1djhxVmZUNUdtY0E&single=true&gid=0&pub=1');
+                query.send(handleQueryResponse);
+            }
+            function handleQueryResponse(response) {
+                data = response.getDataTable();
+
+                // Define category pickers ////////////////
+                var divPicker = new google.visualization.ControlWrapper({
+                    'controlType': 'CategoryFilter',
+                    'containerId': 'control1',
+                    'options': {
+                        'filterColumnLabel': 'Surveyor',
+                        'ui': {
+                            'labelStacking': 'vertical',
+                            'allowTyping': false,
+                            'allowMultiple': false
+                        }
+                    }
+                });
+
+                var subdivPicker = new google.visualization.ControlWrapper({
+                    'controlType': 'CategoryFilter',
+                    'containerId': 'control2',
+                    'options': {
+                        'filterColumnLabel': 'Surveyed',
+                        'ui': {
+                            'labelStacking': 'vertical',
+                            'allowTyping': false,
+                            'allowMultiple': false
+                        }
+                    }
+                });
+
+                // Define a column chart
+                var columnChart = new google.visualization.ChartWrapper({
+                    'chartType': 'ColumnChart',
+                    'containerId': 'chart2',
+                    // Configure the column chart
+                    'view': {'columns': [1, 2]}
+                });
+
+                var table = new google.visualization.ChartWrapper({
+                    'chartType': 'Table',
+                    'containerId': 'chart1',
+                    'options': {
+                        'width': '100%'
+                    },
+                    'view': {'columns': [0, 1, 2]}
+                });
+
+                var columnChart1  = new google.visualization.ChartWrapper({
+                    'chartType': 'ColumnChart',
+                    'containerId': 'chart3',
+                    //group the data for the pie chart
+                    'dataTable' : google.visualization.data.group(data, [0],
+                    [{'column': 2, 'aggregation': google.visualization.data.sum, 'type': 'number'}])
+                });
+          //      columnChart1.draw();
+
+                // Create the dashboard.
+                new google.visualization.Dashboard(document.getElementById('dashboard')).
+                    // Configure & bind the controls
+                bind(divPicker, subdivPicker).
+                    bind(subdivPicker, [table, columnChart]).
+                    // Draw the dashboard
+                draw(data);
+
+			google.visualization.events.addListener(subdivPicker, 'ready',
+
+                function(event) {
+                    // group the data of the filtered table and set the result in the pie chart.
+                    columnChart1.setDataTable( google.visualization.data.group(
+                    // get the filtered results
+                    table.getDataTable(),
+                    [0],
+                    [{'column': 2, 'aggregation': google.visualization.data.sum, 'type': 'number'}]
+                ));
+                    // redraw the pie chart to reflect changes
+                    columnChart1.draw();
+                });
+
+				google.visualization.events.addListener(subdivPicker, 'statechange',
+
+                function(event) {
+                    // group the data of the filtered table and set the result in the pie chart.
+                    columnChart1.setDataTable( google.visualization.data.group(
+                    // get the filtered results
+                    table.getDataTable(),
+                    [0],
+                    [{'column': 2, 'aggregation': google.visualization.data.sum, 'type': 'number'}]
+                ));
+                    // redraw the pie chart to reflect changes
+                    columnChart1.draw();
+                });
+
+            }
+
+            google.setOnLoadCallback(drawVisualization);
+        </script>
+
+
+    <body style="font-family: Arial;border: 0 none;">
+        <div id="dashboard">
+            <table width="100%">
+                <tr style='vertical-align: top'>
+                    <td style='width: 17%; font-size: 0.9em;'>
+                        <div id="control1"></div>
+                        <div id="control2"></div>
+                    </td>
+                    <td>
+                        <div style="float: left;" id="chart2"></div>
+                    </td>
+                    <td><div style="float: left;" id="chart3"></div>
+                    </td>
+                </tr>
+                <tr><td>&nbsp;</td>
+                    <td><div style=" " id="chart1"></div>
+                    </td><td>&nbsp;</td>
+                </tr>
+            </table>
+        </div>
