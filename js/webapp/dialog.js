@@ -329,3 +329,23 @@ function DialogFonteController($scope, $mdDialog, fontes){
         $mdDialog.hide(object);
     };
 }
+
+function DialogFilterController($scope, $mdDialog, fonte){
+    $scope.fonte = fonte;
+
+    $scope.hide = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.cancel = function() {
+        $mdDialog.cancel();
+    };
+
+    $scope.answer = function(answer) {
+        $mdDialog.hide(answer);
+    };
+
+    $scope.send = function(object){
+        $mdDialog.hide(object);
+    };
+}

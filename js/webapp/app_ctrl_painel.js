@@ -18,6 +18,12 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         $mdSidenav('right').toggle();
     };
 
+    var dash = null;
+    var componenteCharts = [];
+    var filters = [];
+
+    var componenteAtual = null;
+
     // Dashboard
     // Cria um novo dashboard em branco
     $scope.newDashboard = function(evento){
@@ -35,6 +41,18 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
     // Salva o dashboard ativo
     $scope.saveDashboard = function(){
         console.log('saveDashboard');
+
+        FontesService.get({ id: $scope.fonte._id }).$promise.
+        then(
+            function(response){
+                var dados = getDadosNovo($scope.fonte.header, response.dados);
+
+                console.log(JSON.stringify(dados));
+
+                geraDashTeste(dados, componenteCharts, filters);
+            });
+
+
     };
 
     // Abre o dashboard
@@ -68,6 +86,8 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         options["height"] = 400;
 
         wrapper.setOptions(options);
+
+        componenteCharts.push({ componente: componenteAtual, chart: wrapper});
 
         wrapper.draw(document.getElementById(wrapper.containerId));
     }
@@ -152,6 +172,120 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         return saida;
     }
 
+    var getDadosNovo = function(header, dados){
+        var saida = new google.visualization.DataTable();
+
+        header.forEach(function(col){
+            console.log('campo: ' + col.campo + ', tipo: ' + col.tipo);
+            saida.addColumn(col.tipo.toLowerCase(), col.campo);
+        });
+
+        var rows = [];
+
+        dados.forEach(function(dado){
+            var row = [];
+
+            header.forEach(function(col){
+                if(String(dado[col.campo]).split('/').length == 3){
+                    var data = String(dado[col.campo]).split('/');
+
+                    row.push(new Date(data[2], data[1], data[0]));
+                }
+                else row.push(dado[col.campo]);
+            });
+
+            rows.push(row);
+        });
+
+        saida.addRows(rows);
+
+        console.log('Number of rows: ' + saida.getNumberOfRows());
+        console.log('Number of columns: ' + saida.getNumberOfColumns());
+
+        return saida;
+    };
+
+    var geraDashTeste = function(dataTable, // Fonte de dados
+                                  cCharts,  // Array de charts
+                                  filters
+                                 )
+    {
+        dash = new google.visualization.Dashboard(document.getElementById("dash_teste"));
+
+        google.visualization.events.addOneTimeListener(dash, 'ready', function() {
+        //redraw the barchart with grouped data
+        //console.log("redraw grouped");
+
+            console.log("Componentes: " + cCharts.length);
+
+            cCharts.forEach(function(componenteChart, indice){
+                var componente = componenteChart.componente;
+                var chart = componenteChart.chart;
+
+                console.log("->" + chart.toJSON());
+
+                var cols = [];
+                var columns = [0];
+                var i = 1;
+
+                componente.dados.y.forEach(function(val){
+                    var aggreg = google.visualization.data.sum;
+
+                    console.log("Totalizador: " + val.totalizador);
+
+                    if(val.totalizador == 'AVG') aggreg = google.visualization.data.avg;
+                    else if(val.totalizador == 'MAX') aggreg = google.visualization.data.max;
+                    else if(val.totalizador == 'MIN') aggreg = google.visualization.data.min;
+                    else if(val.totalizador == 'COUNT') aggreg = google.visualization.data.count;
+
+                    console.log('Aggregation: ' + aggreg);
+
+                    var reg = { 'column' : val.indice, 'aggregation' : aggreg, 'type' : val.tipo.toLowerCase() }
+
+                    cols.push(reg);
+
+                    console.log('Reg = ' + JSON.stringify(reg));
+
+                    columns.push(i);
+                    i++;
+                });
+
+                var grouped_dt = google.visualization.data.group(
+                          dash.getDataTable(), [componente.dados.x.indice],
+                          cols);
+
+                console.log('Gouped = ' + grouped_dt.toString());
+
+                console.log('columns: ' + columns.toString());
+
+                chart.setView({ 'columns' : columns });
+                chart.setDataTable(grouped_dt);
+                chart.setContainerId('chart_teste_' + indice);
+
+                console.log('Esse: ' + chart.toJSON());
+
+                chart.draw();
+            });
+
+        });
+
+        var charts = [];
+
+        cCharts.forEach(function(cc){
+            charts.push(cc.chart);
+        });
+
+        console.log('1 @ GeraDash');
+
+        dash.bind(filters, charts);
+
+        console.log('2 @ GeraDash');
+
+        dash.draw(dataTable);
+
+        console.log('3 @ GeraDash');
+    };
+
     $scope.showDialogDados = function(evento, objeto) {
         var useFullScreen = $mdMedia('xs');
 
@@ -186,11 +320,11 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
                         var wrapper = desenhaGrafico(grafico.chartType, grafico.titulo, dados, tagId);
 
+                        componenteAtual = grafico;
+
+                        //componenteCharts.push({ componente: grafico, chart: wrapper});
+
                         $scope.loadEditor(wrapper);
-
-                        // var wrapper = desenhaGrafico(componente.chartType, componente.titulo, dataTable, 'vis_div');
-
-                        // $scope.loadEditor(wrapper);
                     });
                 }
             },
@@ -219,6 +353,43 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
                 console.log('Fonte escolhida');
                 $scope.fonte = fonte;
                 $scope.openRightMenu();
+            },
+            function() {
+                // Cancelado
+                console.log('Cancelado');
+            }
+        );
+    };
+
+    $scope.showDialogControlador = function(evento) {
+        var useFullScreen = $mdMedia('xs');
+
+        $mdDialog.show({
+            controller: DialogFilterController,
+            templateUrl: 'templates/add_filter_dialog.tmpl.html',
+            parent: angular.element(document.body),
+            targetEvent: evento,
+            clickOutsideToClose: false,
+            bindToController: true,
+            locals: { fonte: $scope.fonte },
+            fullscreen: useFullScreen
+        }).
+        then(
+            function(filtro) {
+                console.log('Novo Filtro: ' + filtro );
+
+                $scope.dashboardAtivo.controladores.push(filtro);
+
+                var controller = new google.visualization.ControlWrapper({
+                    'controlType': 'CategoryFilter',
+                    'containerId': 'ctr_teste',
+                    'options': {
+                        'filterColumnLabel': filtro
+                    }
+                });
+
+                filters.push(controller);
+
             },
             function() {
                 // Cancelado
