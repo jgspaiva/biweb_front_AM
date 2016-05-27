@@ -1,6 +1,6 @@
 angular.module('biwebApp').
 
-controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisService', 'PaineisCnpjService', 'Storage', '$scope', '$cookies', '$mdDialog', '$mdMedia', '$mdSidenav', function(FontesService, FontesCnpjService, PaineisService, PaineisCnpjService, Storage, $scope, $cookies, $mdDialog, $mdMedia, $mdSidenav){
+controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisService', 'PaineisCnpjService', 'Storage', '$scope', '$cookies', '$mdDialog', '$mdMedia', '$mdSidenav', '$timeout', function(FontesService, FontesCnpjService, PaineisService, PaineisCnpjService, Storage, $scope, $cookies, $mdDialog, $mdMedia, $mdSidenav, $timeout){
 
     // Fontes de Dados
     $scope.fontes = [];
@@ -353,13 +353,17 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
                     $scope.graficos.push(grafico);
 
-                    //$scope.$apply();
+                    $timeout(function(){
+                        var wrapper = desenhaGrafico(grafico, dataTable, tagId);
 
-                    var wrapper = desenhaGrafico(grafico, dataTable, tagId);
-                    $scope.chartAtual = wrapper;
-                    $scope.charts.push($scope.chartAtual);
+                        $scope.chartAtual = wrapper;
+                        $scope.charts.push($scope.chartAtual);
 
-                    $scope.loadEditor($scope.chartAtual);
+                        $scope.loadEditor($scope.chartAtual);
+
+                    }, 500);
+
+
                 }
             },
             function() {
