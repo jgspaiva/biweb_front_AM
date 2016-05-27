@@ -9,7 +9,7 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
     var dataTable = null;
     $scope.filtros = [];
-    self.graficos = [];
+    $scope.graficos = [];
     $scope.charts = [];
     $scope.chartAtual = null;
 
@@ -43,7 +43,7 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
         dataTable = null;
         $scope.filtros = [];
-        self.graficos = [];
+        $scope.graficos = [];
         $scope.charts = [];
         $scope.chartAtual = null;
 
@@ -349,9 +349,11 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
                 else {
                     // Recebe grafico novo
 
-                    var tagId = self.graficos.length;
+                    var tagId = $scope.graficos.length;
 
-                    self.graficos.push(grafico);
+                    $scope.graficos.push(grafico);
+
+                    //$scope.$apply();
 
                     var wrapper = desenhaGrafico(grafico, dataTable, tagId);
                     $scope.chartAtual = wrapper;
