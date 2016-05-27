@@ -12,6 +12,8 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
     $scope.graficos = [];
     $scope.charts = [];
     $scope.chartAtual = null;
+    $scope.filters = [];
+    $scope.dashboard = null;
 
     var carregaFontes = function(){
         $scope.fontes = FontesCnpjService.query({ cnpj: $cookies.get('cnpj') });
@@ -46,6 +48,8 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         $scope.graficos = [];
         $scope.charts = [];
         $scope.chartAtual = null;
+        $scope.filters = [];
+        $scope.dashboard = null;
 
         $scope.showDialogFonte(evento);
     };
@@ -54,17 +58,7 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
     $scope.saveDashboard = function(){
         console.log('saveDashboard');
 
-        FontesService.get({ id: $scope.fonte._id }).$promise.
-        then(
-            function(response){
-                var dados = getDadosNovo($scope.fonte.header, response.dados);
-
-                console.log(JSON.stringify(dados));
-
-                geraDashTeste(dados, componenteCharts, filters);
-            });
-
-
+        geraDashboard(dataTable, $scope.charts, $scope.filtros);
     };
 
     // Abre o dashboard
@@ -244,6 +238,83 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         console.log('Number of columns: ' + saida.getNumberOfColumns());
 
         return saida;
+    };
+
+    var geraDashboard = function(dataTable_, charts_, filtros_){
+        filtros_.forEach(function(fText, indice){
+            $scope.filters.push(criaControlador(fText, indice));
+        });
+
+        charts_.forEach(function(chart_, indChart){
+            chart_.setContainerId("chart_teste_" + indChart);
+            chart_.draw();
+        });
+
+        $scope.dashboard = new google.visualization.Dashboard(document.getElementById("dash_teste"));
+
+        $scope.dashboard.bind($scope.filters, charts_);
+
+        $scope.dashboard.draw(dataTable_);
+
+        $scope.filters.forEach(function(filter_, indFilter){
+            charts_.forEach(function(chart_, indChart){
+                google.visualization.events.addListener(filter_, 'ready', function(event) {
+                    chart_.setDataTable(agrupa(chart_.getDataTable(), $scope.graficos[indChart]));
+
+                    console.log('ready');
+
+                    chart_.draw();
+                });
+
+                google.visualization.events.addListener(filter_, 'statechange', function(event) {
+                    chart_.setDataTable(agrupa(chart_.getDataTable(), $scope.graficos[indChart]));
+
+                    console.log('statechange');
+
+                    chart_.draw();
+                });
+            });
+        });
+    };
+
+    var criaControlador = function(filtro_, tagId_){
+        var saida = new google.visualization.ControlWrapper({
+            controlType: 'CategoryFilter',
+            containerId: 'ctr_teste_' + tagId_,
+            options: {
+                filterColumnLabel: filtro_
+            }
+        });
+
+        return saida;
+    };
+
+    var agrupa = function(dataTable_, grafico_){
+        var cols = [];
+        var columns = [0];
+        var i = 1;
+
+        grafico_.dados.y.forEach(function(val){
+            var aggreg = google.visualization.data.sum;
+
+            if(val.totalizador == 'AVG') aggreg = google.visualization.data.avg;
+            else if(val.totalizador == 'MAX') aggreg = google.visualization.data.max;
+            else if(val.totalizador == 'MIN') aggreg = google.visualization.data.min;
+            else if(val.totalizador == 'COUNT') aggreg = google.visualization.data.count;
+
+            var reg = { 'column' : val.indice, 'aggregation' : aggreg, 'type' : val.tipo.toLowerCase() }
+
+            cols.push(reg);
+
+            columns.push(i);
+            i++;
+        });
+
+        var grouped_dt = google.visualization.data.group(
+                          dataTable_, [grafico_.dados.x.indice],
+                          cols);
+
+        return grouped_dt;
     };
 
     var geraDashTeste = function(dataTable, // Fonte de dados
