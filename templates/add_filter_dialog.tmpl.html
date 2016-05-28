@@ -18,7 +18,7 @@
             <md-input-container flex="50">
                 <label>Filtro</label>
                 <md-select ng-model="filtro">
-                    <md-option ng-repeat="col in fonte.header" ng-value="col.campo">
+                    <md-option ng-repeat="col in fonte.header" ng-value="col">
                         {{col.campo | uppercase}}
                     </md-option>
                 </md-select>

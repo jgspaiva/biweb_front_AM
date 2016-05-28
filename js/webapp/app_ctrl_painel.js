@@ -178,11 +178,23 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
     };
 
     var criaControlador = function(filtro_, tagId_){
+        var tipo = 'CategoryFilter';
+
+        if(filtro_.tipo.toLowerCase() == 'date'){
+            tipo = 'DateRangeFilter';
+        }
+        else if(filtro_.tipo.toLowerCase() == 'number'){
+            tipo = 'NumberRangeFilter';
+        }
+        else if(filtro_.tipo.toLowerCase() == 'string'){
+            tipo = 'CategoryFilter';
+        }
+
         var saida = new google.visualization.ControlWrapper({
-            controlType: 'DateRangeFilter',
+            controlType: tipo,
             containerId: 'ctr_div_' + tagId_,
             options: {
-                filterColumnLabel: filtro_,
+                filterColumnLabel: filtro_.campo,
                 ui: {
                     labelStacking: 'vertical'
                 }
@@ -316,7 +328,7 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
                 var tagId = $scope.filtros.length;
 
-                $scope.filtros.push(filtro);
+                $scope.filtros.push(filtro.campo);
 
                 $timeout(function(){
                         var ctr = criaControlador(filtro, tagId);
