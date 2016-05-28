@@ -182,7 +182,10 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
             controlType: 'DateRangeFilter',
             containerId: 'ctr_div_' + tagId_,
             options: {
-                filterColumnLabel: filtro_
+                filterColumnLabel: filtro_,
+                ui: {
+                    labelStacking: 'vertical'
+                }
             }
         });
 
