@@ -180,6 +180,8 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
     var criaControlador = function(filtro_, tagId_){
         var tipo = 'CategoryFilter';
 
+        console.log('Tipo do controlador ' + filtro_.campo + ' é ' + filtro_.tipo);
+
         if(filtro_.tipo.toLowerCase() == 'date'){
             tipo = 'DateRangeFilter';
         }
@@ -189,6 +191,8 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         else if(filtro_.tipo.toLowerCase() == 'string'){
             tipo = 'CategoryFilter';
         }
+
+        console.log('ControlType: ' + tipo);
 
         var saida = new google.visualization.ControlWrapper({
             controlType: tipo,
