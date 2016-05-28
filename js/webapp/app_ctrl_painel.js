@@ -26,12 +26,6 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         $mdSidenav('right').toggle();
     };
 
-    var dash = null;
-    var componenteCharts = [];
-    var filters = [];
-
-    var componenteAtual = null;
-
     // Dashboard
     // Cria um novo dashboard em branco
     $scope.newDashboard = function(evento){
@@ -93,38 +87,14 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
         wrapper.setOptions(options);
 
-        $scope.charts[$scope.charts.indexOf($scope.chartAtual)] = wrapper; // Atualiza o Chart no Array
-
-        //componenteCharts.push({ componente: componenteAtual, chart: wrapper});
+        $scope.charts[$scope.charts.indexOf($scope.chartAtual)] = wrapper;
 
         wrapper.draw(document.getElementById(wrapper.containerId));
     }
 
     // Funções de Gráficos
     function desenhaGrafico(grafico_, dados_, tagId_) {
-        var cols = [];
-        var columns = [0];
-        var i = 1;
-
-        grafico_.dados.y.forEach(function(val){
-            var aggreg = google.visualization.data.sum;
-
-            if(val.totalizador == 'AVG') aggreg = google.visualization.data.avg;
-            else if(val.totalizador == 'MAX') aggreg = google.visualization.data.max;
-            else if(val.totalizador == 'MIN') aggreg = google.visualization.data.min;
-            else if(val.totalizador == 'COUNT') aggreg = google.visualization.data.count;
-
-            var reg = { 'column' : val.indice, 'aggregation' : aggreg, 'type' : val.tipo.toLowerCase() }
-
-            cols.push(reg);
-
-            columns.push(i);
-            i++;
-        });
-
-        var grouped_dt = google.visualization.data.group(
-                          dados_, [grafico_.dados.x.indice],
-                          cols);
+        var grouped_dt = agrupa(dados_, grafico_);
 
         var wrapper = new google.visualization.ChartWrapper(
             {
@@ -138,73 +108,6 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         wrapper.draw();
 
         return wrapper;
-    }
-
-    // Prepara a fonte de dados
-    // ANALISAR
-    function getDados(header, dados){
-        var saida = new google.visualization.DataTable();
-        var headerDataTable = [];
-
-        var sqlConsulta = "";
-        var sqlCampos = [];
-        var argumento = "";
-
-        saida.addColumn(header.x.tipo.toLowerCase(), header.x.campo);
-        headerDataTable.push(header.x.campo);
-
-        console.log('1 @ getDados');
-
-        // Inclusão do argumento
-        argumento = header.x.campo;
-        sqlCampos.push(argumento);
-
-        console.log('2 @ getDados');
-
-        header.y.forEach(function(y_i){
-            saida.addColumn(y_i.tipo.toLowerCase(), y_i.campo);
-            headerDataTable.push(y_i.campo);
-
-            console.log('3 loop @ getDados');
-
-            // Inclusão de totalizadores de valores
-
-            sqlCampos.push(y_i.totalizador + "([" + y_i.campo + "]) AS [" + y_i.campo + "]");
-
-            console.log('4 loop @ getDados');
-        });
-
-        // Consulta SQL (Alasql)
-        sqlConsulta = "SELECT " + sqlCampos.join() + " FROM ? GROUP BY " + argumento;
-
-        console.log('5 @ getDados');
-        console.log(sqlConsulta);
-
-        // Array obtido da consulta SQL
-        var interArray = alasql(sqlConsulta, [dados]);
-
-        console.log('6 @ getDados');
-
-        var rows = [];
-
-        interArray.forEach(function(dado){
-            var row = [];
-
-            headerDataTable.forEach(function(col){
-                if(String(dado[col]).split('/').length == 3){
-                    var data = String(dado[col]).split('/');
-
-                    row.push(new Date(data[2], data[1], data[0]));
-                }
-                else row.push(dado[col]);
-            });
-
-            rows.push(row);
-        });
-
-        saida.addRows(rows);
-
-        return saida;
     }
 
     var getDadosNovo = function(header, dados){
@@ -270,7 +173,7 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
     var criaControlador = function(filtro_, tagId_){
         var saida = new google.visualization.ControlWrapper({
-            controlType: 'CategoryFilter',
+            controlType: 'DateRangeFilter',
             containerId: 'ctr_div_' + tagId_,
             options: {
                 filterColumnLabel: filtro_
@@ -306,87 +209,6 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
                           cols);
 
         return grouped_dt;
-    };
-
-    var geraDashTeste = function(dataTable, // Fonte de dados
-                                  cCharts,  // Array de charts
-                                  filters
-                                 )
-    {
-        dash = new google.visualization.Dashboard(document.getElementById("dash_teste"));
-
-        google.visualization.events.addOneTimeListener(dash, 'ready', function() {
-        //redraw the barchart with grouped data
-        //console.log("redraw grouped");
-
-            console.log("Componentes: " + cCharts.length);
-
-            cCharts.forEach(function(componenteChart, indice){
-                var componente = componenteChart.componente;
-                var chart = componenteChart.chart;
-
-                console.log("->" + chart.toJSON());
-
-                var cols = [];
-                var columns = [0];
-                var i = 1;
-
-                componente.dados.y.forEach(function(val){
-                    var aggreg = google.visualization.data.sum;
-
-                    console.log("Totalizador: " + val.totalizador);
-
-                    if(val.totalizador == 'AVG') aggreg = google.visualization.data.avg;
-                    else if(val.totalizador == 'MAX') aggreg = google.visualization.data.max;
-                    else if(val.totalizador == 'MIN') aggreg = google.visualization.data.min;
-                    else if(val.totalizador == 'COUNT') aggreg = google.visualization.data.count;
-
-                    console.log('Aggregation: ' + aggreg);
-
-                    var reg = { 'column' : val.indice, 'aggregation' : aggreg, 'type' : val.tipo.toLowerCase() }
-
-                    cols.push(reg);
-
-                    console.log('Reg = ' + JSON.stringify(reg));
-
-                    columns.push(i);
-                    i++;
-                });
-
-                var grouped_dt = google.visualization.data.group(
-                          dash.getDataTable(), [componente.dados.x.indice],
-                          cols);
-
-                console.log('Gouped = ' + grouped_dt.toString());
-
-                console.log('columns: ' + columns.toString());
-
-                chart.setView({ 'columns' : columns });
-                chart.setDataTable(grouped_dt);
-                chart.setContainerId('chart_teste_' + indice);
-
-                console.log('Esse: ' + chart.toJSON());
-
-                chart.draw();
-            });
-
-        });
-
-        var charts = [];
-
-        cCharts.forEach(function(cc){
-            charts.push(cc.chart);
-        });
-
-        console.log('1 @ GeraDash');
-
-        dash.bind(filters, charts);
-
-        console.log('2 @ GeraDash');
-
-        dash.draw(dataTable);
-
-        console.log('3 @ GeraDash');
     };
 
     $scope.showDialogDados = function(evento, objeto) {
@@ -501,7 +323,4 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
             }
         );
     };
-
-
-
 }]);
