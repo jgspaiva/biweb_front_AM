@@ -1,4 +1,4 @@
-<div>
+<div id="dash_teste">
     <div layout="row" layout-align="space-between center">
         <span flex></span>
         <md-input-container class="md-block" flex="40">
@@ -12,23 +12,20 @@
         </md-button>
     </div>
 
-    <div>
+    <!--<div>
         <md-button class="md-icon-button" ng-click="showDialogControlador($event, null)">
             <md-icon>add</md-icon>
         </md-button>
 
         <md-chips ng-model="filtros"></md-chips>
-    </div>
+    </div>-->
 
-    <!--<md-grid-list
+    <md-grid-list
         md-cols-xs="2" md-cols-sm="3" md-cols-md="4" md-cols-gt-md="5"
         md-row-height-gt-md="5:1" md-row-height="5:1"
         md-gutter="12px" md-gutter-gt-sm="8px" style="margin: 10px">
 
-        <md-grid-tile ng-repeat="controlador in dashboardAtivo.controladores" layout="column" layout-align="center center">
-
-
-
+        <md-grid-tile ng-repeat="f in filtros" layout="column" layout-align="center center">
 
             <md-card class="full">
                 <div id="ctr_div_{{$index}}" style="width: 100%; height: 100%"></div>
@@ -37,10 +34,12 @@
         </md-grid-tile>
 
         <md-grid-tile class="dashed">
-
+            <md-button class="md-icon-button" ng-click="showDialogControlador($event, null)">
+                <md-icon>add</md-icon>
+            </md-button>
         </md-grid-tile>
 
-    </md-grid-list>-->
+    </md-grid-list>
 
     <md-grid-list
         md-cols-xs="1" md-cols-sm="1" md-cols-md="2" md-cols-gt-md="3"
@@ -65,14 +64,14 @@
 </div>
 
 <!-- Teste -->
-<div id="dash_teste">
+<!--<div id="dash_teste">
     <div id="ctr_teste_0"></div>
     <div id="ctr_teste_1"></div>
     <div id="chart_teste_0"></div>
     <div id="chart_teste_1"></div>
-</div>
+</div>-->
 
-<md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+<md-sidenav class="md-sidenav-right" md-whiteframe="2" md-component-id="right">
     <md-subheader layout="row" layout-align="space-between center">
         <md-button class="md-icon-button" ng-click="newDashboard($event)">
             <md-icon>
@@ -97,8 +96,5 @@
 
     <md-divider></md-divider>
 
-    <md-content>
-        <md-list>
-        </md-list>
-    </md-content>
+    <md-list></md-list>
 </md-sidenav>

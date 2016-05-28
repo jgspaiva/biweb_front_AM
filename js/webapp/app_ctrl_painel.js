@@ -58,7 +58,7 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
     $scope.saveDashboard = function(){
         console.log('saveDashboard');
 
-        geraDashboard(dataTable, $scope.charts, $scope.filtros);
+        geraDashboard(dataTable, $scope.charts, $scope.filters);
     };
 
     // Abre o dashboard
@@ -240,23 +240,14 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         return saida;
     };
 
-    var geraDashboard = function(dataTable_, charts_, filtros_){
-        filtros_.forEach(function(fText, indice){
-            $scope.filters.push(criaControlador(fText, indice));
-        });
-
-        charts_.forEach(function(chart_, indChart){
-            chart_.setContainerId("chart_teste_" + indChart);
-            chart_.draw();
-        });
-
+    var geraDashboard = function(dataTable_, charts_, filters_){
         $scope.dashboard = new google.visualization.Dashboard(document.getElementById("dash_teste"));
 
-        $scope.dashboard.bind($scope.filters, charts_);
+        $scope.dashboard.bind(filters_, charts_);
 
         $scope.dashboard.draw(dataTable_);
 
-        $scope.filters.forEach(function(filter_, indFilter){
+        filters_.forEach(function(filter_, indFilter){
             charts_.forEach(function(chart_, indChart){
                 google.visualization.events.addListener(filter_, 'ready', function(event) {
                     chart_.setDataTable(agrupa(chart_.getDataTable(), $scope.graficos[indChart]));
@@ -280,7 +271,7 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
     var criaControlador = function(filtro_, tagId_){
         var saida = new google.visualization.ControlWrapper({
             controlType: 'CategoryFilter',
-            containerId: 'ctr_teste_' + tagId_,
+            containerId: 'ctr_div_' + tagId_,
             options: {
                 filterColumnLabel: filtro_
             }
@@ -490,7 +481,19 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         }).
         then(
             function(filtro) {
+
+
+                var tagId = $scope.filtros.length;
+
                 $scope.filtros.push(filtro);
+
+                $timeout(function(){
+                        var ctr = criaControlador(filtro, tagId);
+
+                        $scope.filters.push(ctr);
+
+                    }, 500);
+
             },
             function() {
                 // Cancelado
