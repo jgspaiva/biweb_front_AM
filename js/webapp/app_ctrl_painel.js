@@ -2,6 +2,8 @@ angular.module('biwebApp').
 
 controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisService', 'PaineisCnpjService', 'Storage', '$scope', '$cookies', '$mdDialog', '$mdMedia', '$mdSidenav', '$timeout', function(FontesService, FontesCnpjService, PaineisService, PaineisCnpjService, Storage, $scope, $cookies, $mdDialog, $mdMedia, $mdSidenav, $timeout){
 
+    $scope.edicao = false;
+
     // Fontes de Dados
     $scope.fontes = [];
 
@@ -31,6 +33,8 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
     $scope.newDashboard = function(evento){
         console.log('newDashboard');
 
+        $scope.edicao = true;
+
         $scope.dashboardAtivo = {
             graficos: [],
             controladores: [],
@@ -51,6 +55,8 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
     // Salva o dashboard ativo
     $scope.saveDashboard = function(){
         console.log('saveDashboard');
+
+        $scope.edicao = false;
 
         geraDashboard(dataTable, $scope.charts, $scope.filters);
     };

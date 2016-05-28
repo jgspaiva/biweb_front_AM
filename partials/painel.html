@@ -1,11 +1,12 @@
 <div id="dash_teste">
     <div layout="row" layout-align="space-between center">
         <span flex></span>
-        <md-input-container class="md-block" flex="40">
+        <md-input-container class="md-block" flex="40" ng-show="edicao">
             <label>Painel</label>
 
             <input ng-model="dashboardAtivo.titulo" required>
         </md-input-container>
+        <p class="md-display-1" ng-show="!edicao">{{dashboardAtivo.titulo}}</p>
         <span flex></span>
         <md-button class="md-icon-button" ng-click="openRightMenu()">
             <md-icon>menu</md-icon>
@@ -33,7 +34,7 @@
 
         </md-grid-tile>
 
-        <md-grid-tile class="dashed">
+        <md-grid-tile class="dashed" ng-show="edicao">
             <md-button class="md-icon-button" ng-click="showDialogControlador($event, null)">
                 <md-icon>add</md-icon>
             </md-button>
@@ -54,7 +55,7 @@
 
         </md-grid-tile>
 
-        <md-grid-tile class="dashed">
+        <md-grid-tile class="dashed" ng-show="edicao">
             <md-button class="md-icon-button" ng-click="showDialogDados($event, null)">
                 <md-icon>add</md-icon>
             </md-button>
