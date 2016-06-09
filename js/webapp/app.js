@@ -1,4 +1,4 @@
-angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 'ngSanitize', 'dx', 'ngMessages'])
+angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 'ngSanitize', 'ngMessages'])
 
 // Router
 	.config(function($routeProvider){
