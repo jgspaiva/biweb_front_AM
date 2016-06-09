@@ -1,15 +1,22 @@
 angular.module('biwebApp').
 controller('MainController', ['AutenticaService', 'UsuariosService', 'Storage', 'ClientesService', '$location', '$cookies', '$route', '$mdSidenav', '$scope', '$rootScope','$mdDialog', '$timeout', function(AutenticaService, UsuariosService, Storage, ClientesService, $location, $cookies, $route, $mdSidenav, $scope, $rootScope, $mdDialog, $timeout){
 
+    var logado = false;
+
+    $scope.isLogado = function(){
+        return logado;
+    }
+
     // Métodos para Facebook API Login
 
     // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
   function testAPI() {
     console.log('Welcome!  Fetching your information.... ');
+    logado = true;
+
     FB.api('/me', function(response) {
       console.log('Successful login for: ' + response.name);
-        console.log('Funcionou');
 
       document.getElementById('status').innerHTML =
         'Thanks for logging in, ' + response.name + '!';

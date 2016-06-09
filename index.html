@@ -74,7 +74,7 @@
 
     </md-sidenav>
 
-    <div layout="column" ng-show="main.isLogado()">
+    <div layout="column" ng-show="isLogado()">
 
         <md-toolbar class="md-whiteframe-2dp">
 
@@ -125,44 +125,15 @@
 
     <!-- Card para login -->
 
-    <div layout="row" layout-align="center center" ng-show="!main.isLogado()" style="height: 100%" flex="100">
-
-        <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-            </fb:login-button>
-
-            <div id="status">
-            </div>
+    <div layout="row" layout-align="center center" ng-show="!isLogado()" style="height: 100%" flex="100">
 
         <span flex></span>
 
         <md-card class="md-card-login" flex-xs="100" flex-sm="60" flex-md="40" flex-gt-md="30">
 
+            <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button>
 
-
-            <form ng-submit="main.logon()">
-
-            <img class="logo-login" ng-src="imagens/logo_quadratica.png">
-
-            <md-card-content>
-                <md-input-container class="md-block">
-                    <md-icon>email</md-icon>
-                    <input ng-model="main.user.username" type="email" placeholder="E-mail" ng-required="true">
-                </md-input-container>
-
-                <md-input-container class="md-block">
-                    <md-icon>lock</md-icon>
-                    <input ng-model="main.user.password" type="password" placeholder="Senha" ng-required="true">
-                </md-input-container>
-
-            </md-card-content>
-
-            <md-divider></md-divider>
-
-            <md-card-actions>
-                <md-button type="submit">LOGIN</md-button>
-            </md-card-actions>
-
-            </form>
+            <div id="status"></div>
 
         </md-card>
 
