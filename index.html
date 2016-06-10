@@ -24,7 +24,6 @@
 </head>
 
 <body class="back-gray" ng-controller="MainController as main" ng-cloak>
-    <div id="fb-root"></div>
 
     <!-- Navigation -->
     <md-sidenav md-component-id="left" class="md-sidenav-left" md-whiteframe="2">
@@ -33,49 +32,24 @@
 
             <img ng-src="imagens/logo_quadratica.png">
 
-            <p class="md-title">{{main.usuario.nome}}</p>
+            <p class="md-title">{{getUsuario().name}}</p>
 
         </div>
 
         <md-list>
-            <md-divider ng-show="main.isAdmin()"></md-divider>
 
-            <md-list-item ng-show="main.isAdmin()">
-
-                <div layout="column" flex="100">
-
-                    <md-input-container class="sel-cliente" flex="100">
-                        <label>Cliente</label>
-
-                        <md-select ng-model="main.clienteId" ng-change="main.mudaCliente()">
-                            <md-option ng-value="null">TODOS</md-option>
-
-                            <md-option ng-repeat="cliente in main.clientes" value="{{cliente.cnpj}}">
-                                {{cliente.nome_fantasia | limitTo: 30 }}
-                            </md-option>
-                        </md-select>
-
-                    </md-input-container>
-
-                </div>
-
-            </md-list-item>
-
-            <md-divider></md-divider>
-
-            <md-list-item ng-repeat-start="p in main.usuario.permissoes">
-                <md-button class="md-menu__link" ng-click="goto(p.cadastro)">
-                    <md-icon flex="20">{{main.icone(p.cadastro)}}</md-icon><span style="margin-left: 10px">{{p.nome}}</span>
+            <md-list-item>
+                <md-button class="md-menu__link" ng-click="goto('painel')">
+                    <md-icon flex="20">dashboard</md-icon><span style="margin-left: 10px">Paineis</span>
                 </md-button>
-            </md-list-item>
 
-            <md-divider ng-repeat-end></md-divider>
+            </md-list-item>
 
         </md-list>
 
     </md-sidenav>
 
-    <div layout="column" ng-show="isLogado()">
+    <div layout="column">
 
         <md-toolbar class="md-whiteframe-2dp">
 
@@ -126,15 +100,17 @@
 
     <!-- Card para login -->
 
-    <div layout="row" layout-align="center center" ng-show="!isLogado()" style="height: 100%" flex="100">
+    <div layout="row" layout-align="center center" style="height: 100%" flex="100">
 
         <span flex></span>
 
         <md-card class="md-card-login" flex-xs="100" flex-sm="60" flex-md="40" flex-gt-md="30">
 
-            <fb:login-button show-faces="true" max-rows="1" size="large"></fb:login-button>
+            <!--<div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="true" data-auto-logout-link="true" scope="public_profile, email"></div>-->
 
-            <div id="status"></div>
+            <md-button ng-click="login()">
+                <md-icon>verified_user</md-icon> Login
+            </md-button>
 
         </md-card>
 
@@ -163,7 +139,7 @@
   <script src="js/globalize.js"></script>
 
   <!-- Facebook -->
-  <script src="http://connect.facebook.net/en_US/sdk.js"></script>
+  <!--<script src="http://connect.facebook.net/en_US/sdk.js"></script>-->
 
   <!-- Arquivo principal da aplicação -->
   <script src="js/webapp/app.js"></script>
@@ -188,6 +164,28 @@
       function drawChart(){
           console.log('Carregado o Google Charts');
       }
+  </script>
+
+  <div id="fb-root"></div>
+
+  <script>
+    window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '230447407347738',
+      xfbml      : true,
+      cookie     : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
   </script>
 
 </body>

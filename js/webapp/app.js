@@ -1,118 +1,29 @@
 angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 'ngSanitize', 'ngMessages'])
 .run(['$rootScope', '$window', 'servAuth', function($rootScope, $window, sAuth){
 
-    $rootScope.user = {};
-
-    $window.fbAsyncInit = function() {
-        FB.init({
-            appId       : '230447407347738',
-            cookie      : true,
-            status      : true,
-            xfbml       : true,
-            version     : 'v2.6'
-        });
-
-        sAuth.watchAuthenticationStatusChange();
-    };
-
-    (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-
 }])
 
 // Router
 .config(function($routeProvider){
     $routeProvider
-    .when('/usuarios', {
-        templateUrl: 'partials/usuarios.html',
-        controller: 'UsuariosController as usrCtrl'})
-
     .when('/principal', {
         templateUrl: 'partials/principal.html',
         controller: 'InicialController as iniCtrl'})
-
-    .when('/clientes', {
-        templateUrl: 'partials/clientes.html',
-        controller: 'ClientesController as cliCtrl'})
-
-    .when('/planos', {
-        templateUrl: 'partials/planos.html',
-        controller: 'PlanosController as plaCtrl'})
 
     .when('/painel', {
         templateUrl: 'partials/painel.html',
         controller: 'PainelController as pnlCtrl'})
 
-    .when('/senha', {
-        templateUrl: 'partials/senha.html',
-        controller: 'SenhaController as senCtrl'})
-
     .otherwise({
         template: '<h1>Bem-vindo ao PWBI Web</h1>'});
 })
-    // Constantes
+// Constantes
 
 .constant('apiUrl', 'http://begyn.com.br:3100')
 
 .service('servAuth', function(){
 
-    watchAuthenticationStatusChange = function() {
 
-        var _self = this;
-
-        FB.Event.subscribe('auth.authResponseChange', function(res) {
-
-            if (res.status === 'connected') {
-
-                // Conectado
-
-                _self.getUserInfo();
-
-            }
-            else {
-                // Não conectado
-            }
-        });
-
-    }
-
-    getUserInfo = function() {
-
-        var _self = this;
-
-        FB.api('/me', function(res) {
-
-            $rootScope.$apply(function() {
-
-                $rootScope.user = _self.user = res;
-
-            });
-
-        });
-
-    }
-
-    logout = function() {
-
-        var _self = this;
-
-        FB.logout(function(response) {
-
-            $rootScope.$apply(function() {
-
-                $rootScope.user = _self.user = {};
-
-            });
-
-        });
-
-    }
 
 })
 
