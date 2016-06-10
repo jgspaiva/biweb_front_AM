@@ -1,6 +1,6 @@
 angular.module('biwebApp').
 
-controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisService', 'PaineisCnpjService', 'Storage', '$scope', '$cookies', '$mdDialog', '$mdMedia', '$mdSidenav', '$timeout', function(FontesService, FontesCnpjService, PaineisService, PaineisCnpjService, Storage, $scope, $cookies, $mdDialog, $mdMedia, $mdSidenav, $timeout){
+controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisService', 'PaineisCnpjService', '$scope', '$cookies', '$mdDialog', '$mdMedia', '$mdSidenav', '$timeout', function(FontesService, FontesCnpjService, PaineisService, PaineisCnpjService, $scope, $cookies, $mdDialog, $mdMedia, $mdSidenav, $timeout){
 
     $scope.edicao = false;
 

@@ -24,6 +24,7 @@
 </head>
 
 <body class="back-gray" ng-controller="MainController as main" ng-cloak>
+    <div id="fb-root"></div>
 
     <!-- Navigation -->
     <md-sidenav md-component-id="left" class="md-sidenav-left" md-whiteframe="2">
@@ -108,7 +109,7 @@
                     <md-divider></md-divider>
 
                     <md-menu-item>
-                        <md-button ng-click="main.logout()">Sair</md-button>
+                        <md-button ng-click="logout()">Sair</md-button>
                     </md-menu-item>
                 </md-menu-content>
 
@@ -131,7 +132,7 @@
 
         <md-card class="md-card-login" flex-xs="100" flex-sm="60" flex-md="40" flex-gt-md="30">
 
-            <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button>
+            <fb:login-button show-faces="true" max-rows="1" size="large"></fb:login-button>
 
             <div id="status"></div>
 
@@ -161,6 +162,9 @@
   <script src="js/angular-sanitize.js"></script>
   <script src="js/globalize.js"></script>
 
+  <!-- Facebook -->
+  <script src="http://connect.facebook.net/en_US/sdk.js"></script>
+
   <!-- Arquivo principal da aplicação -->
   <script src="js/webapp/app.js"></script>
 
@@ -169,14 +173,8 @@
 
   <!-- Controladores -->
   <script src="js/webapp/app_ctrl_main.js"></script>
-  <script src="js/webapp/app_ctrl_inicial.js"></script>
-  <script src="js/webapp/app_ctrl_clientes.js"></script>
-  <script src="js/webapp/app_ctrl_planos.js"></script>
   <script src="js/webapp/app_ctrl_usuarios.js"></script>
-  <script src="js/webapp/app_ctrl_reports.js"></script>
   <script src="js/webapp/app_ctrl_painel.js"></script>
-  <script src="js/webapp/app_ctrl_senha.js"></script>
-  <script src="js/webapp/app_ctrl_utilizacao.js"></script>
 
   <!-- Dialog Controllers -->
   <script src="js/webapp/dialog.js"></script>
@@ -194,6 +192,7 @@
 
   <script>
 
+// Load the SDK asynchronously
 
 
 </script>
