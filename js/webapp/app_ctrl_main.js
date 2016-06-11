@@ -1,7 +1,5 @@
 angular.module('biwebApp').
 controller('MainController', ['AutenticaService', 'servAuth', '$location', '$cookies', '$route', '$mdSidenav', '$scope', '$rootScope','$mdDialog', '$timeout', function(AutenticaService, sAuth, $location, $cookies, $route, $mdSidenav, $scope, $rootScope, $mdDialog, $timeout){
-    //$scope.logado = false;
-
     $scope.isLogado = function(){
         return sAuth.logado;
     };
@@ -17,7 +15,7 @@ controller('MainController', ['AutenticaService', 'servAuth', '$location', '$coo
 
                 console.log('Welcome!  Fetching your information.... ');
 
-                FB.api('/me', { fields: 'name, email' }, function(response) {
+                FB.api('/me', { fields: 'name, picture, email' }, function(response) {
                     console.log('Good to see you, ' + response.name + '.');
                     console.log('Seu email é ' + response.email);
 
@@ -41,10 +39,6 @@ controller('MainController', ['AutenticaService', 'servAuth', '$location', '$coo
     $scope.logout = function(){
         FB.logout(function(response){
             console.log('Logged out');
-
-
-
-            //$scope.logado = false;
 
             $rootScope.$apply(function(){
                 sAuth.logado = false;

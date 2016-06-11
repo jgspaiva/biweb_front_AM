@@ -15,9 +15,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
                 case 'connected':
                     console.log('Já conectado');
 
-
-                    FB.api('/me', { fields: 'name, email' }, function(response) {
-
+                    FB.api('/me', { fields: 'name, picture, email' }, function(response) {
                         $rootScope.$apply(function(){
                             sAuth.usuario = response;
                             sAuth.logado = true;
@@ -27,12 +25,14 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
                     break;
                 case 'not_authorized':
                     console.log('Não autorizado');
+
                     $rootScope.$apply(function(){
                         sAuth.logado = false;
                     });
                     break;
                 default:
                     console.log('Não logado');
+
                     $rootScope.$apply(function(){
                         sAuth.logado = false;
                     });
