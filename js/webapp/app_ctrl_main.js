@@ -6,6 +6,10 @@ controller('MainController', ['AutenticaService', 'UsuariosService', 'ClientesSe
         return $scope.logado;
     };
 
+    $scope.$watch('logado', function(oldValue, newValue){
+
+    });
+
     $scope.login = function(){
         FB.login(function(response) {
 
@@ -18,6 +22,8 @@ controller('MainController', ['AutenticaService', 'UsuariosService', 'ClientesSe
                     console.log('Seu email é ' + response.email);
 
                     $scope.logado = true;
+
+                    $scope.$apply();
 
                 });
 
@@ -36,6 +42,8 @@ controller('MainController', ['AutenticaService', 'UsuariosService', 'ClientesSe
             console.log('Logged out');
 
             $scope.logado = false;
+
+            $scope.$apply();
         });
     };
 

@@ -1,6 +1,38 @@
 angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 'ngSanitize', 'ngMessages'])
 .run(['$rootScope', '$window', 'servAuth', function($rootScope, $window, sAuth){
 
+    $window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '230447407347738',
+            xfbml      : true,
+            cookie     : true,
+            status     : true,
+            version    : 'v2.6'
+        });
+
+        FB.getLoginStatus(function(response){
+            switch(response.status){
+                case 'connected':
+                    console.log('Já conectado');
+                    break;
+                case 'not_authorized':
+                    console.log('Não autorizado');
+                    break;
+                default:
+                    console.log('Não logado');
+                    break;
+            }
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
 }])
 
 // Router
@@ -22,7 +54,6 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
 .constant('apiUrl', 'http://begyn.com.br:3100')
 
 .service('servAuth', function(){
-
 
 
 })

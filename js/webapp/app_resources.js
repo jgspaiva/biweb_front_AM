@@ -88,8 +88,8 @@ angular.module('biwebApp')
 	.factory('ResourceInterceptor', ['$cookies', '$q', '$rootScope', function($cookies, $q, $rootScope){
 		return {
 			request: function(config){
-				config.headers['x-access-token'] = $cookies.get('token');
-                config.headers['usuario_id'] = $cookies.get('usuario_id');
+				//config.headers['x-access-token'] = $cookies.get('token');
+                //config.headers['usuario_id'] = $cookies.get('usuario_id');
 
                 $rootScope.$broadcast('start', { data: 'req'});
 
