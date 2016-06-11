@@ -32,7 +32,10 @@
 
             <img ng-src="{{getUsuario().picture.data.url}}">
 
-            <p class="md-title">{{getUsuario().name}}</p>
+            <p>
+                <span class="md-title">{{getUsuario().name}}</span><br>
+                <span class="md-caption">{{getUsuario().email}}</span>
+            </p>
 
         </div>
 
