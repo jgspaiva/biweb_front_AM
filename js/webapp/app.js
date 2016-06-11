@@ -14,12 +14,28 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
             switch(response.status){
                 case 'connected':
                     console.log('Já conectado');
+
+
+                    FB.api('/me', { fields: 'name, email' }, function(response) {
+
+                        $rootScope.$apply(function(){
+                            sAuth.usuario = response;
+                            sAuth.logado = true;
+                        });
+
+                    });
                     break;
                 case 'not_authorized':
                     console.log('Não autorizado');
+                    $rootScope.$apply(function(){
+                        sAuth.logado = false;
+                    });
                     break;
                 default:
                     console.log('Não logado');
+                    $rootScope.$apply(function(){
+                        sAuth.logado = false;
+                    });
                     break;
             }
         });
@@ -54,7 +70,11 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
 .constant('apiUrl', 'http://begyn.com.br:3100')
 
 .service('servAuth', function(){
+    var self = this;
 
+    self.usuario = {};
+
+    self.logado = false;
 
 })
 

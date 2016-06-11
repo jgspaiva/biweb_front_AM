@@ -1,14 +1,18 @@
 angular.module('biwebApp').
-controller('MainController', ['AutenticaService', 'UsuariosService', 'ClientesService', '$location', '$cookies', '$route', '$mdSidenav', '$scope', '$rootScope','$mdDialog', '$timeout', function(AutenticaService, UsuariosService, ClientesService, $location, $cookies, $route, $mdSidenav, $scope, $rootScope, $mdDialog, $timeout){
-    $scope.logado = false;
+controller('MainController', ['AutenticaService', 'servAuth', '$location', '$cookies', '$route', '$mdSidenav', '$scope', '$rootScope','$mdDialog', '$timeout', function(AutenticaService, sAuth, $location, $cookies, $route, $mdSidenav, $scope, $rootScope, $mdDialog, $timeout){
+    //$scope.logado = false;
 
     $scope.isLogado = function(){
-        return $scope.logado;
+        return sAuth.logado;
     };
 
-    $scope.$watch('logado', function(oldValue, newValue){
+    $scope.getUsuario = function(){
+        return sAuth.usuario;
+    };
 
-    });
+    /*$scope.$watch('logado', function(oldValue, newValue){
+
+    });*/
 
     $scope.login = function(){
         FB.login(function(response) {
@@ -21,9 +25,14 @@ controller('MainController', ['AutenticaService', 'UsuariosService', 'ClientesSe
                     console.log('Good to see you, ' + response.name + '.');
                     console.log('Seu email é ' + response.email);
 
-                    $scope.logado = true;
+                    //$scope.logado = true;
 
-                    $scope.$apply();
+                    $rootScope.$apply(function(){
+                        sAuth.logado = true;
+                        sAuth.usuario = response;
+                    });
+
+                    //$scope.$apply();
 
                 });
 
@@ -41,9 +50,14 @@ controller('MainController', ['AutenticaService', 'UsuariosService', 'ClientesSe
         FB.logout(function(response){
             console.log('Logged out');
 
-            $scope.logado = false;
 
-            $scope.$apply();
+
+            //$scope.logado = false;
+
+            $rootScope.$apply(function(){
+                sAuth.logado = false;
+                sAuth.usuario = {};
+            });
         });
     };
 
