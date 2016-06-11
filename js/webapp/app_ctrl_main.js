@@ -10,10 +10,6 @@ controller('MainController', ['AutenticaService', 'servAuth', '$location', '$coo
         return sAuth.usuario;
     };
 
-    /*$scope.$watch('logado', function(oldValue, newValue){
-
-    });*/
-
     $scope.login = function(){
         FB.login(function(response) {
 
@@ -25,14 +21,10 @@ controller('MainController', ['AutenticaService', 'servAuth', '$location', '$coo
                     console.log('Good to see you, ' + response.name + '.');
                     console.log('Seu email é ' + response.email);
 
-                    //$scope.logado = true;
-
                     $rootScope.$apply(function(){
                         sAuth.logado = true;
                         sAuth.usuario = response;
                     });
-
-                    //$scope.$apply();
 
                 });
 
