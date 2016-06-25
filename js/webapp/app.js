@@ -299,6 +299,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
                 var array = CSVToArray(csv);
 
                 var objArray = [];
+                var headerArray = [];
 
                 for (var i = 1; i < array.length; i++) {
                     objArray[i - 1] = {};
@@ -306,16 +307,53 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
                         var key = array[0][k];
                         key = key.trim();
 
-                        objArray[i - 1][key] = (array[i][k]).trim();
+                        var valStr = (array[i][k]).trim();
+
+                        var val = undefined;
+
+                        if(tipo(valStr) == "number") val = Number(valStr);
+                        else val = valStr;
+
+                        objArray[i - 1][key] = val;
+
+                        // Header
+                        if(i == 1) {
+                            var regHeader = { campo: key, tipo: tipo(valStr)};
+
+                            headerArray.push(regHeader);
+                        }
                     }
                 }
 
                 var json = JSON.stringify(objArray);
                 var str = json.replace(/},/g, "},\r\n");
 
-                console.log(str); // so para testes
+                sessionStorage.setItem('fonte', str);
+
+
+                //Header
+                var jsonHeader = JSON.stringify(headerArray);
+                var strHeader = jsonHeader.replace(/},/g, "},\r\n");
+
+                sessionStorage.setItem('header', strHeader);
 
                 return str;
+            };
+
+            var tipo = function(valor){
+                var saida = "";
+
+                if(valor.match(/^\d+$/) != null){
+                    saida = "number";
+                }
+                else if(valor.match(/^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g) != null){
+                    saida = "date";
+                }
+                else{
+                    saida = "string";
+                }
+
+                return saida;
             };
         }
     }
