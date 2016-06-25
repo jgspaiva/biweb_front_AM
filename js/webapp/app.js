@@ -190,4 +190,133 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
         }
 
     };
-}]);
+
+}])
+
+.directive('ngCsvImport', function() {
+	return {
+		restrict: 'E',
+		transclude: true,
+		replace: true,
+		scope:{
+			content:'=?',
+			header: '=?',
+			headerVisible: '=?',
+			separator: '=?',
+			separatorVisible: '=?',
+			result: '=?',
+			encoding: '=?',
+			encodingVisible: '=?',
+			accept: '=?'
+		},
+		templateUrl: 'componentes/csv_uploader.tmpl.html',
+		link: function(scope, element) {
+			scope.separatorVisible = scope.separatorVisible || false;
+			scope.headerVisible = scope.headerVisible || false;
+
+			angular.element(element[0].querySelector('.separator-input')).on('keyup', function(e) {
+				if ( scope.content != null ) {
+					var content = {
+						csv: scope.content,
+						header: scope.header,
+						separator: e.target.value,
+						encoding: scope.encoding
+					};
+
+                    console.log(content.csv);
+
+					scope.result = CSV2JSON(content.csv);
+					scope.$apply();
+				}
+			});
+
+			element.on('change', function(onChangeEvent) {
+				var reader = new FileReader();
+
+				scope.filename = onChangeEvent.target.files[0].name;
+
+				reader.onload = function(onLoadEvent) {
+					scope.$apply(function() {
+						var content = {
+							csv: onLoadEvent.target.result.replace(/\r\n|\r/g,'\n'),
+							header: scope.header,
+							separator: scope.separator
+						};
+						scope.content = content.csv;
+						scope.result = CSV2JSON(content.csv);
+						scope.result.filename = scope.filename;
+					});
+				};
+
+				if ((onChangeEvent.target.type === "file") && (onChangeEvent.target.files != null || onChangeEvent.srcElement.files != null)) {
+					reader.readAsText((onChangeEvent.srcElement || onChangeEvent.target).files[0], scope.encoding);
+				}
+                else {
+					if ( scope.content != null ) {
+						var content = {
+							csv: scope.content,
+							header: !scope.header,
+							separator: scope.separator
+						};
+						scope.result = CSV2JSON(content.csv);
+					}
+				}
+			});
+
+            var CSVToArray = function(strData, strDelimiter) {
+                strDelimiter = (strDelimiter || ",");
+                var objPattern = new RegExp((
+                    "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+                    "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+                    "([^\"\\" + strDelimiter + "\\r\\n]*))"), "gi");
+
+                var arrData = [[]];
+
+                var arrMatches = null;
+
+                while (arrMatches = objPattern.exec(strData)) {
+                    var strMatchedDelimiter = arrMatches[1];
+
+                    if (strMatchedDelimiter.length && (strMatchedDelimiter != strDelimiter)) {
+                        arrData.push([]);
+                    }
+
+                    if (arrMatches[2]) {
+                        var strMatchedValue = arrMatches[2].replace(
+                            new RegExp("\"\"", "g"), "\"");
+                    } else {
+                        var strMatchedValue = arrMatches[3];
+                    }
+
+                    arrData[arrData.length - 1].push(strMatchedValue);
+                }
+
+                return (arrData);
+
+            };
+
+            var CSV2JSON = function(csv) {
+                var array = CSVToArray(csv);
+
+                var objArray = [];
+
+                for (var i = 1; i < array.length; i++) {
+                    objArray[i - 1] = {};
+                    for (var k = 0; k < array[0].length && k < array[i].length; k++) {
+                        var key = array[0][k];
+                        key = key.trim();
+
+                        objArray[i - 1][key] = (array[i][k]).trim();
+                    }
+                }
+
+                var json = JSON.stringify(objArray);
+                var str = json.replace(/},/g, "},\r\n");
+
+                console.log(str); // so para testes
+
+                return str;
+            };
+        }
+    }
+});

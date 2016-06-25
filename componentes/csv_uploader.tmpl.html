@@ -1,0 +1,21 @@
+<div><div ng-show="headerVisible">
+    <div class="label">Header</div>
+    <input type="checkbox" ng-model="header">
+</div>
+
+<div ng-show="encoding && encodingVisible">
+    <div class="label">Encoding</div>
+    <span>{{encoding}}</span>
+</div>
+
+<div ng-show="separator && separatorVisible">
+
+    <div class="label">Seperator</div>
+    <span><input class="separator-input" type="text" ng-change="changeSeparator" ng-model="separator"></span>
+
+</div>
+
+<div>
+    <input class="btn cta gray" type="file" multiple accept="{{accept}}">
+</div>
+</div>
