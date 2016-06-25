@@ -38,7 +38,7 @@ function DialogDadosController($scope, $mdDialog, fonte, componente){
     var getIndiceFonte = function(campo){
         var saida = -1;
 
-        $scope.fonte.header.forEach(function(col, indice){
+        $scope.fonte.forEach(function(col, indice){
             if(col.campo.toLowerCase() == campo.toLowerCase()) saida = indice;
         });
 

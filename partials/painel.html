@@ -1,15 +1,5 @@
 <div id="dash_teste">
 
-    <ng-csv-import
-               content="csv.content"
-               header="csv.header"
-               header-visible="csv.headerVisible"
-               separator="csv.separator"
-               separator-visible="csv.separatorVisible"
-               result="csv.result"
-               encoding="csv.encoding"
-               encoding-visible="csv.encodingVisible"></ng-csv-import>
-
     <div layout="row" layout-align="space-between center">
         <span flex></span>
         <md-input-container class="md-block" flex="40" ng-show="edicao">
@@ -82,6 +72,18 @@
     </md-subheader>
 
     <md-divider></md-divider>
+
+    <div layout-padding>
+        <ng-csv-import
+               content="csv.content"
+               header="csv.header"
+               header-visible="csv.headerVisible"
+               separator="csv.separator"
+               separator-visible="csv.separatorVisible"
+               result="csv.result"
+               encoding="csv.encoding"
+               encoding-visible="csv.encodingVisible"></ng-csv-import>
+    </div>
 
     <md-list></md-list>
 </md-sidenav>

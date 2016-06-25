@@ -49,7 +49,14 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         $scope.filters = [];
         $scope.dashboard = null;
 
-        $scope.showDialogFonte(evento);
+        $scope.fonte = JSON.parse(sessionStorage.getItem('header'));
+
+        dataTable = getDadosNovo(
+            $scope.fonte,
+            JSON.parse(sessionStorage.getItem('fonte'))
+        );
+
+        $scope.openRightMenu();
     };
 
     // Salva o dashboard ativo

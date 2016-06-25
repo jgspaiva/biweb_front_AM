@@ -25,13 +25,13 @@
                 <label>Argumento</label>
                 <md-select ng-model="componente.dados.x" ng-change="escolheArgumento()">
                     <md-optgroup label="TEXTO">
-                        <md-option ng-repeat="col in fonte.header | filter: {tipo : 'String'}" ng-value="col">
+                        <md-option ng-repeat="col in fonte | filter: {tipo : 'String'}" ng-value="col">
                             {{col.campo | uppercase}}
                         </md-option>
                     </md-optgroup>
 
                     <md-optgroup label="DATA">
-                        <md-option ng-repeat="col in fonte.header | filter: {tipo : 'Date'}" ng-value="col">
+                        <md-option ng-repeat="col in fonte | filter: {tipo : 'Date'}" ng-value="col">
                             {{col.campo | uppercase}}
                         </md-option>
                     </md-optgroup>
@@ -47,7 +47,7 @@
                     <md-select ng-model="y.campo">
 
                         <md-optgroup label="NÚMERO">
-                                <md-option ng-repeat="col in fonte.header | filter: {tipo : 'Number'}" ng-value="col.campo">
+                                <md-option ng-repeat="col in fonte | filter: {tipo : 'Number'}" ng-value="col.campo">
                                     {{col.campo | uppercase}}
                                 </md-option>
                         </md-optgroup>
