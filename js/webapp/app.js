@@ -63,7 +63,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
         controller: 'PainelController as pnlCtrl'})
 
     .otherwise({
-        template: '<h1>Bem-vindo ao PWBI Web</h1>'});
+        template: '<h1>Bem-vindo ao Dashboard Designer</h1>'});
 })
 // Constantes
 
