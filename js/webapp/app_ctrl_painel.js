@@ -356,14 +356,20 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         );
     };
 
+    // Configuração do CSV Importador
+
     $scope.csv = {
     	content: null,
+
     	header: true,
-    	headerVisible: true,
+    	headerVisible: false,
+
     	separator: ',',
-    	separatorVisible: true,
+    	separatorVisible: false,
+
     	result: null,
+
     	encoding: 'ISO-8859-1',
-    	encodingVisible: true
+    	encodingVisible: false
     };
 }]);
