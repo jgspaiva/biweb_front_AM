@@ -1,6 +1,6 @@
 angular.module('biwebApp').
 
-controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisService', 'PaineisCnpjService', '$scope', '$cookies', '$mdDialog', '$mdMedia', '$mdSidenav', '$timeout', function(FontesService, FontesCnpjService, PaineisService, PaineisCnpjService, $scope, $cookies, $mdDialog, $mdMedia, $mdSidenav, $timeout){
+controller('PainelController', [ '$scope', '$mdDialog', '$mdMedia', '$mdSidenav', '$timeout', function($scope, $mdDialog, $mdMedia, $mdSidenav, $timeout){
 
     $scope.edicao = false;
 
@@ -17,12 +17,6 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
     $scope.filters = [];
     $scope.dashboard = null;
 
-    var carregaFontes = function(){
-        $scope.fontes = FontesCnpjService.query({ cnpj: $cookies.get('cnpj') });
-    };
-
-    carregaFontes();
-
     // Menu de Paineis
     $scope.openRightMenu = function(){
         $mdSidenav('right').toggle();
@@ -31,8 +25,6 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
     // Dashboard
     // Cria um novo dashboard em branco
     $scope.newDashboard = function(evento){
-        console.log('newDashboard');
-
         $scope.edicao = true;
 
         $scope.dashboardAtivo = {
@@ -97,6 +89,7 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
         // Define o tamanho do gráfico externamente
         options["width"] = 400;
         options["height"] = 400;
+        options["animation"] = { duration: 707 };
 
         wrapper.setOptions(options);
 
@@ -113,10 +106,14 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
             {
                 chartType: grafico_.chartType,
                 dataTable: grouped_dt,
-                options: {'title': grafico_.titulo },
+                options: {
+                    'title': grafico_.titulo
+                },
                 containerId: 'vis_div_' + tagId_
             }
         );
+
+        console.log('Com animation');
 
         wrapper.draw();
 
@@ -168,7 +165,7 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
                 google.visualization.events.addListener(filter_, 'ready', function(event) {
                     chart_.setDataTable(agrupa(chart_.getDataTable(), $scope.graficos[indChart]));
 
-                    console.log('ready');
+                    console.log(JSON.stringify(chart_.getOptions()));
 
                     chart_.draw();
                 });
@@ -281,37 +278,6 @@ controller('PainelController', [ 'FontesService', 'FontesCnpjService', 'PaineisS
 
 
                 }
-            },
-            function() {
-                // Cancelado
-                console.log('Cancelado');
-            }
-        );
-    };
-
-    $scope.showDialogFonte = function(evento) {
-        var useFullScreen = $mdMedia('xs');
-
-        $mdDialog.show({
-            controller: DialogFonteController,
-            templateUrl: 'templates/choose_fonte_dialog.tmpl.html',
-            parent: angular.element(document.body),
-            targetEvent: evento,
-            clickOutsideToClose: false,
-            bindToController: true,
-            locals: { fontes: $scope.fontes },
-            fullscreen: useFullScreen
-        }).
-        then(
-            function(fonte) {
-                console.log('Fonte escolhida');
-                $scope.fonte = fonte;
-                $scope.openRightMenu();
-
-                FontesService.get({ id: $scope.fonte._id }).$promise.
-                then(function(response){
-                    dataTable = getDadosNovo(fonte.header, response.dados);
-                });
             },
             function() {
                 // Cancelado
