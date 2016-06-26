@@ -338,4 +338,24 @@ controller('PainelController', [ '$scope', '$mdDialog', '$mdMedia', '$mdSidenav'
     	encoding: 'ISO-8859-1',
     	encodingVisible: false
     };
+
+    $scope.share = function(){
+        FB.api(
+            'me/objects/begyn_dd:chart',
+            'post',
+            {
+                'object': {
+                    'og:url': 'http://samples.ogp.me/242496319476180',
+                    'og:title': 'Sample Chart',
+                    'og:type': 'begyn_dd:chart',
+                    'og:image': 'https://fbstatic-a.akamaihd.net/images/devsite/attachment_blank.png',
+                    'og:description': 'Massa esse programa',
+                    'fb:app_id': '230447407347738'
+                }
+            },
+            function(response) {
+                console.log('Chegou resposta');
+                console.log(JSON.stringify(response));
+            });
+    };
 }]);
