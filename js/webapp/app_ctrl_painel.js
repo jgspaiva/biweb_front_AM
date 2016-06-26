@@ -166,6 +166,7 @@ controller('PainelController', [ '$scope', '$mdDialog', '$mdMedia', '$mdSidenav'
                     chart_.setDataTable(agrupa(chart_.getDataTable(), $scope.graficos[indChart]));
 
                     console.log(JSON.stringify(chart_.getOptions()));
+                    console.log('URI = ' + chart_.getChart().getImageURI());
 
                     chart_.draw();
                 });
@@ -174,6 +175,7 @@ controller('PainelController', [ '$scope', '$mdDialog', '$mdMedia', '$mdSidenav'
                     chart_.setDataTable(agrupa(chart_.getDataTable(), $scope.graficos[indChart]));
 
                     console.log('statechange');
+                    console.log('URI = ' + chart_.getChart().getImageURI());
 
                     chart_.draw();
                 });
@@ -339,6 +341,7 @@ controller('PainelController', [ '$scope', '$mdDialog', '$mdMedia', '$mdSidenav'
     	encodingVisible: false
     };
 
+    // Função para compartilhamento de historia
     $scope.share = function(){
         FB.api(
             'me/objects/begyn_dd:chart',
