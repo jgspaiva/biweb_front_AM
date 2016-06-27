@@ -205,6 +205,7 @@ controller('PainelController', [ '$scope', '$mdDialog', '$mdMedia', '$mdSidenav'
             containerId: 'ctr_div_' + tagId_,
             options: {
                 filterColumnLabel: filtro_.campo,
+                filterColumnIndex: filtro_.index,
                 ui: {
                     labelStacking: 'vertical'
                 }
@@ -227,7 +228,7 @@ controller('PainelController', [ '$scope', '$mdDialog', '$mdMedia', '$mdSidenav'
             else if(val.totalizador == 'MIN') aggreg = google.visualization.data.min;
             else if(val.totalizador == 'COUNT') aggreg = google.visualization.data.count;
 
-            var reg = { 'column' : val.indice, 'aggregation' : aggreg, 'type' : val.tipo.toLowerCase() }
+            var reg = { 'column' : val.indice, 'aggregation' : aggreg, 'type' : val.tipo.toLowerCase() };
 
             cols.push(reg);
 
