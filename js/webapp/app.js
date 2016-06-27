@@ -318,7 +318,7 @@ angular.module('biwebApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngMaterial', 
 
                         // Header
                         if(i == 1) {
-                            var regHeader = { campo: key, tipo: tipo(valStr)};
+                            var regHeader = { index: k, campo: key, tipo: tipo(valStr)};
 
                             headerArray.push(regHeader);
                         }
