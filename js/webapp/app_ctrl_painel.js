@@ -162,8 +162,8 @@ controller('PainelController', [ '$scope', '$mdDialog', '$mdMedia', '$mdSidenav'
 
         filters_.forEach(function(filter_, indFilter){
             charts_.forEach(function(chart_, indChart){
-                google.visualization.events.addListener(filter_, 'ready', function(event) {
-                    chart_.setDataTable(agrupa(chart_.getDataTable(), $scope.graficos[indChart]));
+                google.visualization.events.addOneTimeListener(filter_, 'ready', function(event) {
+                    chart_.setDataTable(agrupa(dataTable_, $scope.graficos[indChart]));
 
                     console.log(JSON.stringify(chart_.getOptions()));
                     console.log('URI = ' + chart_.getChart().getImageURI());
